@@ -8,7 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const CONTENT_DIR = path.join(__dirname, "../content");
-const TIMEOUT_MS = 10_000;
+const DEFAULT_TIMEOUT_MS = 20_000;
 const DEFAULT_FILE_CONCURRENCY = 15;
 const DEFAULT_URL_CHECK_CONCURRENCY = 40;
 const ACCEPTED_STATUSES = new Set([403, 429]);
@@ -71,6 +71,11 @@ function readPositiveIntEnv(name: string, fallback: number): number {
 
   return parsed;
 }
+
+const TIMEOUT_MS = readPositiveIntEnv(
+  "EXTERNAL_LINKS_TIMEOUT_MS",
+  DEFAULT_TIMEOUT_MS,
+);
 
 function findMarkdownFiles(dir: string, fileList: string[] = []): string[] {
   const files = fs.readdirSync(dir);

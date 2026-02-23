@@ -33,6 +33,10 @@ jobs:
       - name: Run external link checker
         id: external-links
         shell: bash
+        timeout-minutes: 30
+        env:
+          EXTERNAL_LINKS_FILE_CONCURRENCY: "8"
+          EXTERNAL_LINKS_URL_CONCURRENCY: "10"
         run: |
           mkdir -p external-links
           set +e
@@ -48,10 +52,6 @@ jobs:
           REPORT_FILE="external-links/formatted.md"
           JSON_FILE="external-links/report.json"
           OUTPUT_FILE="external-links/output.txt"
-          {
-            echo "## External Link Check Report"
-            echo ""
-          } > "$REPORT_FILE"
           if [ ! -s "$JSON_FILE" ]; then
             echo "::warning::No JSON output found at $JSON_FILE. Using empty object."
             echo "{}" > "$JSON_FILE"
@@ -60,6 +60,8 @@ jobs:
           if ! jq . "$JSON_FILE" >/dev/null; then
             echo "::error::Invalid JSON in $JSON_FILE"
             {
+              echo "## External Link Check Report"
+              echo ""
               echo "### ❌ Invalid JSON report output"
               echo ""
               echo "The external link checker output was not valid JSON."
@@ -71,7 +73,7 @@ jobs:
               cat "$JSON_FILE"
               echo '```'
               echo "</details>"
-            } >> "$REPORT_FILE"
+            } > "$REPORT_FILE"
             if [ -s "$OUTPUT_FILE" ]; then
               echo "stderr output:"
               cat "$OUTPUT_FILE"
@@ -116,6 +118,8 @@ jobs:
           fi
 
           {
+            echo "## External Link Check Report"
+            echo ""
             jq -r '
               "- Scanned files: `\(.scannedFiles // "n/a")`",
               "- Extracted external links: `\(.extractedExternalLinks // "n/a")`",
