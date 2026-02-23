@@ -49,6 +49,14 @@ type FailedResult = {
   occurrences: LinkOccurrence[];
 };
 
+type LinkCheckReport = {
+  scannedFiles: number;
+  extractedExternalLinks: number;
+  uniqueLinksChecked: number;
+  failedLinks: number;
+  failures: FailedResult[];
+};
+
 function readPositiveIntEnv(name: string, fallback: number): number {
   const raw = process.env[name];
   if (!raw) return fallback;
@@ -279,6 +287,7 @@ function mergeOccurrences(
 }
 
 async function main(): Promise<void> {
+  const jsonOutput = process.argv.includes("--json");
   const fileConcurrency = readPositiveIntEnv(
     "EXTERNAL_LINKS_FILE_CONCURRENCY",
     DEFAULT_FILE_CONCURRENCY,
@@ -334,6 +343,19 @@ async function main(): Promise<void> {
   });
 
   failed.sort((a, b) => a.url.localeCompare(b.url));
+
+  const report: LinkCheckReport = {
+    scannedFiles: files.length,
+    extractedExternalLinks: extractedLinks,
+    uniqueLinksChecked: uniqueUrls.length,
+    failedLinks: failed.length,
+    failures: failed,
+  };
+
+  if (jsonOutput) {
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(failed.length === 0 ? 0 : 1);
+  }
 
   console.log(`Scanned files: ${files.length}`);
   console.log(`Extracted external links: ${extractedLinks}`);

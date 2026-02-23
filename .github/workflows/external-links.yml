@@ -1,0 +1,142 @@
+name: External Links
+
+on:
+  pull_request:
+
+concurrency:
+  group: external-links-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Check External Links
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run external link checker
+        id: external-links
+        shell: bash
+        run: |
+          mkdir -p external-links
+          set +e
+          pnpm run lint:external-links -- --json > external-links/report.json 2> external-links/output.txt
+          exit_code=$?
+          echo "exit_code=$exit_code" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Format external links report
+        if: ${{ always() }}
+        shell: bash
+        run: |
+          REPORT_FILE="external-links/formatted.md"
+          JSON_FILE="external-links/report.json"
+          OUTPUT_FILE="external-links/output.txt"
+          EXIT_CODE="${{ steps.external-links.outputs.exit_code }}"
+          export REPORT_FILE JSON_FILE OUTPUT_FILE EXIT_CODE
+          node <<'EOF'
+          const fs = require("node:fs");
+
+          const reportPath = process.env.REPORT_FILE;
+          const jsonPath = process.env.JSON_FILE;
+          const outputPath = process.env.OUTPUT_FILE;
+          const exitCode = process.env.EXIT_CODE ?? "1";
+
+          function readText(path) {
+            if (!fs.existsSync(path)) return "";
+            return fs.readFileSync(path, "utf8");
+          }
+
+          let parsed = null;
+          try {
+            const jsonText = readText(jsonPath);
+            if (jsonText.trim()) parsed = JSON.parse(jsonText);
+          } catch {}
+
+          const outputText = readText(outputPath).trim();
+          const lines = [];
+          lines.push("## External Link Check Report", "");
+
+          if (!parsed) {
+            lines.push("### ❌ Failed to parse JSON output from checker.", "");
+            lines.push("<details>", "<summary>Raw output</summary>", "", "```text");
+            lines.push((outputText || "No output captured.").split("\n").slice(-400).join("\n"));
+            lines.push("```", "</details>");
+            fs.writeFileSync(reportPath, `${lines.join("\n")}\n`);
+            process.exit(0);
+          }
+
+          const scanned = parsed.scannedFiles ?? "n/a";
+          const extracted = parsed.extractedExternalLinks ?? "n/a";
+          const unique = parsed.uniqueLinksChecked ?? "n/a";
+          const failedCount = parsed.failedLinks ?? "n/a";
+          const failures = Array.isArray(parsed.failures) ? parsed.failures : [];
+
+          if (Number(exitCode) === 0) {
+            lines.push("### ✅ No failed external links found.");
+          } else {
+            lines.push("### ❌ Failed external links detected.");
+          }
+
+          lines.push(
+            "",
+            `- Scanned files: \`${scanned}\``,
+            `- Extracted external links: \`${extracted}\``,
+            `- Unique links checked: \`${unique}\``,
+            `- Failed links: \`${failedCount}\``,
+            "",
+          );
+
+          if (failures.length > 0) {
+            lines.push("### Failures", "");
+            for (const failure of failures.slice(0, 100)) {
+              lines.push(`- ${failure.url} (\`${failure.reason}\`)`);
+              const occurrences = Array.isArray(failure.occurrences)
+                ? failure.occurrences
+                : [];
+              for (const occurrence of occurrences.slice(0, 10)) {
+                lines.push(`  - \`${occurrence.file}:${occurrence.line}\``);
+              }
+            }
+            if (failures.length > 100) {
+              lines.push("", `_Showing first 100 of ${failures.length} failures._`, "");
+            }
+          }
+
+          if (outputText) {
+            lines.push("<details>", "<summary>stderr output</summary>", "", "```text");
+            lines.push(outputText.split("\n").slice(-400).join("\n"));
+            lines.push("```", "</details>");
+          }
+
+          fs.writeFileSync(reportPath, `${lines.join("\n")}\n`);
+          EOF
+
+      - name: Comment external links report
+        if: ${{ always() && github.event.pull_request.head.repo.fork == false }}
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: external-links
+          path: external-links/formatted.md
+
+      - name: Fail if broken links found
+        if: ${{ steps.external-links.outputs.exit_code != '0' }}
+        run: |
+          echo "External link checker failed."
+          exit 1
