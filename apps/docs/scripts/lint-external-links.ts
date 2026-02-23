@@ -9,7 +9,8 @@ const __dirname = path.dirname(__filename);
 
 const CONTENT_DIR = path.join(__dirname, "../content");
 const TIMEOUT_MS = 10_000;
-const MAX_CONCURRENCY = 15;
+const DEFAULT_FILE_CONCURRENCY = 15;
+const DEFAULT_URL_CHECK_CONCURRENCY = 40;
 const ACCEPTED_STATUSES = new Set([403, 429]);
 
 const IMAGE_EXTENSIONS = new Set([
@@ -47,6 +48,21 @@ type FailedResult = {
   reason: string;
   occurrences: LinkOccurrence[];
 };
+
+function readPositiveIntEnv(name: string, fallback: number): number {
+  const raw = process.env[name];
+  if (!raw) return fallback;
+
+  const parsed = Number.parseInt(raw, 10);
+  if (!Number.isFinite(parsed) || parsed <= 0) {
+    console.warn(
+      `Invalid ${name} value "${raw}". Falling back to ${fallback}.`,
+    );
+    return fallback;
+  }
+
+  return parsed;
+}
 
 function findMarkdownFiles(dir: string, fileList: string[] = []): string[] {
   const files = fs.readdirSync(dir);
@@ -110,7 +126,8 @@ function toExternalHttpUrl(raw: string): string | null {
 
   try {
     const parsed = new URL(trimmed);
-    if (parsed.protocol !== "http:" && parsed.protocol !== "https:") return null;
+    if (parsed.protocol !== "http:" && parsed.protocol !== "https:")
+      return null;
     if (parsed.hostname === "localhost") return null;
     return parsed.toString();
   } catch {
@@ -118,8 +135,10 @@ function toExternalHttpUrl(raw: string): string | null {
   }
 }
 
-function collectFileLinks(filePath: string): Array<{ url: string; line: number }> {
-  const rawContent = fs.readFileSync(filePath, "utf8");
+async function collectFileLinks(
+  filePath: string,
+): Promise<Array<{ url: string; line: number }>> {
+  const rawContent = await fs.promises.readFile(filePath, "utf8");
   const content = stripCodeBlocks(rawContent);
   const links: Array<{ url: string; line: number }> = [];
 
@@ -183,7 +202,9 @@ async function fetchWithTimeout(
   }
 }
 
-async function checkUrl(url: string): Promise<{ ok: boolean; reason?: string }> {
+async function checkUrl(
+  url: string,
+): Promise<{ ok: boolean; reason?: string }> {
   try {
     // Some providers (e.g. VS Marketplace, Bluesky) return 404 for HEAD
     // while the same URL works with GET in a browser.
@@ -193,7 +214,10 @@ async function checkUrl(url: string): Promise<{ ok: boolean; reason?: string }> 
     });
 
     if (response.status >= 400 || response.status === 429) {
-      response = await fetchWithTimeout(url, { method: "GET", headers: BROWSER_HEADERS });
+      response = await fetchWithTimeout(url, {
+        method: "GET",
+        headers: BROWSER_HEADERS,
+      });
     }
 
     if (response.status === 404) {
@@ -226,43 +250,79 @@ async function runWithConcurrency<T>(
 ): Promise<void> {
   let index = 0;
 
-  const workers = Array.from({ length: Math.min(limit, items.length) }, async () => {
-    while (index < items.length) {
-      const item = items[index];
-      index += 1;
-      await worker(item);
-    }
-  });
+  const workers = Array.from(
+    { length: Math.min(limit, items.length) },
+    async () => {
+      while (index < items.length) {
+        const item = items[index];
+        index += 1;
+        await worker(item);
+      }
+    },
+  );
 
   await Promise.all(workers);
 }
 
+function mergeOccurrences(
+  target: Map<string, LinkOccurrence[]>,
+  source: Map<string, LinkOccurrence[]>,
+): void {
+  for (const [url, occurrences] of source) {
+    const existing = target.get(url);
+    if (existing) {
+      existing.push(...occurrences);
+      continue;
+    }
+    target.set(url, occurrences);
+  }
+}
+
 async function main(): Promise<void> {
+  const fileConcurrency = readPositiveIntEnv(
+    "EXTERNAL_LINKS_FILE_CONCURRENCY",
+    DEFAULT_FILE_CONCURRENCY,
+  );
+  const urlCheckConcurrency = readPositiveIntEnv(
+    "EXTERNAL_LINKS_URL_CONCURRENCY",
+    DEFAULT_URL_CHECK_CONCURRENCY,
+  );
+
   if (!fs.existsSync(CONTENT_DIR)) {
     console.error(`Content directory not found: ${CONTENT_DIR}`);
     process.exit(1);
   }
 
   const files = findMarkdownFiles(CONTENT_DIR);
+
   const occurrencesByUrl = new Map<string, LinkOccurrence[]>();
   let extractedLinks = 0;
 
-  for (const filePath of files) {
+  // Parse markdown files concurrently before link validation starts.
+  const perFileOccurrences: Array<Map<string, LinkOccurrence[]>> = [];
+  await runWithConcurrency(files, fileConcurrency, async (filePath) => {
     const relativeFile = path.relative(process.cwd(), filePath);
-    const links = collectFileLinks(filePath);
-    extractedLinks += links.length;
+    const links = await collectFileLinks(filePath);
 
+    const localOccurrences = new Map<string, LinkOccurrence[]>();
     for (const link of links) {
-      const occurrences = occurrencesByUrl.get(link.url) ?? [];
+      const occurrences = localOccurrences.get(link.url) ?? [];
       occurrences.push({ file: relativeFile, line: link.line });
-      occurrencesByUrl.set(link.url, occurrences);
+      localOccurrences.set(link.url, occurrences);
     }
+
+    perFileOccurrences.push(localOccurrences);
+    extractedLinks += links.length;
+  });
+
+  for (const fileOccurrences of perFileOccurrences) {
+    mergeOccurrences(occurrencesByUrl, fileOccurrences);
   }
 
   const uniqueUrls = [...occurrencesByUrl.keys()];
   const failed: FailedResult[] = [];
 
-  await runWithConcurrency(uniqueUrls, MAX_CONCURRENCY, async (url) => {
+  await runWithConcurrency(uniqueUrls, urlCheckConcurrency, async (url) => {
     const result = await checkUrl(url);
     if (result.ok) return;
 
