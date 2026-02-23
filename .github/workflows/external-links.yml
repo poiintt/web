@@ -36,7 +36,7 @@ jobs:
         run: |
           mkdir -p external-links
           set +e
-          pnpm run lint:external-links -- --json > external-links/report.json 2> external-links/output.txt
+          pnpm --dir apps/docs exec tsx ./scripts/lint-external-links.ts --json > external-links/report.json 2> external-links/output.txt
           exit_code=$?
           echo "exit_code=$exit_code" >> "$GITHUB_OUTPUT"
           exit 0
