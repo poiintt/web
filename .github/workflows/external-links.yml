@@ -1,168 +1,147 @@
-name: External Links
+name: 🍈 Lychee
 
-on:
-  pull_request:
+on: [pull_request]
 
 concurrency:
-  group: external-links-${{ github.event.pull_request.number }}
+  group: lychee-${{ github.event.pull_request.number }}
   cancel-in-progress: true
 
 jobs:
   check:
-    name: Check External Links
+    name: Check Links
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: write
+    permissions: write-all
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: 🍈 Lychee Link Checker (First Run)
+        id: lychee
+        uses: lycheeverse/lychee-action@v2
         with:
-          node-version: "20"
-          cache: "pnpm"
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Run external link checker
-        id: external-links
-        shell: bash
-        timeout-minutes: 30
+          args: >-
+            --cache
+            --cache-exclude-status 429,500,502,503,504
+            --max-cache-age 5m
+            --verbose
+            --no-progress
+            --exclude '.*'
+            --timeout 20
+            --max-retries 8
+            --retry-wait-time 5
+            --include '^https://'
+            --exclude 'https://www.gnu.org'
+            --exclude 'https://docs.solidjs.com'
+            --accept 200,201,204,304,403,429
+            './apps/docs/content'
+          output: lychee/out.md
+          fail: false
         env:
-          EXTERNAL_LINKS_FILE_CONCURRENCY: "8"
-          EXTERNAL_LINKS_URL_CONCURRENCY: "10"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🔄 Retry Lychee Link Checker (Second Run for Timeouts)
+        id: lychee-retry
+        if: ${{ always() && steps.lychee.outputs.exit_code != 0 }}
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: >-
+            --cache
+            --cache-exclude-status 429,500,502,503,504
+            --max-cache-age 5m
+            --verbose
+            --no-progress
+            --exclude '.*'
+            --timeout 30
+            --max-retries 10
+            --retry-wait-time 10
+            --include '^https://'
+            --exclude 'https://www.gnu.org'
+            --exclude 'https://docs.solidjs.com'
+            --accept 200,201,204,304,403,429
+            './apps/docs/content'
+          output: lychee/out-retry.md
+          fail: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 📝 Clean up Lychee Report
+        if: ${{ always() && github.event.pull_request.head.repo.fork == false }}
         run: |
-          mkdir -p external-links
-          set +e
-          pnpm --dir apps/docs exec tsx ./scripts/lint-external-links.ts --json > external-links/report.json 2> external-links/output.txt
-          exit_code=$?
-          echo "exit_code=$exit_code" >> "$GITHUB_OUTPUT"
-          exit 0
-
-      - name: Parse and print external links report
-        if: ${{ always() }}
-        shell: bash
-        run: |
-          REPORT_FILE="external-links/formatted.md"
-          JSON_FILE="external-links/report.json"
-          OUTPUT_FILE="external-links/output.txt"
-          if [ ! -s "$JSON_FILE" ]; then
-            echo "::warning::No JSON output found at $JSON_FILE. Using empty object."
-            echo "{}" > "$JSON_FILE"
+          # Use retry results if available, otherwise use first run results
+          if [ -f "lychee/out-retry.md" ]; then
+            REPORT_FILE="lychee/out-retry.md"
+          elif [ -f "lychee/out.md" ]; then
+            REPORT_FILE="lychee/out.md"
           fi
 
-          if ! jq . "$JSON_FILE" >/dev/null; then
-            echo "::error::Invalid JSON in $JSON_FILE"
-            {
-              echo "## External Link Check Report"
-              echo ""
-              echo "### ❌ Invalid JSON report output"
-              echo ""
-              echo "The external link checker output was not valid JSON."
-              echo ""
-              echo "<details>"
-              echo "<summary>Raw report.json</summary>"
-              echo ""
-              echo '```text'
-              cat "$JSON_FILE"
-              echo '```'
-              echo "</details>"
-            } > "$REPORT_FILE"
-            if [ -s "$OUTPUT_FILE" ]; then
-              echo "stderr output:"
-              cat "$OUTPUT_FILE"
-              {
-                echo ""
-                echo "<details>"
-                echo "<summary>stderr output</summary>"
-                echo ""
-                echo '```text'
-                cat "$OUTPUT_FILE"
-                echo '```'
-                echo "</details>"
-              } >> "$REPORT_FILE"
-            fi
-            cat "$REPORT_FILE" >> "$GITHUB_STEP_SUMMARY"
-            exit 1
-          fi
+          if [ -n "$REPORT_FILE" ]; then
+            # Parse stats from lychee markdown table
+            TOTAL=$(grep 'Total' "$REPORT_FILE" | grep -oE '\| [0-9]+ +\|' | grep -oE '[0-9]+' || echo "0")
+            SUCCESS=$(grep 'Successful' "$REPORT_FILE" | grep -oE '\| [0-9]+ +\|' | grep -oE '[0-9]+' || echo "0")
+            ERRORS=$(grep 'Errors' "$REPORT_FILE" | grep -oE '\| [0-9]+ +\|' | grep -oE '[0-9]+' || echo "0")
+            REDIRECTS=$(grep 'Redirected' "$REPORT_FILE" | grep -oE '\| [0-9]+ +\|' | grep -oE '[0-9]+' || echo "0")
+            EXCLUDED=$(grep 'Excluded' "$REPORT_FILE" | grep -oE '\| [0-9]+ +\|' | grep -oE '[0-9]+' || echo "0")
+            TIMEOUTS=$(grep 'Timeouts' "$REPORT_FILE" | grep -oE '\| [0-9]+ +\|' | grep -oE '[0-9]+' || echo "0")
+            UNKNOWN=$(grep 'Unknown' "$REPORT_FILE" | grep -oE '\| [0-9]+ +\|' | grep -oE '[0-9]+' || echo "0")
+            UNSUPPORTED=$(grep 'Unsupported' "$REPORT_FILE" | grep -oE '\| [0-9]+ +\|' | grep -oE '[0-9]+' || echo "0")
 
-          echo "External links JSON report:"
-          jq . "$JSON_FILE"
-          echo ""
+            # Extract errors section
+            ERRORS_SECTION=$(sed -n '/^## Errors/,/^## /p' "$REPORT_FILE" | sed '$d' | tail -n +2)
 
-          echo "External links summary:"
-          jq -r '
-            "- Scanned files: \(.scannedFiles // "n/a")",
-            "- Extracted external links: \(.extractedExternalLinks // "n/a")",
-            "- Unique links checked: \(.uniqueLinksChecked // "n/a")",
-            "- Failed links: \(.failedLinks // "n/a")"
-          ' "$JSON_FILE"
-          echo ""
+            # Format errors section
+            FORMATTED_ERRORS=""
+            while IFS= read -r line; do
+              if [[ $line =~ ^### ]]; then
+                file=$(echo "$line" | sed 's/### Errors in //')
+                FORMATTED_ERRORS+="\n**\`$file\`**\n"
+              elif [[ $line =~ ^\* ]]; then
+                FORMATTED_ERRORS+="$line\n"
+              fi
+            done <<< "$ERRORS_SECTION"
 
-          FAILED_COUNT="$(jq -r '.failedLinks // 0' "$JSON_FILE")"
-          if [ "$FAILED_COUNT" -gt 0 ]; then
-            echo "Failures:"
-            jq -r '
-              .failures[]? as $failure
-              | "- \($failure.url) (\($failure.reason))",
-                ($failure.occurrences[]? | "  - \(.file):\(.line)")
-            ' "$JSON_FILE"
-          else
-            echo "No failed external links found."
-          fi
+            # Create formatted output using echo statements
+            echo "## 🍈 Lychee Link Check Report" > lychee/formatted.md
+            echo "" >> lychee/formatted.md
+            echo "**$TOTAL links:** \`✅ $SUCCESS OK\` | \`🚫 $ERRORS errors\` | \`🔀 $REDIRECTS redirects\` | \`👻 $EXCLUDED excluded\`" >> lychee/formatted.md
+            echo "" >> lychee/formatted.md
 
-          {
-            echo "## External Link Check Report"
-            echo ""
-            jq -r '
-              "- Scanned files: `\(.scannedFiles // "n/a")`",
-              "- Extracted external links: `\(.extractedExternalLinks // "n/a")`",
-              "- Unique links checked: `\(.uniqueLinksChecked // "n/a")`",
-              "- Failed links: `\(.failedLinks // "n/a")`"
-            ' "$JSON_FILE"
-            echo ""
-
-            if [ "$FAILED_COUNT" -gt 0 ]; then
-              echo "### Failures"
-              echo ""
-              jq -r '
-                .failures[]? as $failure
-                | "- \($failure.url) (`\($failure.reason)`)",
-                  ($failure.occurrences[]? | "  - `\(.file):\(.line)`")
-              ' "$JSON_FILE"
+            if [ "$ERRORS" -eq 0 ]; then
+              echo "### ✅ All links are working!" >> lychee/formatted.md
             else
-              echo "### ✅ No failed external links found."
+              echo "### ❌ Errors" >> lychee/formatted.md
+              echo -e "$FORMATTED_ERRORS" >> lychee/formatted.md
             fi
+            echo "---" >> lychee/formatted.md
+            echo "" >> lychee/formatted.md
+            echo "<details>" >> lychee/formatted.md
+            echo "<summary>Full Statistics Table</summary>" >> lychee/formatted.md
+            echo "" >> lychee/formatted.md
+            echo "| Status | Count |" >> lychee/formatted.md
+            echo "|--------|-------|" >> lychee/formatted.md
+            echo "| ✅ Successful | $SUCCESS |" >> lychee/formatted.md
+            echo "| 🔀 Redirected | $REDIRECTS |" >> lychee/formatted.md
+            echo "| 👻 Excluded | $EXCLUDED |" >> lychee/formatted.md
+            echo "| 🚫 Errors | $ERRORS |" >> lychee/formatted.md
+            echo "| ⛔ Unsupported | $UNSUPPORTED |" >> lychee/formatted.md
+            echo "| ⏳ Timeouts | $TIMEOUTS |" >> lychee/formatted.md
+            echo "| ❓ Unknown | $UNKNOWN |" >> lychee/formatted.md
+            echo "" >> lychee/formatted.md
+            echo "</details>" >> lychee/formatted.md
+          fi
 
-            if [ -s "$OUTPUT_FILE" ]; then
-              echo ""
-              echo "<details>"
-              echo "<summary>stderr output</summary>"
-              echo ""
-              echo '```text'
-              cat "$OUTPUT_FILE"
-              echo '```'
-              echo "</details>"
-            fi
-          } > "$REPORT_FILE"
-
-          cat "$REPORT_FILE" >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Comment external links report
-        if: ${{ always() && github.event.pull_request.head.repo.fork == false && hashFiles('external-links/formatted.md') != '' }}
+      - name: 📝 Comment Broken Links
+        if: ${{ always() && github.event.pull_request.head.repo.fork == false }}
         uses: marocchino/sticky-pull-request-comment@v2
         with:
-          header: external-links
-          path: external-links/formatted.md
+          header: lychee
+          path: lychee/formatted.md
 
-      - name: Fail if broken links found
-        if: ${{ steps.external-links.outputs.exit_code != '0' }}
+      - name: 🚫 Fail if broken links found
+        if: ${{ steps.lychee-retry.conclusion == 'success' && steps.lychee-retry.outputs.exit_code != 0 || steps.lychee-retry.conclusion == 'failure' }}
         run: |
-          echo "External link checker failed."
-          exit 1
+          if [ "${{ steps.lychee-retry.conclusion }}" == "success" ]; then
+            echo "Failing based on retry run results"
+            exit ${{ steps.lychee-retry.outputs.exit_code }}
+          else
+            echo "Failing based on first run results"
+            exit ${{ steps.lychee.outputs.exit_code }}
+          fi
