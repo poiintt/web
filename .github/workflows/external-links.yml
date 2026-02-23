@@ -48,6 +48,10 @@ jobs:
           REPORT_FILE="external-links/formatted.md"
           JSON_FILE="external-links/report.json"
           OUTPUT_FILE="external-links/output.txt"
+          {
+            echo "## External Link Check Report"
+            echo ""
+          } > "$REPORT_FILE"
           if [ ! -s "$JSON_FILE" ]; then
             echo "::warning::No JSON output found at $JSON_FILE. Using empty object."
             echo "{}" > "$JSON_FILE"
@@ -55,10 +59,34 @@ jobs:
 
           if ! jq . "$JSON_FILE" >/dev/null; then
             echo "::error::Invalid JSON in $JSON_FILE"
+            {
+              echo "### ❌ Invalid JSON report output"
+              echo ""
+              echo "The external link checker output was not valid JSON."
+              echo ""
+              echo "<details>"
+              echo "<summary>Raw report.json</summary>"
+              echo ""
+              echo '```text'
+              cat "$JSON_FILE"
+              echo '```'
+              echo "</details>"
+            } >> "$REPORT_FILE"
             if [ -s "$OUTPUT_FILE" ]; then
               echo "stderr output:"
               cat "$OUTPUT_FILE"
+              {
+                echo ""
+                echo "<details>"
+                echo "<summary>stderr output</summary>"
+                echo ""
+                echo '```text'
+                cat "$OUTPUT_FILE"
+                echo '```'
+                echo "</details>"
+              } >> "$REPORT_FILE"
             fi
+            cat "$REPORT_FILE" >> "$GITHUB_STEP_SUMMARY"
             exit 1
           fi
 
@@ -88,8 +116,6 @@ jobs:
           fi
 
           {
-            echo "## External Link Check Report"
-            echo ""
             jq -r '
               "- Scanned files: `\(.scannedFiles // "n/a")`",
               "- Extracted external links: `\(.extractedExternalLinks // "n/a")`",
@@ -125,7 +151,7 @@ jobs:
           cat "$REPORT_FILE" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Comment external links report
-        if: ${{ always() && github.event.pull_request.head.repo.fork == false }}
+        if: ${{ always() && github.event.pull_request.head.repo.fork == false && hashFiles('external-links/formatted.md') != '' }}
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           header: external-links
