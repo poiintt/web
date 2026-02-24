@@ -21,6 +21,7 @@
     "types:check": "tsc --noEmit"
   },
   "dependencies": {
+    "@base-ui/react": "catalog:",
     "@fumadocs/base-ui": "catalog:",
     "@radix-ui/react-accordion": "catalog:",
     "@radix-ui/react-checkbox": "catalog:",
@@ -36,9 +37,11 @@
     "@radix-ui/react-tooltip": "catalog:",
     "class-variance-authority": "catalog:",
     "clsx": "catalog:",
+    "date-fns": "^4.1.0",
     "fumadocs-core": "catalog:",
     "fumadocs-ui": "catalog:",
     "lucide-react": "catalog:",
+    "react-day-picker": "^9.14.0",
     "recharts": "^3.7.0",
     "tailwind-merge": "catalog:"
   },

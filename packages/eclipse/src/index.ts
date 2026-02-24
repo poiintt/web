@@ -12,3 +12,12 @@ export * from "./tokens";
 
 // Export utilities
 export { cn } from "./lib/cn";
+
+// Export date helpers (server-safe)
+export {
+  createDateRangePresets,
+  createDateRangePreset,
+  getLastNDays,
+  getCurrentMonth,
+  getPreviousMonth,
+} from "./lib/date-presets";
