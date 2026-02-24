@@ -1,7 +1,7 @@
 import { RootProvider } from "fumadocs-ui/provider/next";
 import "./global.css";
 import { Inter, Barlow } from "next/font/google";
-import Script from "next/script";
+import { FontAwesomeScript } from "@prisma-docs/eclipse";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -29,6 +29,7 @@ export default function Layout({ children }: LayoutProps<"/">) {
       </head>
       <body className="flex flex-col min-h-screen">
         <RootProvider>{children}</RootProvider>
+        <FontAwesomeScript />
       </body>
     </html>
   );

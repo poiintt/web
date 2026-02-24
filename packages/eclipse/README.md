@@ -14,9 +14,35 @@ For complete documentation, examples, and interactive demos, visit:
 pnpm add @prisma-docs/eclipse
 ```
 
+### Setup
+
+1. Import the global styles:
+
+```tsx
+import "@prisma-docs/eclipse/styles/globals.css";
+```
+
+2. Add the FontAwesome script to your app layout (required for icons):
+
+```tsx
+import { FontAwesomeScript } from "@prisma-docs/eclipse";
+
+export default function RootLayout({ children }) {
+  return (
+    <html>
+      <body>
+        {children}
+        <FontAwesomeScript />
+      </body>
+    </html>
+  );
+}
+```
+
+3. Use Eclipse components:
+
 ```tsx
 import { Button } from "@prisma-docs/eclipse";
-import "@prisma-docs/eclipse/styles/globals.css";
 
 export function App() {
   return <Button variant="ppg">Click me</Button>;

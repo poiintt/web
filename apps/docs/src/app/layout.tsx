@@ -5,6 +5,7 @@ import { Inter, Barlow } from "next/font/google";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import Script from "next/script";
+import { FontAwesomeScript } from "@prisma-docs/eclipse";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -46,6 +47,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           src="https://cdn-cookieyes.com/client_data/96980f76df67ad5235fc3f0d/script.js"
           id="cookieyes"
         />
+        <FontAwesomeScript />
       </body>
     </html>
   );

@@ -10,6 +10,7 @@ export {
   useChart,
 } from "./chart";
 export type { ChartConfig } from "./chart";
+export { FontAwesomeScript } from "./fontawesome-script";
 
 export { Accordion, Accordions } from "./accordion";
 
