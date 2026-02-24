@@ -21,7 +21,7 @@ The command creates a `prisma` directory containing a `schema.prisma` file. By d
 | Option                  | Description                                                                                               |
 | ----------------------- | --------------------------------------------------------------------------------------------------------- |
 | `-h`, `--help`          | Display help message                                                                                      |
-| `--db`                  | Provision a fully managed Prisma Postgres database on the Prisma Data Platform                            |
+| `--db`                  | Provision a fully managed Prisma Postgres database on the Prisma Developer Platform                            |
 | `--datasource-provider` | Define the datasource provider: `postgresql`, `mysql`, `sqlite`, `sqlserver`, `mongodb`, or `cockroachdb` |
 | `--generator-provider`  | Define the generator provider to use (default: `prisma-client-js`)                                        |
 | `--preview-feature`     | Define a preview feature to use (can be specified multiple times)                                         |
@@ -106,7 +106,7 @@ Create a new project with a managed Prisma Postgres database:
 npx prisma init --db
 ```
 
-This requires authentication with the [Prisma Data Platform Console](https://console.prisma.io).
+This requires authentication with the [Prisma Developer Platform Console](https://console.prisma.io).
 
 ## Generated files
 
