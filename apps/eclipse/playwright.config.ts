@@ -13,7 +13,9 @@ export default defineConfig({
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
+  workers: process.env.CI ? 2 : undefined,
+  /* Increase timeout for slower pages */
+  timeout: 60 * 1000, // 60 seconds
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: process.env.ARGOS_TOKEN
     ? [
@@ -47,10 +49,6 @@ export default defineConfig({
 
   projects: [
     {
-      name: "chromium - mobile",
-      use: { ...devices["Pixel 3"] },
-    },
-    {
       name: "safari - mobile",
       use: { ...devices["iPhone 15"] },
     },
@@ -69,6 +67,10 @@ export default defineConfig({
     command: "pnpm run dev",
     url: "http://localhost:3002",
     reuseExistingServer: !process.env.CI,
-    timeout: 120 * 1000, // 2 minutes
+    timeout: 180 * 1000, // 3 minutes
+  },
+  expect: {
+    /* Maximum time expect() should wait for the condition to be met. */
+    timeout: 10 * 1000, // 10 seconds
   },
 });

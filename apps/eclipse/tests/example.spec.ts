@@ -62,7 +62,10 @@ const disableComp = async (page: Page) => {
 
 for (const { name, path } of pages) {
   test(`run Argos on ${name} (${path})`, async ({ page }) => {
-    await page.goto(path, { waitUntil: "domcontentloaded" });
+    await page.goto(path, {
+      waitUntil: "networkidle",
+      timeout: 60000,
+    });
     await disableComp(page);
 
     try {
