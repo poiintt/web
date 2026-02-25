@@ -26,6 +26,8 @@ export default defineConfig({
             // Upload to Argos on CI only.
             uploadToArgos: !!process.env.CI,
             token: process.env.ARGOS_TOKEN,
+            // Specify the reference branch for comparison
+            reference: process.env.ARGOS_REFERENCE || "main",
           }),
         ],
       ]
