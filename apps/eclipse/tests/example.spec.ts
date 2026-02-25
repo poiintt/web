@@ -35,6 +35,8 @@ const pages = [
 
 const ignoreElements: String[] = [];
 
+const MAX_PAGE_HEIGHT = 30000; // Set below the 32767px limit
+
 const disableComp = async (page: Page) => {
   if (ignoreElements.length) {
     for (const iEl of ignoreElements) {
@@ -60,6 +62,10 @@ const disableComp = async (page: Page) => {
   await page.waitForTimeout(500); // Optional: allow animations to settle
 };
 
+const getPageHeight = async (page: Page): Promise<number> => {
+  return await page.evaluate(() => document.body.scrollHeight);
+};
+
 for (const { name, path } of pages) {
   test(`run Argos on ${name} (${path})`, async ({ page }) => {
     await page.goto(path, {
@@ -68,15 +74,24 @@ for (const { name, path } of pages) {
     });
     await disableComp(page);
 
-    try {
-      // Try full page screenshot
-      await argosScreenshot(page, name, { fullPage: true });
-    } catch (err) {
+    const pageHeight = await getPageHeight(page);
+
+    if (pageHeight > MAX_PAGE_HEIGHT) {
       console.warn(
-        `Full page screenshot failed for ${name}, falling back to viewport only. Error:`,
-        err,
+        `Page ${name} is too tall (${pageHeight}px), taking viewport screenshot only`,
       );
       await argosScreenshot(page, name, { fullPage: false });
+    } else {
+      try {
+        // Try full page screenshot
+        await argosScreenshot(page, name, { fullPage: true });
+      } catch (err) {
+        console.warn(
+          `Full page screenshot failed for ${name}, falling back to viewport only. Error:`,
+          err,
+        );
+        await argosScreenshot(page, name, { fullPage: false });
+      }
     }
   });
 }
