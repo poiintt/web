@@ -26,8 +26,6 @@ export default defineConfig({
             // Upload to Argos on CI only.
             uploadToArgos: !!process.env.CI,
             token: process.env.ARGOS_TOKEN,
-            // Specify the reference branch for comparison
-            reference: process.env.ARGOS_REFERENCE || "main",
           }),
         ],
       ]
@@ -46,9 +44,22 @@ export default defineConfig({
   },
 
   /* Configure projects for major browsers */
+
   projects: [
     {
-      name: "chromium",
+      name: "chromium - mobile",
+      use: { ...devices["Pixel 3"] },
+    },
+    {
+      name: "safari - mobile",
+      use: { ...devices["iPhone 15"] },
+    },
+    {
+      name: "safari - desktop",
+      use: { ...devices["Desktop Safari"] },
+    },
+    {
+      name: "chrome - desktop",
       use: { ...devices["Desktop Chrome"] },
     },
   ],
