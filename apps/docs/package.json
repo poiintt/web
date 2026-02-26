@@ -37,6 +37,7 @@
     "fumadocs-ui": "catalog:",
     "jotai": "catalog:",
     "lucide-react": "catalog:",
+    "mermaid": "^11.12.3",
     "motion": "catalog:",
     "next": "catalog:",
     "next-themes": "catalog:",

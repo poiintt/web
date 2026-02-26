@@ -4,6 +4,9 @@
   "defaultOpen": true,
   "icon": "Database",
   "pages": [
+    "---TEMP Prisma Next---",
+    "...temp-next",
+
     "---Introduction---",
     "index",
 

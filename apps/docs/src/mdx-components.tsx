@@ -2,7 +2,7 @@ import defaultMdxComponents from "fumadocs-ui/mdx";
 import { APIPage } from "@/components/api-page";
 import { Youtube } from "@/components/youtube";
 import { withDocsBasePath } from "@/lib/urls";
-
+import { Mermaid } from "@/components/mermaid";
 import type { MDXComponents } from "mdx/types";
 import { ImageZoom } from "fumadocs-ui/components/image-zoom";
 import * as icons from "lucide-react";
@@ -42,6 +42,7 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
   const mdxComponents = {
     ...(icons as unknown as MDXComponents),
     ...defaultMdxComponents,
+    Mermaid,
     // Fumadocs tabs for manual usage (with items prop)
     Tab,
     Tabs,
@@ -59,7 +60,10 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     APIPage,
     Youtube,
     img: (props: any) => (
-      <ImageZoom {...(props as any)} src={withDocsBasePathForImageSrc((props as any).src)} />
+      <ImageZoom
+        {...(props as any)}
+        src={withDocsBasePathForImageSrc((props as any).src)}
+      />
     ),
     input: (props: any) => <Input {...props} />,
   };
