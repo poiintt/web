@@ -54,9 +54,7 @@ Note that [`node-postgres`](https://node-postgres.com/) (`pg`) is currently _not
 When deploying a Vercel Edge Function that uses Prisma ORM, you need to use one of these [edge-compatible drivers](/orm/prisma-client/deployment/edge/overview#edge-compatibility-of-database-drivers) and its respective [driver adapter](/orm/core-concepts/supported-databases/database-drivers#driver-adapters) for Prisma ORM.
 
 :::note
-
-If your application uses PostgreSQL, we recommend using [Prisma Postgres](/postgres). It is fully supported on edge runtimes and does not require a specialized edge-compatible driver. For other databases, [Prisma Accelerate](/accelerate) extends edge compatibility so you can connect to _any_ database from _any_ edge function provider.
-
+If your application uses PostgreSQL, we recommend using [Prisma Postgres](/postgres). It is fully supported on edge runtimes and does not require a specialized edge-compatible driver.
 :::
 
 ### Setting your database connection URL as an environment variable

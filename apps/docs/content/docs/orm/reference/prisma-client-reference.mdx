@@ -55,7 +55,7 @@ This section describes the `PrismaClient` constructor and its parameters.
 
 ### `adapter`
 
-Specifies a [driver adapter](/orm/core-concepts/supported-databases/database-drivers#driver-adapters) for database connections. Required unless using [`accelerateUrl`](#accelerateurl).
+Specifies a [driver adapter](/orm/core-concepts/supported-databases/database-drivers#driver-adapters) for database connections. Required for connecting to a database.
 
 #### Example
 
@@ -65,20 +65,6 @@ import { PrismaClient } from "../prisma/generated/client";
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
-```
-
-### `accelerateUrl`
-
-Specifies a [Prisma Accelerate](https://www.prisma.io/accelerate) URL for remote query execution. Required unless using [`adapter`](#adapter).
-
-#### Example
-
-```ts
-import { PrismaClient } from "../prisma/generated/client";
-
-const prisma = new PrismaClient({
-  accelerateUrl: process.env.ACCELERATE_URL,
-});
 ```
 
 ### `log`
