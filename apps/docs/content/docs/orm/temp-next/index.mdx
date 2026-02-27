@@ -134,14 +134,12 @@ That helps catch drift and incompatibility earlier, before incorrect behavior re
 
 Prisma Next follows one lifecycle:
 
-**Schema -> Data Contract -> Database Signing -> Verified Runtime Queries**
-
 ```mermaid
 flowchart TB
-  A("1 Schema")
-  B("2 Data Contract")
-  C("3 Database Signing")
-  D("4 Verified Runtime Queries")
+  A("1. Schema")
+  B("2. Data Contract")
+  C("3. Database Signing")
+  D("4. Verified Runtime Queries")
 
   A --> B --> C --> D
 ```
