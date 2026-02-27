@@ -26,6 +26,7 @@ export const docs = defineDocs({
       url: z.string(),
       metaTitle: z.string(),
       metaDescription: z.string(),
+      aiPrompt: z.string().optional(),
     }),
     postprocess: {
       includeProcessedMarkdown: true,
@@ -46,6 +47,7 @@ export const docsV6 = defineDocs({
       url: z.string().optional(),
       metaTitle: z.string().optional(),
       metaDescription: z.string().optional(),
+      aiPrompt: z.string().optional(),
     }),
     postprocess: {
       includeProcessedMarkdown: true,
