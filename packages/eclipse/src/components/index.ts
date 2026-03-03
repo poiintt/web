@@ -1,3 +1,5 @@
+export { Textarea } from "./textarea";
+
 export { Accordion, Accordions } from "./accordion";
 
 export { Action, actionVariants } from "./action";
