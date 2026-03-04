@@ -10,12 +10,12 @@ interface TextareaProps extends React.ComponentProps<"textarea"> {
 }
 
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
-  ({ className, showCharCount = false, maxLength, ...props }, ref) => {
+  ({ className, showCharCount = false, maxLength, onChange, ...rest }, ref) => {
     const [charCount, setCharCount] = React.useState(0);
 
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       setCharCount(e.target.value.length);
-      props.onChange?.(e);
+      onChange?.(e);
     };
 
     return (
@@ -28,9 +28,9 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
             showCharCount && maxLength && "pb-8",
             className,
           )}
+          {...rest}
           maxLength={maxLength}
           onChange={handleChange}
-          {...props}
         />
         {showCharCount && maxLength && (
           <Badge
