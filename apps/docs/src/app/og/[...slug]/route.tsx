@@ -15,11 +15,13 @@ const PrismaLogo = () => (
   </svg>
 );
 
-const HTTP_METHOD_COLORS = {
+const HTTP_METHOD_COLORS: Record<string, string> = {
   GET: "#07DC71",
   POST: "#51A2FF",
+  PUT: "#EAB308",
+  PATCH: "#EAB308",
   DELETE: "#FF6467",
-} as const;
+};
 
 function PrismaOGImage({
   title,
@@ -30,7 +32,7 @@ function PrismaOGImage({
 }: {
   title: string;
   description?: string;
-  method?: "GET" | "POST" | "DELETE";
+  method?: string;
   apiPath?: string;
   section?: string;
 }) {
@@ -57,14 +59,14 @@ function PrismaOGImage({
             alignItems: "center",
             justifyContent: "center",
             backgroundColor: "transparent",
-            color: HTTP_METHOD_COLORS[method],
-            border: `3px solid ${HTTP_METHOD_COLORS[method]}`,
+            color: HTTP_METHOD_COLORS[method] ?? "#a0aec0",
+            border: `3px solid ${HTTP_METHOD_COLORS[method] ?? "#a0aec0"}`,
             padding: "12px 24px",
             borderRadius: 9999,
             fontSize: 24,
             fontFamily: "Barlow, sans-serif",
             fontWeight: 700,
-            boxShadow: `0 0 40px ${HTTP_METHOD_COLORS[method]}40`,
+            boxShadow: `0 0 40px ${HTTP_METHOD_COLORS[method] ?? "#a0aec0"}40`,
           }}
         >
           {method}
@@ -200,7 +202,7 @@ export async function GET(_req: Request, { params }: RouteContext<"/og/[...slug]
   const page = source.getPage(slug.slice(0, -1)) ?? sourceV6.getPage(slug.slice(0, -1));
   if (!page) notFound();
 
-  const method = (page.data as any)?._openapi?.method as "GET" | "POST" | "DELETE" | undefined;
+  const method = ((page.data as any)?._openapi?.method as string | undefined)?.toUpperCase();
   const apiPath = (page.data as any)?._openapi?.path as string | undefined;
   const section = page.slugs[0];
 
