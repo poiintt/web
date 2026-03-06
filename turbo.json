@@ -1,0 +1,36 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "ui": "tui",
+  "globalDependencies": [".env"],
+
+  "tasks": {
+    "build": {
+      "inputs": ["$TURBO_DEFAULT$", ".env"],
+      "outputs": [".next/**", "!.next/cache/**", "cache/**"],
+      "env": [
+        "ARGOS_TOKEN",
+        "MIXEDBREAD_API_KEY",
+        "SENTRY_AUTH_TOKEN",
+        "ENABLE_DOCS_SUBDOMAIN_PROXY"
+      ]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "test": {
+      "dependsOn": ["build"],
+      "cache": false
+    },
+    "check": {
+      "cache": false
+    },
+    "types:check": {
+      "dependsOn": ["^types:check"]
+    },
+    "lint:links": {},
+    "lint:external-links": {},
+    "lint:code": {},
+    "lint:spellcheck": {}
+  }
+}
