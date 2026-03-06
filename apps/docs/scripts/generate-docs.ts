@@ -55,21 +55,24 @@ void generateFiles({
         }
       }
 
-      const openapiPathMatch = frontmatter.match(
-        /^\s*path:\s*['"]?([^'"\n]+)['"]?\s*$/m,
+      const openapiBlock = frontmatter.match(
+        /_openapi:\s*\n([\s\S]*?)(?=\n[^\s]|\n?$)/,
       );
-      if (!apiPath && openapiPathMatch) {
-        apiPath = openapiPathMatch[1];
+      const openapiHasPath = openapiBlock
+        ? /^\s*path:\s*['"]?[^'"\n]+['"]?\s*$/m.test(openapiBlock[1])
+        : false;
+
+      if (!apiPath && openapiHasPath && openapiBlock) {
+        const pathInBlock = openapiBlock[1].match(
+          /^\s*path:\s*['"]?([^'"\n]+)['"]?\s*$/m,
+        );
+        if (pathInBlock) apiPath = pathInBlock[1];
       }
 
-      if (
-        frontmatter.includes("_openapi:") &&
-        !frontmatter.includes("path:") &&
-        apiPath
-      ) {
+      if (openapiBlock && !openapiHasPath && apiPath) {
         frontmatter = frontmatter.replace(
-          /(_openapi:\s*\n\s*method:)/,
-          `_openapi:\n  path: "${apiPath}"\n  method:`,
+          /(_openapi:\s*\n)/,
+          `$1  path: "${apiPath}"\n`,
         );
       }
 
