@@ -1,4 +1,10 @@
 {
   "title": "Integrations",
-  "pages": ["get-workspaces-id-integrations", "delete-workspaces-id-integrations-id"]
+  "pages": [
+    "get-integrations",
+    "get-integrations-by-id",
+    "delete-integrations-by-id",
+    "get-workspaces-id-integrations",
+    "delete-workspaces-id-integrations-id"
+  ]
 }

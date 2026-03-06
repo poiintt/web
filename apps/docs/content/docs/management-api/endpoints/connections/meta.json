@@ -1,0 +1,9 @@
+{
+  "title": "Connections",
+  "pages": [
+    "get-connections",
+    "get-connections-by-id",
+    "post-connections",
+    "delete-connections-by-id"
+  ]
+}

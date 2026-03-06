@@ -35,6 +35,9 @@ jobs:
         working-directory: apps/docs
         run: pnpm fetch-openapi
 
+      - name: Clean stale endpoint files
+        run: find apps/docs/content/docs/management-api/endpoints -name '*.mdx' -type f -delete
+
       - name: Generate docs
         working-directory: apps/docs
         run: pnpm tsx scripts/generate-docs.ts
@@ -51,6 +54,19 @@ jobs:
             git status --short -- apps/docs/content/docs/management-api/
           fi
 
+      - name: Validate links
+        if: steps.changes.outputs.changed == 'true'
+        run: pnpm run lint:links
+
+      - name: Validate spelling
+        if: steps.changes.outputs.changed == 'true'
+        run: pnpm run lint:spellcheck
+
+      - name: Build docs
+        if: steps.changes.outputs.changed == 'true'
+        working-directory: apps/docs
+        run: pnpm exec next build
+
       - name: Commit and push
         if: steps.changes.outputs.changed == 'true'
         run: |
@@ -61,4 +77,5 @@ jobs:
           git push "https://x-access-token:${{ secrets.BOT_TOKEN_DOCS_COMMIT }}@github.com/${{ github.repository }}.git" HEAD:${{ github.ref_name }}
 
       - name: Trigger Vercel deploy
+        if: steps.changes.outputs.changed == 'true'
         run: curl --fail -X POST "${{ secrets.VERCEL_DEPLOY_HOOK_URL }}"

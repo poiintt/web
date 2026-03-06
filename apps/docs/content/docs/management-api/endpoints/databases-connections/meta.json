@@ -1,4 +1,4 @@
 {
-  "title": "Connections",
-  "pages": ["get-databases-id-connections", "post-databases-id-connections", "delete-connections"]
+  "title": "Database Connections",
+  "pages": ["get-databases-id-connections", "post-databases-id-connections"]
 }

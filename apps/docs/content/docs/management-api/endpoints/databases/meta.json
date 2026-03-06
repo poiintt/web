@@ -1,9 +1,12 @@
 {
   "title": "Databases",
   "pages": [
-    "get-projects-id-databases",
+    "get-databases",
     "get-databases-id",
+    "post-databases",
     "post-projects-id-databases",
+    "get-projects-id-databases",
+    "patch-databases-id",
     "delete-databases-id"
   ]
 }

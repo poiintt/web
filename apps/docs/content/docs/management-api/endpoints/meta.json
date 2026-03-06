@@ -2,12 +2,14 @@
   "title": "Endpoints",
   "defaultOpen": true,
   "pages": [
+    "connections",
     "databases",
     "database-backups",
     "database-usage",
     "databases-connections",
     "integrations",
     "projects",
+    "regions",
     "workspaces",
     "misc"
   ]
