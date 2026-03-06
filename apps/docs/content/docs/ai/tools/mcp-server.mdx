@@ -1,7 +1,7 @@
 ---
 title: MCP server
 description: Manage Prisma Postgres databases using LLMs with the Prisma Model-Context-Protocol (MCP) Server
-url: /docs/ai/tools/mcp-server
+url: /ai/tools/mcp-server
 metaTitle: 'Prisma MCP Server'
 metaDescription: 'Manage Prisma Postgres databases using LLMs with the Prisma Model-Context-Protocol (MCP) Server'
 
@@ -11,7 +11,7 @@ metaDescription: 'Manage Prisma Postgres databases using LLMs with the Prisma Mo
 
 The [Model-Context-Protocol](https://modelcontextprotocol.io/introduction) (MCP) gives LLMs a way to call APIs and thus access external systems in a well-defined manner.
 
-Prisma's provides two MCP servers: a _local_ and a _remote_ one. See below for specific information on each.
+Prisma provides two MCP servers: a _local_ and a _remote_ one. See below for specific information on each.
 
 If you're a developer working on a local machine and want your AI agent to help with your database workflows, use the local MCP server.
 
@@ -74,7 +74,7 @@ npx -y prisma mcp
 
 :::tip
 
-If you're using VS Code, you can use [VS Code agent mode](https://code.visualstudio.com/docs/copilot/chat/chat-agent-mode) to enter prompts such as "create Postgres database" or "apply schema migration" directly in the chat. The VS Code agent handles all underlying Prisma CLI invocations and API calls automatically. See our [VS Code Agent documentation](/docs/guides/postgres/vscode#agent-mode) for more details.
+If you're using VS Code, you can use [VS Code agent mode](https://code.visualstudio.com/docs/copilot/chat/chat-agent-mode) to enter prompts such as "create Postgres database" or "apply schema migration" directly in the chat. The VS Code agent handles all underlying Prisma CLI invocations and API calls automatically. See our [VS Code Agent documentation](/guides/postgres/vscode#agent-mode) for more details.
 
 :::
 
@@ -173,7 +173,7 @@ If your browser blocks the link, [you can set it up manually](https://code.visua
 }
 ```
 
-Explore additional Prisma features and workflows for VS Code in [our docs](/docs/guides/postgres/vscode).
+Explore additional Prisma features and workflows for VS Code in [our docs](/guides/postgres/vscode).
 
 ### Cursor
 
@@ -254,7 +254,7 @@ To learn more about Windsurf's MCP integration, check out the [Windsurf MCP docs
 
 #### Add via Windsurf MCP Plugin Store (Recommended)
 
-Use the Prisma MCP plugin from the [Windsurf MCP Plugin Store](https://docs.windsurf.com/windsurf/cascade/mcp#adding-a-new-mcp-plugin). Follow [the steps here](/docs/ai/tools/windsurf#add-prisma-mcp-server-via-windsurf-plugins) to add the Prisma MCP plugin in Windsurf. This is the simplest and recommended way to add the Prisma MCP server to Windsurf.
+Use the Prisma MCP plugin from the [Windsurf MCP Plugin Store](https://docs.windsurf.com/windsurf/cascade/mcp#adding-a-new-mcp-plugin). Follow [the steps here](/ai/tools/windsurf#add-prisma-mcp-server-via-windsurf-plugins) to add the Prisma MCP plugin in Windsurf. This is the simplest and recommended way to add the Prisma MCP server to Windsurf.
 
 #### Add via Windsurf Settings UI
 
@@ -318,10 +318,10 @@ To learn more about Warp's MCP integration, visit the [Warp MCP docs](https://do
 
 ### Claude Code
 
-Claude Code is a terminal-based AI tool where you can add MCP server using the `claud mcp add` command for the local MCP server:
+Claude Code is a terminal-based AI tool where you can add MCP servers using the `claude mcp add` command for the local MCP server:
 
 ```bash
-claude mcp add prisma-local npx prisma mcp
+claude mcp add prisma-local -- npx -y prisma mcp
 ```
 
 or for the remote MCP server:
@@ -371,7 +371,7 @@ Alternatively, you can add the _remote_ MCP server as an [integration](https://w
 
 ### ChatGPT
 
-You can add the remote Prisma MCP server to ChatGPT to manage your Prisma Postgres databases using natural language. Learn more about setting it up in our [ChatGPT integration guide](/docs/ai/tools/chatgpt).
+You can add the remote Prisma MCP server to ChatGPT to manage your Prisma Postgres databases using natural language. Learn more about setting it up in our [ChatGPT integration guide](/ai/tools/chatgpt).
 
 ### OpenAI Agents SDK
 
