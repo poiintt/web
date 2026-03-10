@@ -14,15 +14,17 @@ function getStorageKey(path: string) {
 
 export function PageFeedback() {
   const pathname = usePathname();
-  const [state, setState] = useState<FeedbackState>("idle");
+  const [state, setState] = useState<FeedbackState | null>(null);
   const [comment, setComment] = useState("");
   const [showTextarea, setShowTextarea] = useState(false);
 
   useEffect(() => {
     try {
       const stored = localStorage.getItem(getStorageKey(pathname));
-      if (stored) setState("submitted");
-    } catch {}
+      setState(stored ? "submitted" : "idle");
+    } catch {
+      setState("idle");
+    }
   }, [pathname]);
 
   const persist = useCallback(
@@ -53,6 +55,8 @@ export function PageFeedback() {
     setState("submitted");
     persist("down", comment || undefined);
   };
+
+  if (state === null) return null;
 
   if (state === "submitted") {
     return (
