@@ -15,10 +15,8 @@ import {
   EditOnGitHub,
   PageLastUpdate,
 } from "@/components/layout/notebook/page";
-import {
-  TechArticleSchema,
-  BreadcrumbSchema,
-} from "@/components/structured-data";
+import { TechArticleSchema, BreadcrumbSchema } from "@/components/structured-data";
+import { PageFeedback } from "@/components/page-feedback";
 
 interface PageParams {
   slug?: string[];
@@ -79,6 +77,7 @@ export default async function Page({ params }: { params: Promise<PageParams> }) 
             />
           )}
         </div>
+        <PageFeedback />
       </DocsPage>
     </>
   );
