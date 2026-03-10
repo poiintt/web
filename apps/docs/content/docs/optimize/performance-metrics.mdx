@@ -1,29 +1,15 @@
 ---
 title: Performance metrics
-description: Learn about the query performance metrics provided by Optimize
+description: 'Prisma Optimize performance metrics are now part of Query Insights'
 url: /optimize/performance-metrics
-metaTitle: 'Prisma Postgres: Query performance metrics'
-metaDescription: Learn about the query performance metrics provided by Optimize.
+metaTitle: Optimize Performance Metrics → Query Insights
+metaDescription: 'Performance metrics are now part of Query Insights in Prisma Postgres.'
 ---
 
-An Optimize recording session provides detailed insights into the latencies of executed queries, capturing key metrics such as average duration, 50th percentile, 99th percentile, and maximal query execution time.
+:::warning
+Prisma Optimize has evolved into **[Query Insights](/postgres/query-insights)**, now built directly into Prisma Postgres.
 
-## Total query durations
+Performance metrics including execution time, read volume, and query frequency are now available through Query Insights.
 
-Prisma Optimize measures total latency for query patterns, enabling you to analyze and debug slow queries effectively.
-
-### Average query duration (`AVG`)
-
-The average query duration reveals the mean execution time across all queries, helping you assess overall performance trends and identify inefficiencies that impact the user experience.
-
-### 50th percentile (`P50`)
-
-The 50th percentile, or median, query duration indicates the time within which half of your queries complete. This metric offers a clear view of typical user performance, unaffected by outliers.
-
-### 99th percentile (`P99`)
-
-The 99th percentile query duration highlights the execution time for the slowest 1% of queries. This metric is crucial for uncovering and addressing performance bottlenecks that, while infrequent, can significantly impact user satisfaction.
-
-### Maximal query duration (`MAX`)
-
-The maximal query duration measures the time taken by the single slowest query. This metric helps identify extreme cases, providing insights into the worst performance scenarios your system might face, so you can diagnose and resolve outliers.
+[Learn more about Query Insights →](/postgres/query-insights)
+:::

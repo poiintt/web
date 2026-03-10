@@ -151,15 +151,9 @@ If VS Code does not recognize the `$extends` method, refer to [this section](/ac
 
 Since [extensions are applied one after another](/orm/prisma-client/client-extensions#conflicts-in-combined-extensions), make sure you apply them in the correct order. Extensions cannot share behavior and the last extension applied takes precedence.
 
-If you are using [Prisma Optimize](/optimize) in your application, make sure you apply it _before_ the Accelerate extension. For example:
-
-```ts
-const prisma = new PrismaClient({
-  accelerateUrl: process.env.DATABASE_URL,
-})
-  .$extends(withOptimize())
-  .$extends(withAccelerate());
-```
+:::note
+If you were previously using the Prisma Optimize extension, note that Optimize has evolved into [Query Insights](/postgres/query-insights), which is built into Prisma Postgres and requires no client extension.
+:::
 
 ### 2.5. Use Accelerate in your database queries
 
