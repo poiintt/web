@@ -1,17 +1,16 @@
-'use client';
+"use client";
 
 import {
   type ComponentProps,
   createContext,
   use,
-  useEffectEvent,
   useLayoutEffect,
   useMemo,
   useRef,
   useState,
-} from 'react';
-import * as Primitive from '@radix-ui/react-tabs';
-import { mergeRefs } from '../../lib/merge-refs';
+} from "react";
+import * as Primitive from "@radix-ui/react-tabs";
+import { mergeRefs } from "../../lib/merge-refs";
 
 type ChangeListener = (v: string) => void;
 const listeners = new Map<string, Set<ChangeListener>>();
@@ -39,7 +38,7 @@ const TabsContext = createContext<{
 
 function useTabContext() {
   const ctx = use(TabsContext);
-  if (!ctx) throw new Error('You must wrap your component in <Tabs>');
+  if (!ctx) throw new Error("You must wrap your component in <Tabs>");
   return ctx;
 }
 
@@ -59,12 +58,15 @@ export function Tabs({
 }: TabsProps) {
   const tabsRef = useRef<HTMLDivElement>(null);
   const valueToIdMap = useMemo(() => new Map<string, string>(), []);
+  const onValueChangeRef = useRef(_onValueChange);
+  onValueChangeRef.current = _onValueChange;
+
   const [value, setValue] =
     _value === undefined
       ? // eslint-disable-next-line react-hooks/rules-of-hooks -- not supposed to change controlled/uncontrolled
         useState(defaultValue)
       : // eslint-disable-next-line react-hooks/rules-of-hooks -- not supposed to change controlled/uncontrolled
-        [_value, useEffectEvent((v: string) => _onValueChange?.(v))];
+        [_value, (v: string) => onValueChangeRef.current?.(v)];
 
   useLayoutEffect(() => {
     if (!groupId) return;
@@ -102,7 +104,7 @@ export function Tabs({
           const id = valueToIdMap.get(v);
 
           if (id) {
-            window.history.replaceState(null, '', `#${id}`);
+            window.history.replaceState(null, "", `#${id}`);
           }
         }
 
@@ -127,7 +129,10 @@ export function Tabs({
   );
 }
 
-export function TabsContent({ value, ...props }: ComponentProps<typeof Primitive.TabsContent>) {
+export function TabsContent({
+  value,
+  ...props
+}: ComponentProps<typeof Primitive.TabsContent>) {
   const { valueToIdMap } = useTabContext();
 
   if (props.id) {
