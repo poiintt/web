@@ -3,11 +3,7 @@ import { notFound } from "next/navigation";
 import { getMDXComponents } from "@/mdx-components";
 import { createRelativeLink } from "fumadocs-ui/mdx";
 import { blog } from "@/lib/source";
-import {
-  Badge,
-  InlineTOC,
-  Separator,
-} from "@prisma/eclipse";
+import { Badge, InlineTOC, Separator } from "@prisma/eclipse";
 
 import { FooterNewsletterForm } from "@prisma-docs/ui/components/newsletter";
 import { BlogShare } from "@/components/BlogShare";
@@ -43,7 +39,7 @@ export default async function Page(props: {
           >
             ← Back to Blog
           </Link>
-          <h1 className="mt-3 mb-8 font-bold max-md:text-3xl md:text-5xl   stretch-display font-display text-foreground-neutral">
+          <h1 className="mt-3 mb-8 font-bold max-md:text-3xl md:text-5xl stretch-display font-sans-display text-foreground-neutral">
             {page.data.title}
           </h1>
           <div className="text-sm flex gap-2 items-center text-foreground-neutral mb-4">
