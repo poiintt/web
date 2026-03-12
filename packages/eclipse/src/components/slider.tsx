@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import * as SliderPrimitive from "@radix-ui/react-slider";
+import { Slider as SliderPrimitive } from "@base-ui/react/slider";
 
 import { cn } from "../lib/cn";
 
@@ -11,34 +11,38 @@ const Slider = React.forwardRef<
     isErrored?: boolean;
   }
 >(({ isErrored, className, ...props }, ref) => {
-  const values = props.defaultValue || props.value || [0];
+  const sliderValue = props.defaultValue ?? props.value ?? [0];
+  const values = Array.isArray(sliderValue) ? sliderValue : [sliderValue];
 
   return (
     <SliderPrimitive.Root
       ref={ref}
       className={cn(
         "relative flex w-full touch-none select-none items-center data-disabled:pointer-events-none",
-        className,
+        className as string,
       )}
       {...props}
     >
-      <SliderPrimitive.Track className="relative h-1.5 w-full grow overflow-hidden rounded-full bg-background-default">
-        <SliderPrimitive.Range
-          className={cn(
-            "absolute h-full bg-background-ppg-reverse data-disabled:bg-background-neutral-strong transition-colors",
-            isErrored && "bg-background-error-reverse",
-          )}
-        />
-      </SliderPrimitive.Track>
-      {values.map((_, index) => (
-        <SliderPrimitive.Thumb
-          key={index}
-          className="block h-4 w-4 rounded-full border data-disabled:border-stroke-neutral-weak border-stroke-neutral bg-background-default transition-colors cursor-grab active:cursor-grabbing"
-        />
-      ))}
+      <SliderPrimitive.Control className="flex w-full touch-none items-center py-2 select-none">
+        <SliderPrimitive.Track className="relative h-1.5 w-full rounded-full bg-background-default select-none">
+          <SliderPrimitive.Indicator
+            className={cn(
+              "absolute h-full rounded-full bg-background-ppg-reverse data-disabled:bg-background-neutral-strong transition-colors",
+              isErrored && "bg-background-error-reverse",
+            )}
+          />
+          {values.map((_, index) => (
+            <SliderPrimitive.Thumb
+              key={`thumb-${index}`}
+              index={index}
+              className="block h-4 w-4 rounded-full border data-disabled:border-stroke-neutral-weak border-stroke-neutral bg-background-default transition-colors cursor-grab active:cursor-grabbing"
+            />
+          ))}
+        </SliderPrimitive.Track>
+      </SliderPrimitive.Control>
     </SliderPrimitive.Root>
   );
 });
-Slider.displayName = SliderPrimitive.Root.displayName;
+Slider.displayName = "Slider";
 
 export { Slider };

@@ -1,42 +1,38 @@
 "use client";
-import * as Primitive from "@radix-ui/react-collapsible";
-import { forwardRef, useEffect, useState } from "react";
+import { Collapsible as Primitive } from "@base-ui/react/collapsible";
+import { forwardRef } from "react";
 import { cn } from "../../lib/cn";
 
 const Collapsible = Primitive.Root;
 
-const CollapsibleTrigger = Primitive.CollapsibleTrigger;
+const CollapsibleTrigger = Primitive.Trigger;
 
 const CollapsibleContent = forwardRef<
   HTMLDivElement,
-  React.ComponentPropsWithoutRef<typeof Primitive.CollapsibleContent>
+  React.ComponentPropsWithoutRef<typeof Primitive.Panel>
 >(({ children, ...props }, ref) => {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   return (
-    <Primitive.CollapsibleContent
+    <Primitive.Panel
       ref={ref}
       {...props}
-      className={cn(
-        "overflow-hidden border-t border-background-neutral-weak",
-        mounted &&
-          "data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down",
-        props.className,
-      )}
+      className={(state) =>
+        cn(
+          "overflow-hidden border-t border-background-neutral-weak h-(--collapsible-panel-height) transition-[height] data-starting-style:h-0 data-ending-style:h-0",
+          typeof props.className === "function"
+            ? props.className(state)
+            : props.className,
+        )
+      }
     >
       {children}
-    </Primitive.CollapsibleContent>
+    </Primitive.Panel>
   );
 });
 
-CollapsibleContent.displayName = Primitive.CollapsibleContent.displayName;
+CollapsibleContent.displayName = Primitive.Panel.displayName;
 
 export { Collapsible, CollapsibleTrigger, CollapsibleContent };
 
-export type CollapsibleProps = Primitive.CollapsibleProps;
-export type CollapsibleContentProps = Primitive.CollapsibleContentProps;
-export type CollapsibleTriggerProps = Primitive.CollapsibleTriggerProps;
+export type CollapsibleProps = Primitive.Root.Props;
+export type CollapsibleContentProps = Primitive.Panel.Props;
+export type CollapsibleTriggerProps = Primitive.Trigger.Props;

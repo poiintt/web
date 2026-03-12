@@ -1,22 +1,31 @@
 'use client';
 
+import { Tabs as Primitive } from '@base-ui/react/tabs';
+import * as React from 'react';
 import {
   type ComponentProps,
   createContext,
   use,
-  useEffectEvent,
   useLayoutEffect,
   useMemo,
   useRef,
   useState,
 } from 'react';
-import * as Primitive from '@radix-ui/react-tabs';
 import { mergeRefs } from '../../lib/merge-refs';
 
 type ChangeListener = (v: string) => void;
 const listeners = new Map<string, Set<ChangeListener>>();
 
-export interface TabsProps extends ComponentProps<typeof Primitive.Tabs> {
+type PrimitiveTabsRootProps = Omit<
+  ComponentProps<typeof Primitive.Root>,
+  'className' | 'value' | 'defaultValue' | 'onValueChange'
+>;
+
+export interface TabsProps extends PrimitiveTabsRootProps {
+  className?: string;
+  value?: string;
+  defaultValue?: string;
+  onValueChange?: (value: string) => void;
   /**
    * Identifier for Sharing value of tabs
    */
@@ -43,9 +52,46 @@ function useTabContext() {
   return ctx;
 }
 
-export const TabsList = Primitive.TabsList;
+type PrimitiveTabsListProps = Omit<
+  React.ComponentPropsWithoutRef<typeof Primitive.List>,
+  'className'
+> & {
+  className?: string;
+};
 
-export const TabsTrigger = Primitive.TabsTrigger;
+export const TabsList = React.forwardRef<
+  React.ComponentRef<typeof Primitive.List>,
+  PrimitiveTabsListProps
+>(({ className, ...props }, ref) => (
+  <Primitive.List ref={ref} className={className} {...props} />
+));
+TabsList.displayName = Primitive.List.displayName;
+
+type PrimitiveTabsTriggerProps = Omit<
+  React.ComponentPropsWithoutRef<typeof Primitive.Tab>,
+  'className' | 'value'
+> & {
+  className?: string;
+  value: string;
+};
+
+export const TabsTrigger = React.forwardRef<
+  React.ComponentRef<typeof Primitive.Tab>,
+  PrimitiveTabsTriggerProps
+>(({ className, ...props }, ref) => (
+  <Primitive.Tab
+    ref={ref}
+    className={className}
+    {...props}
+    render={(renderProps, state) => (
+      <button
+        {...renderProps}
+        data-state={state.active ? "active" : "inactive"}
+      />
+    )}
+  />
+));
+TabsTrigger.displayName = Primitive.Tab.displayName;
 
 export function Tabs({
   ref,
@@ -59,12 +105,19 @@ export function Tabs({
 }: TabsProps) {
   const tabsRef = useRef<HTMLDivElement>(null);
   const valueToIdMap = useMemo(() => new Map<string, string>(), []);
-  const [value, setValue] =
-    _value === undefined
-      ? // eslint-disable-next-line react-hooks/rules-of-hooks -- not supposed to change controlled/uncontrolled
-        useState(defaultValue)
-      : // eslint-disable-next-line react-hooks/rules-of-hooks -- not supposed to change controlled/uncontrolled
-        [_value, useEffectEvent((v: string) => _onValueChange?.(v))];
+  const isControlled = _value !== undefined;
+  const initialDefaultValueRef = useRef(defaultValue);
+  const [uncontrolledValue, setUncontrolledValue] = useState<string | undefined>(
+    initialDefaultValueRef.current,
+  );
+  const value = isControlled ? _value : uncontrolledValue;
+  const setValue = (nextValue: string) => {
+    if (isControlled) {
+      _onValueChange?.(nextValue);
+      return;
+    }
+    setUncontrolledValue(nextValue);
+  };
 
   useLayoutEffect(() => {
     if (!groupId) return;
@@ -78,7 +131,7 @@ export function Tabs({
     return () => {
       groupListeners.delete(setValue);
     };
-  }, [groupId, persist, setValue]);
+  }, [groupId, isControlled, persist, setValue]);
 
   useLayoutEffect(() => {
     const hash = window.location.hash.slice(1);
@@ -94,12 +147,14 @@ export function Tabs({
   }, [setValue, valueToIdMap]);
 
   return (
-    <Primitive.Tabs
+    <Primitive.Root
       ref={mergeRefs(ref, tabsRef)}
       value={value}
-      onValueChange={(v: string) => {
+      onValueChange={(v) => {
+        const valueKey = String(v);
+
         if (updateAnchor) {
-          const id = valueToIdMap.get(v);
+          const id = valueToIdMap.get(valueKey);
 
           if (id) {
             window.history.replaceState(null, '', `#${id}`);
@@ -109,13 +164,13 @@ export function Tabs({
         if (groupId) {
           const groupListeners = listeners.get(groupId);
           if (groupListeners) {
-            for (const listener of groupListeners) listener(v);
+            for (const listener of groupListeners) listener(valueKey);
           }
 
-          sessionStorage.setItem(groupId, v);
-          if (persist) localStorage.setItem(groupId, v);
+          sessionStorage.setItem(groupId, valueKey);
+          if (persist) localStorage.setItem(groupId, valueKey);
         } else {
-          setValue(v);
+          setValue(valueKey);
         }
       }}
       {...props}
@@ -123,20 +178,41 @@ export function Tabs({
       <TabsContext value={useMemo(() => ({ valueToIdMap }), [valueToIdMap])}>
         {props.children}
       </TabsContext>
-    </Primitive.Tabs>
+    </Primitive.Root>
   );
 }
 
-export function TabsContent({ value, ...props }: ComponentProps<typeof Primitive.TabsContent>) {
+type PrimitiveTabsContentProps = Omit<
+  ComponentProps<typeof Primitive.Panel>,
+  'className' | 'keepMounted' | 'value'
+>;
+
+export interface TabsContentProps extends PrimitiveTabsContentProps {
+  className?: string;
+  value: string;
+  forceMount?: boolean;
+}
+
+export function TabsContent({ value, forceMount, ...props }: TabsContentProps) {
   const { valueToIdMap } = useTabContext();
 
   if (props.id) {
-    valueToIdMap.set(value, props.id);
+    valueToIdMap.set(String(value), props.id);
   }
 
   return (
-    <Primitive.TabsContent value={value} {...props}>
+    <Primitive.Panel
+      value={value}
+      keepMounted={forceMount}
+      {...props}
+      render={(renderProps, state) => (
+        <div
+          {...renderProps}
+          data-state={state.hidden ? "inactive" : "active"}
+        />
+      )}
+    >
       {props.children}
-    </Primitive.TabsContent>
+    </Primitive.Panel>
   );
 }

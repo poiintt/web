@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Slot } from "@radix-ui/react-slot";
 import { MoreHorizontal } from "lucide-react";
 
 import { cn } from "../lib/cn";
@@ -45,10 +44,23 @@ const BreadcrumbLink = React.forwardRef<
     asChild?: boolean;
   }
 >(({ asChild, className, ...props }, ref) => {
-  const Comp = asChild ? Slot : "a";
+  if (asChild && React.isValidElement(props.children)) {
+    const child = props.children as React.ReactElement<{
+      className?: string;
+    }>;
+
+    return React.cloneElement(child, {
+      ...props,
+      className: cn(
+        "opacity-100 transition-all hover:bg-background-neutral rounded-square no-underline py-1 px-2 -my-1 -mx-2 text-foreground-neutral",
+        className,
+        child.props.className,
+      ),
+    });
+  }
 
   return (
-    <Comp
+    <a
       ref={ref}
       className={cn(
         "opacity-100 transition-all hover:bg-background-neutral rounded-square no-underline py-1 px-2 -my-1 -mx-2 text-foreground-neutral",

@@ -61,7 +61,6 @@ export function Accordions({
   }, []);
 
   return (
-    // @ts-expect-error -- Multiple types
     <Root
       type={type}
       ref={composedRef}

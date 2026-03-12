@@ -1,30 +1,86 @@
 "use client";
 
-import * as Primitive from "@radix-ui/react-accordion";
+import { Accordion as Primitive } from "@base-ui/react/accordion";
 import { ChevronRight } from "lucide-react";
-import { type ComponentProps } from "react";
+import * as React from "react";
 import { cn } from "../../lib/cn";
 
-export function Accordion({
-  className,
-  ...props
-}: ComponentProps<typeof Primitive.Root>) {
-  return (
+type AccordionValue = string | string[];
+
+type PrimitiveAccordionRootProps = Omit<
+  React.ComponentPropsWithoutRef<typeof Primitive.Root>,
+  "className" | "multiple" | "value" | "defaultValue" | "onValueChange"
+>;
+
+export interface AccordionProps extends PrimitiveAccordionRootProps {
+  className?: string;
+  type?: "single" | "multiple";
+  collapsible?: boolean;
+  value?: AccordionValue;
+  defaultValue?: AccordionValue;
+  onValueChange?: (value: AccordionValue) => void;
+}
+
+export const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(
+  (
+    {
+      className,
+      type = "single",
+      collapsible: _collapsible,
+      value,
+      defaultValue,
+      onValueChange,
+      ...props
+    },
+    ref,
+  ) => (
     <Primitive.Root
+      ref={ref}
+      multiple={type === "multiple"}
+      value={
+        value === undefined
+          ? undefined
+          : Array.isArray(value)
+            ? value
+            : value
+              ? [value]
+              : []
+      }
+      defaultValue={
+        defaultValue === undefined
+          ? undefined
+          : Array.isArray(defaultValue)
+            ? defaultValue
+            : defaultValue
+              ? [defaultValue]
+              : []
+      }
+      onValueChange={(nextValue) => {
+        if (!onValueChange) return;
+        onValueChange(type === "multiple" ? nextValue : (nextValue[0] ?? ""));
+      }}
       className={cn(
         "divide-y divide-fd-border overflow-hidden rounded-lg border bg-fd-card",
         className,
       )}
       {...props}
     />
-  );
-}
+  ),
+);
+Accordion.displayName = "Accordion";
+
+type PrimitiveAccordionItemProps = Omit<
+  React.ComponentPropsWithoutRef<typeof Primitive.Item>,
+  "className"
+> & {
+  className?: string;
+};
 
 export function AccordionItem({
   className,
   children,
   ...props
-}: ComponentProps<typeof Primitive.Item>) {
+}: PrimitiveAccordionItemProps) {
   return (
     <Primitive.Item className={cn("scroll-m-24", className)} {...props}>
       {children}
@@ -32,11 +88,18 @@ export function AccordionItem({
   );
 }
 
+type PrimitiveAccordionHeaderProps = Omit<
+  React.ComponentPropsWithoutRef<typeof Primitive.Header>,
+  "className"
+> & {
+  className?: string;
+};
+
 export function AccordionHeader({
   className,
   children,
   ...props
-}: ComponentProps<typeof Primitive.Header>) {
+}: PrimitiveAccordionHeaderProps) {
   return (
     <Primitive.Header
       className={cn(
@@ -50,11 +113,18 @@ export function AccordionHeader({
   );
 }
 
+type PrimitiveAccordionTriggerProps = Omit<
+  React.ComponentPropsWithoutRef<typeof Primitive.Trigger>,
+  "className"
+> & {
+  className?: string;
+};
+
 export function AccordionTrigger({
   className,
   children,
   ...props
-}: ComponentProps<typeof Primitive.Trigger>) {
+}: PrimitiveAccordionTriggerProps) {
   return (
     <Primitive.Trigger
       className={cn(
@@ -63,26 +133,33 @@ export function AccordionTrigger({
       )}
       {...props}
     >
-      <ChevronRight className="size-4 shrink-0 text-fd-muted-foreground transition-transform duration-200 group-data-[state=open]:rotate-90" />
+      <ChevronRight className="size-4 shrink-0 text-fd-muted-foreground transition-transform duration-200 group-data-[panel-open]:rotate-90" />
       {children}
     </Primitive.Trigger>
   );
 }
 
+type PrimitiveAccordionContentProps = Omit<
+  React.ComponentPropsWithoutRef<typeof Primitive.Panel>,
+  "className"
+> & {
+  className?: string;
+};
+
 export function AccordionContent({
   className,
   children,
   ...props
-}: ComponentProps<typeof Primitive.Content>) {
+}: PrimitiveAccordionContentProps) {
   return (
-    <Primitive.Content
+    <Primitive.Panel
       className={cn(
-        "overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down text-foreground-neutral-weak",
+        "overflow-hidden text-foreground-neutral-weak h-(--accordion-panel-height) transition-[height] data-starting-style:h-0 data-ending-style:h-0",
         className,
       )}
       {...props}
     >
       {children}
-    </Primitive.Content>
+    </Primitive.Panel>
   );
 }

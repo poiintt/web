@@ -1,44 +1,43 @@
 "use client";
 
 import * as React from "react";
-import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
+import { Radio as RadioPrimitive } from "@base-ui/react/radio";
+import { RadioGroup as RadioGroupPrimitive } from "@base-ui/react/radio-group";
 import { Circle } from "lucide-react";
 
 import { cn } from "../lib/cn";
 
-const RadioGroup = React.forwardRef<
-  React.ElementRef<typeof RadioGroupPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root>
->(({ className, ...props }, ref) => {
+function RadioGroup({
+  className,
+  ...props
+}: React.ComponentProps<typeof RadioGroupPrimitive>) {
   return (
-    <RadioGroupPrimitive.Root
-      className={cn("grid gap-2", className)}
+    <RadioGroupPrimitive
+      className={cn("grid gap-2", className as string)}
       {...props}
-      ref={ref}
     />
   );
-});
-RadioGroup.displayName = RadioGroupPrimitive.Root.displayName;
+}
+RadioGroup.displayName = "RadioGroup";
 
-const RadioGroupItem = React.forwardRef<
-  React.ElementRef<typeof RadioGroupPrimitive.Item>,
-  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item>
->(({ className, ...props }, ref) => {
+function RadioGroupItem({
+  className,
+  ...props
+}: React.ComponentProps<typeof RadioPrimitive.Root>) {
   return (
-    <RadioGroupPrimitive.Item
-      ref={ref}
+    <RadioPrimitive.Root
       className={cn(
         "group aspect-square h-4 w-4 rounded-circle border border-stroke-neutral text-background-default bg-background-default outline-none disabled:border-stroke-neutral-weak disabled:bg-background-neutral-weak disabled:text-background-neutral-weak disabled:cursor-not-allowed disabled:opacity-50",
-        className,
+        className as string,
       )}
       {...props}
     >
-      <RadioGroupPrimitive.Indicator className="flex items-center justify-center">
+      <RadioPrimitive.Indicator className="flex items-center justify-center">
         <Circle className="h-3.5 w-3.5 fill-foreground-neutral group-disabled:fill-foreground-neutral-weaker outline-none stroke-4" />
-      </RadioGroupPrimitive.Indicator>
-    </RadioGroupPrimitive.Item>
+      </RadioPrimitive.Indicator>
+    </RadioPrimitive.Root>
   );
-});
-RadioGroupItem.displayName = RadioGroupPrimitive.Item.displayName;
+}
+RadioGroupItem.displayName = "RadioGroupItem";
 
 export { RadioGroup, RadioGroupItem };
