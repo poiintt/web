@@ -1,0 +1,117 @@
+---
+title: "Connection pooling for Prisma Postgres now production ready"
+slug: "connection-pooling-for-prisma-postgres-now-production-ready"
+date: "2026-03-12"
+authors:
+  - "Ankur Datta"
+metaTitle: "Connection pooling for Prisma Postgres now production ready"
+metaDescription: "Connection pooling for Prisma Postgres is now production ready, giving you built-in protection against connection spikes in high concurrency environments."
+metaImagePath: "/connection-pooling-for-prisma-postgres-now-production-ready/imgs/meta-36ec093fafcc691a0e198091a55dcfaaea23facd-844x474.png"
+heroImagePath: "/connection-pooling-for-prisma-postgres-now-production-ready/imgs/hero-36ec093fafcc691a0e198091a55dcfaaea23facd-844x474.png"
+tags:
+  - "announcement"
+---
+
+Connection pooling for Prisma Postgres is now production ready, giving you built-in protection against connection spikes in high concurrency environments. Your database stays stable as your application scales, without requiring you to manage pooling infrastructure yourself.
+
+## Why connection pooling matters
+
+Postgres has a hard limit on the number of concurrent connections. Every application instance can open its own connection. In traditional long-running servers, those connections are reused. In modern environments like serverless, edge, and auto-scaling containers, instances are short-lived and can scale rapidly.
+
+When traffic spikes:
+
+- Many new instances start at once
+- Each attempts to open a database connection
+- The database reaches its connection limit
+
+Once that limit is reached:
+
+- New requests are blocked or fail
+- Latency increases
+- Timeouts become more frequent
+
+In most cases, the database is not CPU-bound. It is connection-bound.
+
+Connection pressure is one of the most common production issues in high concurrency environments.
+
+![](/connection-pooling-for-prisma-postgres-now-production-ready/imgs/9e8e3becfee1a26c6cf2bee22d97d2f495e9684f-2888x2464.webp)
+
+## What connection pooling does
+
+Connection pooling introduces a controlled layer between your application and the database.
+
+![](/connection-pooling-for-prisma-postgres-now-production-ready/imgs/44ba60d5b943aa33c196f630f245f52ca3cd074f-2888x2188.webp)
+
+Instead of allowing every instance to open new connections, a pool:
+
+- Maintains a fixed number of database connections
+- Reuses them across requests
+- Queues additional traffic when necessary
+
+This keeps the database within safe operating limits, even during sudden load increases.
+
+Pooling does not increase the database connection limit. It makes better use of it.
+
+## How to enable and use connection pooling for Prisma Postgres
+
+To use a pooled connection, use the `pooled.db.prisma.io` hostname in your connection string:
+
+```bash
+# Direct connection
+DATABASE_URL="postgres://USER:PASSWORD@db.prisma.io:5432/?sslmode=require"
+
+# Pooled connection
+DATABASE_URL="postgres://USER:PASSWORD@pooled.db.prisma.io:5432/?sslmode=require"
+```
+
+You can also enable connection pooling when generating your connection string in the [Prisma Console](https://console.prisma.io/) by turning on **Enable connection pooling**.
+
+This works with any PostgreSQL client, ORM, or database tool you already use.
+
+## Built directly into Prisma Postgres
+
+With Prisma Postgres, you do not need to:
+
+- Deploy PgBouncer
+- Operate a separate proxy
+- Tune pool sizes across multiple services
+- Monitor another component in production
+
+Connection pooling is part of the database platform itself. Your application connects once, and Prisma Postgres handles connection management behind the scenes.
+
+This removes operational overhead and reduces the risk of misconfiguration.
+
+## What this means in practice
+
+Consider an application that suddenly sees a 20x traffic increase.
+
+Without pooling, each new instance may try to open its own database connection. The database can reach its connection limit quickly, leading to failed or delayed requests.
+
+With pooling in place:
+
+- Existing connections are reused
+- Excess load is regulated
+- The database remains stable
+
+Scaling becomes predictable. The database is protected from connection storms.
+
+## Designed for modern workloads
+
+Prisma Postgres is built for environments where compute scales independently from the database:
+
+- Serverless functions
+- Edge deployments
+- Auto-scaling services
+- High concurrency APIs
+
+Connection pooling is opt in. You enable it by switching to the pooled connection string.
+
+Once enabled, Prisma Postgres manages and reuses connections for you, helping the database stay stable under high concurrency. No extra services. No additional infrastructure. Just a different connection string.
+
+## Give it a try
+
+If you are running Postgres in a high concurrency setup, connection pooling should not require separate infrastructure.
+
+Create a Prisma Postgres database, connect your application, and let the platform manage connections for you.
+
+Ship faster with Postgres designed for the way you build today. Try Prisma Postgres.
