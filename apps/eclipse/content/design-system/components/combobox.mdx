@@ -1,0 +1,827 @@
+---
+title: Combobox
+description: A combobox component that combines an input with a dropdown list, enabling users to search, filter, and select from a list of options. Supports single selection, multi-selection with chips, keyboard navigation, and custom filtering.
+---
+
+import {
+  Combobox,
+  ComboboxInput,
+  ComboboxContent,
+  ComboboxList,
+  ComboboxItem,
+  ComboboxGroup,
+  ComboboxLabel,
+  ComboboxEmpty,
+  ComboboxSeparator,
+  ComboboxChips,
+  ComboboxChip,
+  ComboboxChipsInput,
+  ComboboxValue,
+  ComboboxTrigger,
+  ComboboxCollection,
+  useComboboxAnchor,
+} from "@prisma/eclipse";
+import { Search } from "lucide-react";
+import { MultiSelectComboboxExample, ControlledComboboxExample, CustomFilterComboboxExample } from "@/components/combobox-examples/interactive-examples";
+
+### Usage
+
+**Basic Combobox**
+
+A simple combobox with searchable options:
+
+```tsx
+import {
+  Combobox,
+  ComboboxInput,
+  ComboboxContent,
+  ComboboxList,
+  ComboboxItem,
+} from "@prisma/eclipse";
+
+const fruits = ["Apple", "Banana", "Orange", "Grape", "Mango"];
+
+export function BasicCombobox() {
+  return (
+    <Combobox>
+      <ComboboxInput placeholder="Select a fruit..." />
+      <ComboboxContent>
+        <ComboboxList>
+          {fruits.map((fruit) => (
+            <ComboboxItem key={fruit} value={fruit}>
+              {fruit}
+            </ComboboxItem>
+          ))}
+        </ComboboxList>
+      </ComboboxContent>
+    </Combobox>
+  );
+}
+```
+
+**Live Example:**
+
+<div className="not-prose my-6 max-w-md">
+  <p className="text-sm font-semibold mb-4">Live Example:</p>
+  <Combobox>
+    <ComboboxInput placeholder="Select a fruit..." />
+    <ComboboxContent>
+      <ComboboxList>
+        <ComboboxItem value="apple">Apple</ComboboxItem>
+        <ComboboxItem value="banana">Banana</ComboboxItem>
+        <ComboboxItem value="orange">Orange</ComboboxItem>
+        <ComboboxItem value="grape">Grape</ComboboxItem>
+        <ComboboxItem value="mango">Mango</ComboboxItem>
+      </ComboboxList>
+    </ComboboxContent>
+  </Combobox>
+</div>
+
+**With Search and Empty State**
+
+Add an empty state for when no results match:
+
+```tsx
+import {
+  Combobox,
+  ComboboxInput,
+  ComboboxContent,
+  ComboboxList,
+  ComboboxItem,
+  ComboboxEmpty,
+} from "@prisma/eclipse";
+
+const frameworks = [
+  "Next.js",
+  "React",
+  "Vue",
+  "Svelte",
+  "Angular",
+  "Remix",
+];
+
+export function ComboboxWithEmpty() {
+  return (
+    <Combobox>
+      <ComboboxInput placeholder="Search frameworks..." />
+      <ComboboxContent>
+        <ComboboxList>
+          {frameworks.map((framework) => (
+            <ComboboxItem key={framework} value={framework}>
+              {framework}
+            </ComboboxItem>
+          ))}
+        </ComboboxList>
+        <ComboboxEmpty>No results found.</ComboboxEmpty>
+      </ComboboxContent>
+    </Combobox>
+  );
+}
+```
+
+**Live Example:**
+
+<div className="not-prose my-6 max-w-md">
+  <p className="text-sm font-semibold mb-4">Live Example:</p>
+  <Combobox>
+    <ComboboxInput placeholder="Search frameworks..." />
+    <ComboboxContent>
+      <ComboboxList>
+        <ComboboxItem value="nextjs">Next.js</ComboboxItem>
+        <ComboboxItem value="react">React</ComboboxItem>
+        <ComboboxItem value="vue">Vue</ComboboxItem>
+        <ComboboxItem value="svelte">Svelte</ComboboxItem>
+        <ComboboxItem value="angular">Angular</ComboboxItem>
+        <ComboboxItem value="remix">Remix</ComboboxItem>
+      </ComboboxList>
+      <ComboboxEmpty>No results found.</ComboboxEmpty>
+    </ComboboxContent>
+  </Combobox>
+</div>
+
+**Grouped Options**
+
+Organize options into labeled groups:
+
+```tsx
+import {
+  Combobox,
+  ComboboxInput,
+  ComboboxContent,
+  ComboboxList,
+  ComboboxItem,
+  ComboboxGroup,
+  ComboboxLabel,
+  ComboboxSeparator,
+} from "@prisma/eclipse";
+
+export function GroupedCombobox() {
+  return (
+    <Combobox>
+      <ComboboxInput placeholder="Select a language..." />
+      <ComboboxContent>
+        <ComboboxList>
+          <ComboboxGroup>
+            <ComboboxLabel>Frontend</ComboboxLabel>
+            <ComboboxItem value="javascript">JavaScript</ComboboxItem>
+            <ComboboxItem value="typescript">TypeScript</ComboboxItem>
+          </ComboboxGroup>
+          <ComboboxSeparator />
+          <ComboboxGroup>
+            <ComboboxLabel>Backend</ComboboxLabel>
+            <ComboboxItem value="python">Python</ComboboxItem>
+            <ComboboxItem value="rust">Rust</ComboboxItem>
+            <ComboboxItem value="go">Go</ComboboxItem>
+          </ComboboxGroup>
+        </ComboboxList>
+      </ComboboxContent>
+    </Combobox>
+  );
+}
+```
+
+**Live Example:**
+
+<div className="not-prose my-6 max-w-md">
+  <p className="text-sm font-semibold mb-4">Live Example:</p>
+  <Combobox>
+    <ComboboxInput placeholder="Select a language..." />
+    <ComboboxContent>
+      <ComboboxList>
+        <ComboboxGroup>
+          <ComboboxLabel>Frontend</ComboboxLabel>
+          <ComboboxItem value="javascript">JavaScript</ComboboxItem>
+          <ComboboxItem value="typescript">TypeScript</ComboboxItem>
+        </ComboboxGroup>
+        <ComboboxSeparator />
+        <ComboboxGroup>
+          <ComboboxLabel>Backend</ComboboxLabel>
+          <ComboboxItem value="python">Python</ComboboxItem>
+          <ComboboxItem value="rust">Rust</ComboboxItem>
+          <ComboboxItem value="go">Go</ComboboxItem>
+        </ComboboxGroup>
+      </ComboboxList>
+    </ComboboxContent>
+  </Combobox>
+</div>
+
+**Multi-Select with Chips**
+
+Enable multiple selections with removable chips:
+
+```tsx
+import {
+  Combobox,
+  ComboboxChips,
+  ComboboxChip,
+  ComboboxChipsInput,
+  ComboboxContent,
+  ComboboxList,
+  ComboboxItem,
+  useComboboxAnchor,
+} from "@prisma/eclipse";
+
+const tags = ["React", "TypeScript", "Next.js", "Tailwind", "Prisma"];
+
+export function MultiSelectCombobox() {
+  const [selectedTags, setSelectedTags] = React.useState<string[]>([]);
+  const anchor = useComboboxAnchor();
+
+  return (
+    <Combobox multiple value={selectedTags} onValueChange={setSelectedTags}>
+      <ComboboxChips ref={anchor}>
+        {selectedTags.map((tag) => (
+          <ComboboxChip key={tag} value={tag}>
+            {tag}
+          </ComboboxChip>
+        ))}
+        <ComboboxChipsInput placeholder="Add tags..." />
+      </ComboboxChips>
+      <ComboboxContent anchor={anchor.current}>
+        <ComboboxList>
+          {tags.map((tag) => (
+            <ComboboxItem key={tag} value={tag}>
+              {tag}
+            </ComboboxItem>
+          ))}
+        </ComboboxList>
+      </ComboboxContent>
+    </Combobox>
+  );
+}
+```
+
+**Live Example:**
+
+<div className="not-prose my-6 max-w-md">
+  <p className="text-sm font-semibold mb-4">Live Example:</p>
+  <MultiSelectComboboxExample />
+</div>
+
+**Controlled Combobox**
+
+Manage the selected value with state:
+
+```tsx
+import {
+  Combobox,
+  ComboboxInput,
+  ComboboxContent,
+  ComboboxList,
+  ComboboxItem,
+} from "@prisma/eclipse";
+
+const options = ["Option 1", "Option 2", "Option 3"];
+
+export function ControlledCombobox() {
+  const [value, setValue] = React.useState<string>("");
+
+  return (
+    <div className="space-y-4">
+      <Combobox value={value} onValueChange={setValue}>
+        <ComboboxInput placeholder="Select an option..." />
+        <ComboboxContent>
+          <ComboboxList>
+            {options.map((option) => (
+              <ComboboxItem key={option} value={option}>
+                {option}
+              </ComboboxItem>
+            ))}
+          </ComboboxList>
+        </ComboboxContent>
+      </Combobox>
+      <p className="text-sm text-muted-foreground">
+        Selected: {value || "None"}
+      </p>
+    </div>
+  );
+}
+```
+
+**Live Example:**
+
+<div className="not-prose my-6 max-w-md">
+  <p className="text-sm font-semibold mb-4">Live Example:</p>
+  <ControlledComboboxExample />
+</div>
+
+**With Clear Button**
+
+Add a clear button to reset the selection:
+
+```tsx
+import {
+  Combobox,
+  ComboboxInput,
+  ComboboxContent,
+  ComboboxList,
+  ComboboxItem,
+} from "@prisma/eclipse";
+
+export function ComboboxWithClear() {
+  return (
+    <Combobox>
+      <ComboboxInput 
+        placeholder="Select a country..." 
+        showClear 
+      />
+      <ComboboxContent>
+        <ComboboxList>
+          <ComboboxItem value="us">United States</ComboboxItem>
+          <ComboboxItem value="uk">United Kingdom</ComboboxItem>
+          <ComboboxItem value="ca">Canada</ComboboxItem>
+          <ComboboxItem value="au">Australia</ComboboxItem>
+        </ComboboxList>
+      </ComboboxContent>
+    </Combobox>
+  );
+}
+```
+
+**Live Example:**
+
+<div className="not-prose my-6 max-w-md">
+  <p className="text-sm font-semibold mb-4">Live Example:</p>
+  <Combobox>
+    <ComboboxInput 
+      placeholder="Select a country..." 
+      showClear 
+    />
+    <ComboboxContent>
+      <ComboboxList>
+        <ComboboxItem value="us">United States</ComboboxItem>
+        <ComboboxItem value="uk">United Kingdom</ComboboxItem>
+        <ComboboxItem value="ca">Canada</ComboboxItem>
+        <ComboboxItem value="au">Australia</ComboboxItem>
+      </ComboboxList>
+    </ComboboxContent>
+  </Combobox>
+</div>
+
+**Disabled State**
+
+Disable the combobox when interaction should be prevented:
+
+```tsx
+import {
+  Combobox,
+  ComboboxInput,
+  ComboboxContent,
+  ComboboxList,
+  ComboboxItem,
+} from "@prisma/eclipse";
+
+export function DisabledCombobox() {
+  return (
+    <Combobox disabled>
+      <ComboboxInput placeholder="Disabled combobox" disabled />
+      <ComboboxContent>
+        <ComboboxList>
+          <ComboboxItem value="option1">Option 1</ComboboxItem>
+          <ComboboxItem value="option2">Option 2</ComboboxItem>
+        </ComboboxList>
+      </ComboboxContent>
+    </Combobox>
+  );
+}
+```
+
+**Live Example:**
+
+<div className="not-prose my-6 max-w-md">
+  <p className="text-sm font-semibold mb-4">Live Example:</p>
+  <Combobox disabled>
+    <ComboboxInput placeholder="Disabled combobox" disabled />
+    <ComboboxContent>
+      <ComboboxList>
+        <ComboboxItem value="option1">Option 1</ComboboxItem>
+        <ComboboxItem value="option2">Option 2</ComboboxItem>
+      </ComboboxList>
+    </ComboboxContent>
+  </Combobox>
+</div>
+
+**With Custom Filtering**
+
+Implement custom filtering logic for more control:
+
+```tsx
+import {
+  Combobox,
+  ComboboxInput,
+  ComboboxContent,
+  ComboboxList,
+  ComboboxItem,
+  ComboboxEmpty,
+} from "@prisma/eclipse";
+
+const users = [
+  { id: "1", name: "John Doe", email: "john@example.com" },
+  { id: "2", name: "Jane Smith", email: "jane@example.com" },
+  { id: "3", name: "Bob Johnson", email: "bob@example.com" },
+];
+
+export function CustomFilterCombobox() {
+  const [searchValue, setSearchValue] = React.useState("");
+  
+  const filteredUsers = users.filter((user) => {
+    const search = searchValue.toLowerCase();
+    return (
+      user.name.toLowerCase().includes(search) ||
+      user.email.toLowerCase().includes(search)
+    );
+  });
+
+  return (
+    <Combobox>
+      <ComboboxInput
+        placeholder="Search users..."
+        value={searchValue}
+        onValueChange={setSearchValue}
+      />
+      <ComboboxContent>
+        <ComboboxList>
+          {filteredUsers.map((user) => (
+            <ComboboxItem key={user.id} value={user.id}>
+              <div className="flex flex-col items-start">
+                <span>{user.name}</span>
+                <span className="text-xs text-muted-foreground">
+                  {user.email}
+                </span>
+              </div>
+            </ComboboxItem>
+          ))}
+        </ComboboxList>
+        <ComboboxEmpty>No users found.</ComboboxEmpty>
+      </ComboboxContent>
+    </Combobox>
+  );
+}
+```
+
+**Live Example:**
+
+<div className="not-prose my-6 max-w-md">
+  <p className="text-sm font-semibold mb-4">Live Example:</p>
+  <CustomFilterComboboxExample />
+</div>
+
+**Position Control**
+
+Control the position and alignment of the dropdown:
+
+```tsx
+import {
+  Combobox,
+  ComboboxInput,
+  ComboboxContent,
+  ComboboxList,
+  ComboboxItem,
+} from "@prisma/eclipse";
+
+export function PositionedCombobox() {
+  return (
+    <Combobox>
+      <ComboboxInput placeholder="Select..." />
+      <ComboboxContent side="top" align="end" sideOffset={8}>
+        <ComboboxList>
+          <ComboboxItem value="option1">Option 1</ComboboxItem>
+          <ComboboxItem value="option2">Option 2</ComboboxItem>
+          <ComboboxItem value="option3">Option 3</ComboboxItem>
+        </ComboboxList>
+      </ComboboxContent>
+    </Combobox>
+  );
+}
+```
+
+**Live Example:**
+
+<div className="not-prose my-6 max-w-md">
+  <p className="text-sm font-semibold mb-4">Live Example:</p>
+  <Combobox>
+    <ComboboxInput placeholder="Select..." />
+    <ComboboxContent side="top" align="end" sideOffset={8}>
+      <ComboboxList>
+        <ComboboxItem value="option1">Option 1</ComboboxItem>
+        <ComboboxItem value="option2">Option 2</ComboboxItem>
+        <ComboboxItem value="option3">Option 3</ComboboxItem>
+      </ComboboxList>
+    </ComboboxContent>
+  </Combobox>
+</div>
+
+### API Reference
+
+#### Combobox
+
+The root component that manages combobox state.
+
+**Props:**
+- `value` - Controlled value (string or string[], optional)
+- `onValueChange` - Callback when value changes ((value: string | string[]) => void, optional)
+- `open` - Controlled open state (boolean, optional)
+- `onOpenChange` - Callback when open state changes ((open: boolean) => void, optional)
+- `multiple` - Enable multi-select mode (boolean, default: false)
+- `disabled` - Disable the combobox (boolean, default: false)
+- `defaultValue` - Default value for uncontrolled mode (string or string[], optional)
+- `defaultOpen` - Default open state (boolean, default: false)
+
+#### ComboboxInput
+
+The input field that triggers the combobox and filters options.
+
+**Props:**
+- `placeholder` - Placeholder text (string, optional)
+- `disabled` - Disable the input (boolean, default: false)
+- `showTrigger` - Show the dropdown trigger button (boolean, default: true)
+- `showClear` - Show the clear button (boolean, default: false)
+- `className` - Additional CSS classes (string, optional)
+- All standard HTML input attributes
+
+#### ComboboxContent
+
+The dropdown container that holds the list of options.
+
+**Props:**
+- `side` - Position relative to trigger ("top" | "bottom" | "left" | "right", default: "bottom")
+- `align` - Alignment relative to trigger ("start" | "center" | "end", default: "start")
+- `sideOffset` - Distance from trigger in pixels (number, default: 6)
+- `alignOffset` - Alignment offset in pixels (number, default: 0)
+- `anchor` - Custom anchor element for positioning (HTMLElement, optional)
+- `className` - Additional CSS classes (string or function, optional)
+
+#### ComboboxList
+
+The scrollable list container for combobox items.
+
+**Props:**
+- `className` - Additional CSS classes (string or function, optional)
+- All standard HTML div attributes
+
+#### ComboboxItem
+
+An individual option in the combobox list.
+
+**Props:**
+- `value` - The value of the item (string, required)
+- `disabled` - Disable the item (boolean, default: false)
+- `className` - Additional CSS classes (string or function, optional)
+- `children` - Item content (ReactNode)
+
+#### ComboboxGroup
+
+A container for grouping related items.
+
+**Props:**
+- `className` - Additional CSS classes (string or function, optional)
+- `children` - Group content (ReactNode)
+
+#### ComboboxLabel
+
+A label for a group of items.
+
+**Props:**
+- `className` - Additional CSS classes (string or function, optional)
+- `children` - Label content (ReactNode)
+
+#### ComboboxEmpty
+
+Displays when no items match the search.
+
+**Props:**
+- `className` - Additional CSS classes (string or function, optional)
+- `children` - Empty state content (ReactNode)
+
+#### ComboboxSeparator
+
+A visual separator between groups or items.
+
+**Props:**
+- `className` - Additional CSS classes (string or function, optional)
+
+#### ComboboxChips
+
+Container for multi-select chips (used with multiple mode).
+
+**Props:**
+- `className` - Additional CSS classes (string or function, optional)
+- `children` - Chips and input (ReactNode)
+
+#### ComboboxChip
+
+An individual chip representing a selected item.
+
+**Props:**
+- `value` - The value of the chip (string, required)
+- `showRemove` - Show the remove button (boolean, default: true)
+- `className` - Additional CSS classes (string or function, optional)
+- `children` - Chip content (ReactNode)
+
+#### ComboboxChipsInput
+
+Input field within the chips container for multi-select.
+
+**Props:**
+- `placeholder` - Placeholder text (string, optional)
+- `className` - Additional CSS classes (string or function, optional)
+- All standard HTML input attributes
+
+#### ComboboxValue
+
+Displays the currently selected value.
+
+**Props:**
+- `placeholder` - Text to show when no value is selected (string, optional)
+
+#### ComboboxTrigger
+
+A custom trigger button for opening the combobox dropdown. Automatically includes a chevron icon.
+
+**Props:**
+- `className` - Additional CSS classes (string or function, optional)
+- `children` - Custom trigger content (ReactNode, optional)
+- `disabled` - Disable the trigger (boolean, default: false)
+- All standard HTML button attributes
+
+#### ComboboxCollection
+
+A component for managing dynamic collections of items. Useful when working with data that changes frequently.
+
+**Props:**
+- `items` - Array of items to render (array, required)
+- `children` - Render function for items (ReactNode)
+
+#### useComboboxAnchor
+
+Hook that returns a ref for custom positioning with chips.
+
+**Returns:** `React.RefObject<HTMLDivElement | null>`
+
+### Features
+
+- ✅ Single and multi-select modes
+- ✅ Built-in search/filter functionality
+- ✅ Keyboard navigation (Arrow keys, Enter, Escape, Tab)
+- ✅ Grouped options with labels
+- ✅ Custom positioning and alignment
+- ✅ Empty state support
+- ✅ Chips for multi-select visualization
+- ✅ Clear button option
+- ✅ Disabled state
+- ✅ Controlled and uncontrolled modes
+- ✅ Custom filtering logic
+- ✅ Accessible with ARIA attributes
+- ✅ Portal rendering for z-index management
+- ✅ Animations for open/close transitions
+- ✅ Fully typed with TypeScript
+
+### Best Practices
+
+- Always provide a `placeholder` to guide users
+- Use `ComboboxEmpty` to inform users when no results are found
+- Group related options with `ComboboxGroup` and `ComboboxLabel`
+- For large lists, implement virtual scrolling or pagination
+- Provide clear visual feedback for selected items
+- Use multi-select with chips for better UX when selecting multiple items
+- Consider debouncing search input for async data fetching
+- Test keyboard navigation thoroughly
+- Provide appropriate ARIA labels for screen readers
+- Use the clear button for better user experience in forms
+
+### Accessibility
+
+The Combobox component follows ARIA combobox pattern specifications:
+
+- Uses semantic ARIA roles (`combobox`, `listbox`, `option`)
+- Supports keyboard navigation:
+  - `Arrow Down/Up` - Navigate through options
+  - `Enter` - Select highlighted option
+  - `Escape` - Close the dropdown
+  - `Tab` - Move focus and close dropdown
+- Focus management and trapped focus in dropdown
+- Screen reader announcements for selections and state changes
+- Proper labeling with `aria-label` and `aria-labelledby`
+- Visual focus indicators
+- Selected state announced to assistive technologies
+- Disabled items are properly marked and unfocusable
+
+### Common Use Cases
+
+The Combobox component is perfect for:
+
+- **Search with suggestions** - Autocomplete functionality
+- **Category selection** - Searchable category pickers
+- **Tag input** - Multi-select tag management
+- **Country/state selectors** - Searchable location pickers
+- **User mentions** - @mention functionality in text editors
+- **Product filters** - Filtering products by multiple criteria
+- **Team member selection** - Choosing team members with search
+- **Status updates** - Quick status selection with search
+- **Language switchers** - Searchable language selection
+- **Command palettes** - Quick action launchers
+- **Form inputs** - Enhanced select fields with search
+
+### Styling
+
+The Combobox component uses design tokens and can be customized:
+
+- **Input**: Styled using `InputGroup` component system
+- **Content**: Popover with shadow, rounded corners, and animations
+- **Items**: Hover/focus states with accent colors
+- **Chips**: Muted background with hover states
+- **Selected indicator**: Checkmark icon aligned right
+- **Empty state**: Centered muted text
+- **Animations**: Fade and zoom transitions on open/close
+
+Customize by passing `className` props:
+
+```tsx
+<ComboboxContent className="w-[400px]">
+  <ComboboxList className="max-h-[300px]">
+    <ComboboxItem className="text-lg font-semibold" value="custom">
+      Custom styled item
+    </ComboboxItem>
+  </ComboboxList>
+</ComboboxContent>
+```
+
+### Integration with Forms
+
+Use with form libraries like React Hook Form:
+
+```tsx
+import { useForm, Controller } from "react-hook-form";
+import { Combobox, ComboboxInput, ComboboxContent, ComboboxList, ComboboxItem } from "@prisma/eclipse";
+
+export function ComboboxForm() {
+  const { control, handleSubmit } = useForm();
+
+  return (
+    <form onSubmit={handleSubmit((data) => console.log(data))}>
+      <Controller
+        name="framework"
+        control={control}
+        render={({ field }) => (
+          <Combobox value={field.value} onValueChange={field.onChange}>
+            <ComboboxInput placeholder="Select framework..." />
+            <ComboboxContent>
+              <ComboboxList>
+                <ComboboxItem value="react">React</ComboboxItem>
+                <ComboboxItem value="vue">Vue</ComboboxItem>
+                <ComboboxItem value="svelte">Svelte</ComboboxItem>
+              </ComboboxList>
+            </ComboboxContent>
+          </Combobox>
+        )}
+      />
+    </form>
+  );
+}
+```
+
+### Performance Tips
+
+For large datasets:
+
+1. **Implement pagination** - Load items as user scrolls
+2. **Debounce search input** - Reduce filter calculations
+3. **Use React.memo** - Memoize item components
+4. **Virtual scrolling** - Render only visible items
+5. **Async loading** - Fetch data on-demand
+
+```tsx
+import { useMemo, useState } from "react";
+import { useDebounce } from "@/hooks/use-debounce";
+
+export function OptimizedCombobox({ items }) {
+  const [search, setSearch] = useState("");
+  const debouncedSearch = useDebounce(search, 300);
+  
+  const filteredItems = useMemo(
+    () => items.filter(item => 
+      item.toLowerCase().includes(debouncedSearch.toLowerCase())
+    ),
+    [items, debouncedSearch]
+  );
+
+  return (
+    <Combobox>
+      <ComboboxInput 
+        value={search}
+        onValueChange={setSearch}
+        placeholder="Search..."
+      />
+      <ComboboxContent>
+        <ComboboxList>
+          {filteredItems.map((item) => (
+            <ComboboxItem key={item} value={item}>
+              {item}
+            </ComboboxItem>
+          ))}
+        </ComboboxList>
+      </ComboboxContent>
+    </Combobox>
+  );
+}
+```
