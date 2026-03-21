@@ -1,11 +1,12 @@
 import { Button } from "@prisma/eclipse";
+import type { LucideIcon } from "lucide-react";
 
 import { AgentCard } from "./agent-card";
 
 export type McpAgent = {
   logo: string | null;
   alt: string;
-  icon: string;
+  icon: LucideIcon;
   href: string;
 };
 

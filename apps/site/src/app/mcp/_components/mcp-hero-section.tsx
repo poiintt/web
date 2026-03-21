@@ -1,13 +1,17 @@
 import { Button } from "@prisma/eclipse";
+import type { LucideIcon } from "lucide-react";
+import { ArrowRight, MessageSquareCode } from "lucide-react";
 
 import { McpBubble } from "./mcp-bubble";
 
 export type McpHeroFeature = {
-  icon: string;
+  icon: LucideIcon;
   line1: string;
   line2: string;
   mobileText?: string;
 };
+
+const heroFeatureIconClass = "size-6 text-foreground-ppg shrink-0";
 
 export function McpHeroSection({
   docsHref,
@@ -21,7 +25,7 @@ export function McpHeroSection({
       <div className="mx-auto flex w-full max-w-[368px] flex-col items-center gap-8 md:hidden">
         <div className="flex w-full flex-col items-center gap-4">
           <p className="flex items-center justify-center gap-2 font-sans-display text-base font-black uppercase tracking-[1.6px] text-foreground-ppg">
-            <i className="fa-solid fa-message-code text-sm" aria-hidden />
+            <MessageSquareCode className="size-3.5 shrink-0" strokeWidth={2} aria-hidden />
             Prisma MCP Server
           </p>
           <McpBubble variant="hero-mobile-title">
@@ -46,20 +50,23 @@ export function McpHeroSection({
           className="flex h-10 w-full items-center gap-3 text-base"
         >
           Add MCP Server
-          <i className="fa-regular fa-arrow-right text-sm" aria-hidden />
+          <ArrowRight className="size-4 shrink-0" strokeWidth={2} aria-hidden />
         </Button>
 
         <div className="flex w-full flex-col gap-6">
-          {features.map((feature) => (
-            <div key={feature.line1} className="flex items-center gap-4 text-left">
-              <div className="flex size-12 shrink-0 items-center justify-center rounded-[6px] bg-background-ppg">
-                <i className={`${feature.icon} text-2xl text-foreground-ppg`} aria-hidden />
+          {features.map((feature) => {
+            const FeatureIcon = feature.icon;
+            return (
+              <div key={feature.line1} className="flex items-center gap-4 text-left">
+                <div className="flex size-12 shrink-0 items-center justify-center rounded-[6px] bg-background-ppg">
+                  <FeatureIcon className={heroFeatureIconClass} strokeWidth={1.75} aria-hidden />
+                </div>
+                <p className="font-mono text-sm font-medium leading-5 text-foreground-neutral-weak dark:text-white/70">
+                  {feature.mobileText ?? `${feature.line1} ${feature.line2}`}
+                </p>
               </div>
-              <p className="font-mono text-sm font-medium leading-5 text-foreground-neutral-weak dark:text-white/70">
-                {feature.mobileText ?? `${feature.line1} ${feature.line2}`}
-              </p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
@@ -67,7 +74,7 @@ export function McpHeroSection({
         <div className="flex w-full flex-col items-center gap-[60px]">
           <div className="flex w-full flex-col items-center gap-10">
             <p className="flex items-center justify-center gap-2 font-sans-display text-base font-black uppercase tracking-[1.6px] text-foreground-ppg">
-              <i className="fa-solid fa-message-code text-sm" aria-hidden />
+              <MessageSquareCode className="size-3.5 shrink-0" strokeWidth={2} aria-hidden />
               Prisma MCP Server
             </p>
             <div className="flex w-full max-w-[910px] flex-col items-center gap-6 px-2">
@@ -96,15 +103,15 @@ export function McpHeroSection({
             className="flex h-10 items-center gap-3 px-4 text-base"
           >
             Add MCP Server
-            <i className="fa-regular fa-arrow-right text-sm" aria-hidden />
+            <ArrowRight className="size-4 shrink-0" strokeWidth={2} aria-hidden />
           </Button>
         </div>
 
         <div className="grid w-full max-w-[1024px] grid-cols-4 gap-12 px-[30px]">
-          {features.map(({ icon, line1, line2 }) => (
+          {features.map(({ icon: FeatureIcon, line1, line2 }) => (
             <div key={line1} className="flex items-center gap-4 text-left">
               <div className="flex size-12 shrink-0 items-center justify-center rounded-[6px] bg-background-ppg">
-                <i className={`${icon} text-2xl text-foreground-ppg`} aria-hidden />
+                <FeatureIcon className={heroFeatureIconClass} strokeWidth={1.75} aria-hidden />
               </div>
               <p className="font-mono text-sm font-medium leading-5 text-foreground-neutral-weak dark:text-white/70">
                 {line1}

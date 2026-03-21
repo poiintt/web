@@ -1,13 +1,17 @@
+import type { LucideIcon } from "lucide-react";
+
 import { McpBubble } from "./mcp-bubble";
 
+const capabilityIconClass = "size-6 text-foreground-ppg shrink-0";
+
 export function MobileCapabilityCard({
-  icon,
+  icon: Icon,
   title,
   description,
   prompt,
   mobileTall,
 }: {
-  icon: string;
+  icon: LucideIcon;
   title: string;
   description: string;
   prompt: string;
@@ -22,7 +26,7 @@ export function MobileCapabilityCard({
       <div className="flex flex-col gap-4 p-4">
         <div className="flex items-center gap-4">
           <div className="flex size-12 shrink-0 items-center justify-center rounded-[6px] bg-background-ppg">
-            <i className={`${icon} text-2xl text-foreground-ppg`} aria-hidden />
+            <Icon className={capabilityIconClass} strokeWidth={1.75} aria-hidden />
           </div>
           <h4 className="font-sans-display text-[20px] leading-7 font-extrabold text-foreground-neutral">
             {title}
@@ -42,13 +46,13 @@ export function MobileCapabilityCard({
 }
 
 export function CapabilityCard({
-  icon,
+  icon: Icon,
   title,
   description,
   prompt,
   size,
 }: {
-  icon: string;
+  icon: LucideIcon;
   title: string;
   description: string;
   prompt: string;
@@ -65,7 +69,7 @@ export function CapabilityCard({
       <div className="flex flex-col gap-4 p-4">
         <div className="flex items-center gap-4">
           <div className="flex size-12 shrink-0 items-center justify-center rounded-[6px] bg-background-ppg">
-            <i className={`${icon} text-2xl text-foreground-ppg`} aria-hidden />
+            <Icon className={capabilityIconClass} strokeWidth={1.75} aria-hidden />
           </div>
           <h4 className="font-sans-display text-[20px] leading-7 font-extrabold text-foreground-neutral">
             {title}
