@@ -13,8 +13,8 @@ export default function SiteHome() {
         Prisma Site
       </h1>
       <p className="text-center text-foreground-neutral-weak max-w-2xl mx-auto">
-        This app is the primary host zone. Content sections are served by their
-        own zones via routing rules.
+        This app is the primary host zone. Content sections are served by their own zones via
+        routing rules.
       </p>
     </main>
   );

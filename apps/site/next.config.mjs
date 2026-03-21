@@ -42,7 +42,8 @@ const ContentSecurityPolicy = `
     https://vercel.live
     https://proxyhog.prisma-data.net
     https://hcaptcha.com
-    https://*.hcaptcha.com;
+    https://*.hcaptcha.com
+    https://*.fontawesome.com;
 
   font-src 'self' data:
     https://fonts.gstatic.com
@@ -190,9 +191,7 @@ const securityHeaders = [
   },
 ];
 
-const allowedDevOrigins = (
-  process.env.ALLOWED_DEV_ORIGINS ?? "localhost,127.0.0.1,192.168.1.48"
-)
+const allowedDevOrigins = (process.env.ALLOWED_DEV_ORIGINS ?? "localhost,127.0.0.1,192.168.1.48")
   .split(",")
   .map((origin) => origin.trim())
   .filter(Boolean);
