@@ -21,7 +21,7 @@ export function McpAgentsSection({
     <section className="px-4 py-12 md:px-0">
       <div className="mx-auto flex max-w-[790px] flex-col items-center gap-12 text-center">
         <div className="flex max-w-[768px] flex-col items-center gap-4">
-          <h2 className="font-sans-display text-4xl font-black text-foreground-neutral md:text-5xl">
+          <h2 className="font-sans-display stretch-display font-black text-foreground-neutral text-3xl">
             Works with your AI agent
           </h2>
           <p className="text-base leading-6 text-foreground-neutral-weak">

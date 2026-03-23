@@ -15,14 +15,18 @@ import {
 
 import {
   type McpAgent,
-  type McpCapability,
-  type McpHeroFeature,
   McpAgentsSection,
+} from "./_components/mcp-agents-section";
+import {
+  type McpCapability,
   McpCapabilitiesSection,
-  McpCtaSection,
+} from "./_components/mcp-capabilities-section";
+import { McpCtaSection } from "./_components/mcp-cta-section";
+import {
+  type McpHeroFeature,
   McpHeroSection,
-  McpVideoSection,
-} from "./_components";
+} from "./_components/mcp-hero-section";
+import { McpVideoSection } from "./_components/mcp-video-section";
 
 export const metadata: Metadata = {
   title: "Prisma MCP Server",
