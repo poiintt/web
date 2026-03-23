@@ -1,9 +1,7 @@
-import type { LucideIcon } from "lucide-react";
-
 import { CapabilityCard } from "./capability-cards";
 
 export type McpCapability = {
-  icon: LucideIcon;
+  icon: string;
   title: string;
   description: string;
   prompt: string;

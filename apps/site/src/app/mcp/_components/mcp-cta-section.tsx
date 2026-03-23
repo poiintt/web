@@ -1,5 +1,4 @@
 import { buttonVariants } from "@prisma/eclipse";
-import { ArrowRight, BookOpen } from "lucide-react";
 
 export function McpCtaSection({ docsHref }: { docsHref: string }) {
   return (
@@ -41,7 +40,7 @@ export function McpCtaSection({ docsHref }: { docsHref: string }) {
                 })}
               >
                 Add MCP server
-                <ArrowRight className="size-4 shrink-0" strokeWidth={2} aria-hidden />
+                <i className="fa-regular fa-arrow-up-right shrink-0 text-[14px]" aria-hidden />
               </a>
               <a
                 href={docsHref}
@@ -53,7 +52,7 @@ export function McpCtaSection({ docsHref }: { docsHref: string }) {
                 })}
               >
                 Read Docs
-                <BookOpen className="size-4 shrink-0" strokeWidth={2} aria-hidden />
+                <i className="fa-regular fa-book-open shrink-0 text-[14px]" aria-hidden />
               </a>
             </div>
 

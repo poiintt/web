@@ -1,15 +1,14 @@
 import Image from "next/image";
-import type { LucideIcon } from "lucide-react";
 
 export function AgentCard({
   logo,
   alt,
-  icon: Icon,
+  icon,
   href,
 }: {
   logo: string | null;
   alt: string;
-  icon: LucideIcon;
+  icon: string | null;
   href: string;
 }) {
   return (
@@ -31,12 +30,14 @@ export function AgentCard({
       ) : (
         <span className="font-mono text-lg text-foreground-neutral-weak">Any AI agent</span>
       )}
-      <span
-        className="absolute right-[7px] top-[7px] text-foreground-neutral-weaker opacity-60 transition-opacity group-hover:opacity-100"
-        aria-hidden
-      >
-        <Icon className="size-3.5" strokeWidth={1.75} />
-      </span>
+      {icon ? (
+        <span
+          className="absolute right-[7px] top-[7px] text-foreground-neutral-weaker opacity-60 transition-opacity group-hover:opacity-100"
+          aria-hidden
+        >
+          <i className={`${icon} text-[16px]`} />
+        </span>
+      ) : null}
     </a>
   );
 }
