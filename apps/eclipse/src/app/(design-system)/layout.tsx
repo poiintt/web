@@ -1,21 +1,19 @@
 import { source } from '@/lib/source';
-import { baseOptions } from '@/lib/layout.shared';
-import { DocsLayout } from '@/components/layout/notebook';
-export default async function Layout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const { nav, ...base } = baseOptions();
+import { Nav } from '@/components/nav';
+import { Sidebar } from '@/components/sidebar';
+import { SidebarProvider } from '@/components/sidebar-context';
+import type { ReactNode } from 'react';
 
+export default function Layout({ children }: { children: ReactNode }) {
   return (
-    <DocsLayout
-      {...base}
-      nav={{ ...nav }}
-      sidebar={{ collapsible: false }}
-      tree={source.pageTree}
-    >
-      {children}
-    </DocsLayout>
+    <SidebarProvider>
+      <Nav />
+      <div data-component="docs-layout">
+        <Sidebar tree={source.pageTree} />
+        <main>
+          {children}
+        </main>
+      </div>
+    </SidebarProvider>
   );
 }
