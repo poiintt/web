@@ -19,7 +19,7 @@ export default function EclipseSearchDialog({ open, onOpenChange }: SharedProps)
 function SearchDialogInner({ onClose }: { onClose: () => void }) {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
-  const { search, setSearch, query } = useDocsSearch({ type: 'static' });
+  const { search, setSearch, query } = useDocsSearch({ type: 'fetch' });
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -88,7 +88,7 @@ function SearchDialogInner({ onClose }: { onClose: () => void }) {
                   >
                     <span className="flex items-center gap-3">
                       <ResultIcon type={result.type} />
-                      <span className="text-sm font-medium text-foreground-neutral line-clamp-1">{result.content}</span>
+                      <span className="text-sm font-medium text-foreground-neutral line-clamp-1">{stripHtml(result.content)}</span>
                     </span>
                     <span className="ml-7 text-xs text-foreground-neutral-weak truncate max-w-full">
                       {result.url.replace(/^\//, '').replace(/\//g, ' / ') || 'Home'}
@@ -102,6 +102,10 @@ function SearchDialogInner({ onClose }: { onClose: () => void }) {
       </div>
     </div>
   );
+}
+
+function stripHtml(str: string): string {
+  return str.replace(/<[^>]*>/g, '');
 }
 
 function ResultIcon({ type }: { type: 'page' | 'heading' | 'text' }) {
