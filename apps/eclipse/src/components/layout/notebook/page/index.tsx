@@ -1,8 +1,7 @@
 import type { ComponentProps, ReactNode } from 'react';
 import type { TOCItemType } from 'fumadocs-core/toc';
-import { TOCProvider, TableOfContents } from '../toc';
-import { DocsFooter } from './docs-footer';
-import { SidebarEnabledSync } from './context';
+import { TOCProvider, TableOfContents } from '../../../toc';
+import { DocsFooter, SidebarEnabledSync } from './client';
 
 export interface DocsPageProps {
   toc?: TOCItemType[];

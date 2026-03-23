@@ -5,6 +5,8 @@ import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
 import { useFooterItems } from '@fumadocs/base-ui/utils/use-footer-items';
 
+export { SidebarEnabledSync } from '../client';
+
 export function DocsFooter({ className }: { className?: string }) {
   const footerList = useFooterItems();
   const pathname = usePathname();

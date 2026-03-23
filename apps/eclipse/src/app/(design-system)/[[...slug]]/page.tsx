@@ -5,7 +5,7 @@ import {
   DocsTitle,
   DocsDescription,
   DocsBody,
-} from '@/components/layout/docs-page';
+} from '@/components/layout/notebook/page';
 import { notFound } from 'next/navigation';
 import { getMDXComponents } from '@/mdx-components';
 import type { Metadata } from 'next';

@@ -1,14 +1,18 @@
 import type { ReactNode } from 'react';
 import type * as PageTree from 'fumadocs-core/page-tree';
 import { TreeContextProvider } from '@fumadocs/base-ui/contexts/tree';
-import { SidebarProvider, SidebarContent } from '../sidebar/base';
-import { SidebarPageTree } from '../sidebar/page-tree';
-import { Nav } from '../nav';
-import { SearchToggle } from '../search';
+import { SidebarProvider } from '../sidebar/base';
+import {
+  SidebarContent,
+  SidebarDrawer,
+  SidebarPageTree,
+} from './sidebar';
+import { SearchToggle } from '../../search';
 import {
   LayoutContextProvider,
   SidebarEnabledFromPageProvider,
-} from './context';
+  Nav,
+} from './client';
 
 export interface DocsLayoutProps {
   tree: PageTree.Root;
@@ -34,6 +38,21 @@ export function DocsLayout({
   } = {},
   children,
 }: DocsLayoutProps) {
+  const searchBanner = <SearchToggle />;
+
+  function sidebar() {
+    return (
+      <>
+        <SidebarContent banner={searchBanner} footer={sidebarProps.footer}>
+          <SidebarPageTree />
+        </SidebarContent>
+        <SidebarDrawer banner={searchBanner} footer={sidebarProps.footer}>
+          <SidebarPageTree />
+        </SidebarDrawer>
+      </>
+    );
+  }
+
   return (
     <TreeContextProvider tree={tree}>
       <LayoutContextProvider>
@@ -44,14 +63,7 @@ export function DocsLayout({
           <SidebarEnabledFromPageProvider layoutEnabled={sidebarEnabled}>
             <Nav />
             <div>
-              {sidebarEnabled && (
-                <SidebarContent
-                  banner={<SearchToggle />}
-                  footer={sidebarProps.footer}
-                >
-                  <SidebarPageTree />
-                </SidebarContent>
-              )}
+              {sidebarEnabled && sidebar()}
               <main>{children}</main>
             </div>
           </SidebarEnabledFromPageProvider>

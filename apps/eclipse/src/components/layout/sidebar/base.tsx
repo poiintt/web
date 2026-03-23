@@ -3,6 +3,7 @@
 import {
   type ComponentProps,
   createContext,
+  type PointerEvent,
   type ReactNode,
   type RefObject,
   use,
@@ -16,6 +17,7 @@ import { useOnChange } from 'fumadocs-core/utils/use-on-change';
 import { usePathname } from 'fumadocs-core/framework';
 import { useMediaQuery } from 'fumadocs-core/utils/use-media-query';
 import scrollIntoView from 'scroll-into-view-if-needed';
+import ReactDOM from 'react-dom';
 
 type Mode = 'drawer' | 'full';
 
@@ -97,66 +99,132 @@ export function SidebarProvider({
   );
 }
 
-/**
- * Sidebar shell — renders backdrop (mobile) + aside panel.
- * Keeps Eclipse's visual design: floating card with rounded corners.
- */
+// -- Sidebar content (render-function pattern) --
+
 export function SidebarContent({
-  banner,
-  footer,
   children,
 }: {
-  banner?: ReactNode;
-  footer?: ReactNode;
-  children: ReactNode;
+  children: (state: {
+    ref: RefObject<HTMLElement | null>;
+    collapsed: boolean;
+    hovered: boolean;
+    onPointerEnter: (event: PointerEvent) => void;
+    onPointerLeave: (event: PointerEvent) => void;
+  }) => ReactNode;
 }) {
+  const { collapsed, mode } = useSidebar();
+  const [hover, setHover] = useState(false);
+  const ref = useRef<HTMLElement>(null);
+  const timerRef = useRef(0);
+
+  useOnChange(collapsed, () => {
+    if (collapsed) setHover(false);
+  });
+
+  if (mode !== 'full') return;
+
+  function shouldIgnoreHover(e: PointerEvent): boolean {
+    const element = ref.current;
+    if (!element) return true;
+
+    return (
+      !collapsed ||
+      e.pointerType === 'touch' ||
+      element.getAnimations().length > 0
+    );
+  }
+
+  return children({
+    ref,
+    collapsed,
+    hovered: hover,
+    onPointerEnter(e) {
+      if (shouldIgnoreHover(e)) return;
+      window.clearTimeout(timerRef.current);
+      setHover(true);
+    },
+    onPointerLeave(e) {
+      if (shouldIgnoreHover(e)) return;
+      window.clearTimeout(timerRef.current);
+
+      timerRef.current = window.setTimeout(
+        () => setHover(false),
+        Math.min(e.clientX, document.body.clientWidth - e.clientX) > 100
+          ? 0
+          : 500,
+      );
+    },
+  });
+}
+
+// -- Sidebar drawer (mobile) --
+
+export function SidebarDrawerOverlay(props: ComponentProps<'div'>) {
   const { open, setOpen, mode } = useSidebar();
+  const [hidden, setHidden] = useState(!open);
+
+  if (open && hidden) setHidden(false);
+  if (mode !== 'drawer' || hidden) return;
 
   return (
-    <>
-      {/* Backdrop overlay — mobile only */}
-      {mode === 'drawer' && (
-        <div
-          className={`fixed inset-0 z-40 bg-background-default/50 backdrop-blur-surface transition-opacity md:hidden ${
-            open ? 'opacity-100' : 'opacity-0 pointer-events-none'
-          }`}
-          onClick={() => setOpen(false)}
-          aria-hidden="true"
-        />
-      )}
-
-      {/* Sidebar */}
-      <aside
-        id="nd-sidebar"
-
-        className={`fixed top-2 md:top-[3.75rem] left-2 bottom-2 right-auto z-50 w-[15rem] flex flex-col items-stretch justify-start bg-background-default border border-stroke-neutral rounded-square-high shadow-box overflow-hidden transition-transform duration-150 ${
-          open
-            ? 'translate-x-0'
-            : '-translate-x-[calc(100%+0.5rem)] md:translate-x-0'
-        }`}
-      >
-        {banner && (
-          <div className="grow-0 p-3 flex flex-col items-stretch justify-start gap-3 bg-background-default/50 border-b last:border-b-none border-stroke-neutral backdrop-blur-surface-low">
-            {banner}
-          </div>
-        )}
-        <div className="grow-1 p-3 flex flex-col items-stretch justify-start gap-3 bg-background-default border-b last:border-b-none border-stroke-neutral overflow-y-scroll no-scrollbar">
-          {children}
-        </div>
-        {footer && (
-          <div className="grow-0 p-3 flex flex-col items-stretch justify-start gap-3 bg-background-default/50 border-t border-stroke-neutral">
-            {footer}
-          </div>
-        )}
-      </aside>
-    </>
+    <div
+      data-state={open ? 'open' : 'closed'}
+      onClick={() => setOpen(false)}
+      onAnimationEnd={() => {
+        if (!open) ReactDOM.flushSync(() => setHidden(true));
+      }}
+      {...props}
+    />
   );
 }
 
-/**
- * Sidebar folder — manages open/close state with depth tracking.
- * Matches docs' SidebarFolder pattern with FolderContext.
- */
+export function SidebarDrawerContent({
+  className,
+  children,
+  ...props
+}: ComponentProps<'aside'>) {
+  const { open, mode } = useSidebar();
+  const [hidden, setHidden] = useState(!open);
+
+  if (open && hidden) setHidden(false);
+  if (mode !== 'drawer') return;
+
+  return (
+    <aside
+      id="nd-sidebar-mobile"
+      data-state={open ? 'open' : 'closed'}
+      className={`${hidden ? 'invisible' : ''} ${className ?? ''}`}
+      onAnimationEnd={() => {
+        if (!open) ReactDOM.flushSync(() => setHidden(true));
+      }}
+      {...props}
+    >
+      {children}
+    </aside>
+  );
+}
+
+// -- Sidebar trigger --
+
+export function SidebarTrigger({
+  children,
+  ...props
+}: ComponentProps<'button'>) {
+  const { setOpen } = useSidebar();
+
+  return (
+    <button
+      aria-label="Open Sidebar"
+      onClick={() => setOpen((prev) => !prev)}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+}
+
+// -- Folder primitives --
+
 export function SidebarFolder({
   defaultOpen: defaultOpenProp,
   active = false,
@@ -168,7 +236,8 @@ export function SidebarFolder({
 }) {
   const { defaultOpenLevel } = useSidebar();
   const depth = useFolderDepth() + 1;
-  const defaultOpen = active || (defaultOpenProp ?? defaultOpenLevel >= depth);
+  const defaultOpen =
+    active || (defaultOpenProp ?? defaultOpenLevel >= depth);
   const [open, setOpen] = useState(defaultOpen);
 
   useOnChange(defaultOpen, (v) => {
@@ -176,16 +245,19 @@ export function SidebarFolder({
   });
 
   return (
-    <FolderContext value={useMemo(() => ({ open, setOpen, depth }), [depth, open])}>
-      <li>{children}</li>
+    <FolderContext
+      value={useMemo(() => ({ open, setOpen, depth }), [depth, open])}
+    >
+      {children}
     </FolderContext>
   );
 }
 
-/**
- * Sidebar folder trigger button — toggles the folder open/closed.
- */
-export function SidebarFolderTrigger({ children }: { children: ReactNode }) {
+export function SidebarFolderTrigger({
+  children,
+}: {
+  children: ReactNode;
+}) {
   const { open, setOpen } = useFolder()!;
 
   return (
@@ -205,16 +277,21 @@ export function SidebarFolderTrigger({ children }: { children: ReactNode }) {
         stroke="currentColor"
         strokeWidth={2.5}
       >
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M9 5l7 7-7 7"
+        />
       </svg>
     </button>
   );
 }
 
-/**
- * Sidebar folder content — only renders children when folder is open.
- */
-export function SidebarFolderContent({ children }: { children: ReactNode }) {
+export function SidebarFolderContent({
+  children,
+}: {
+  children: ReactNode;
+}) {
   const { open } = useFolder()!;
   if (!open) return null;
 
@@ -225,10 +302,6 @@ export function SidebarFolderContent({ children }: { children: ReactNode }) {
   );
 }
 
-/**
- * Sidebar folder link — a clickable link that also toggles the folder.
- * Used when a folder has an index page.
- */
 export function SidebarFolderLink({
   href,
   children,
@@ -275,15 +348,18 @@ export function SidebarFolderLink({
         stroke="currentColor"
         strokeWidth={2.5}
       >
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M9 5l7 7-7 7"
+        />
       </svg>
     </Link>
   );
 }
 
-/**
- * Sidebar item — a leaf node link.
- */
+// -- Item and separator --
+
 export function SidebarItem({
   href,
   icon,
@@ -320,9 +396,6 @@ export function SidebarItem({
   );
 }
 
-/**
- * Sidebar separator — a heading or horizontal rule.
- */
 export function SidebarSeparator({ children }: { children?: ReactNode }) {
   const depth = useFolderDepth();
 
@@ -330,7 +403,6 @@ export function SidebarSeparator({ children }: { children?: ReactNode }) {
 
   return (
     <li
-
       className={`mt-6 mb-2 px-2 font-semibold uppercase tracking-wider text-2xs text-foreground-neutral-weak ${depth === 0 ? 'first:mt-0' : ''}`}
     >
       {children}
@@ -338,9 +410,8 @@ export function SidebarSeparator({ children }: { children?: ReactNode }) {
   );
 }
 
-/**
- * Auto-scroll the active sidebar item into view.
- */
+// -- Auto-scroll utility --
+
 export function useAutoScroll(
   active: boolean,
   ref: RefObject<HTMLElement | null>,
@@ -350,7 +421,9 @@ export function useAutoScroll(
   useEffect(() => {
     if (active && ref.current) {
       scrollIntoView(ref.current, {
-        boundary: document.getElementById('nd-sidebar'),
+        boundary: document.getElementById(
+          mode === 'drawer' ? 'nd-sidebar-mobile' : 'nd-sidebar',
+        ),
         scrollMode: 'if-needed',
       });
     }
