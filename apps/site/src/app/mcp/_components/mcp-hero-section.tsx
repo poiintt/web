@@ -24,7 +24,7 @@ export function McpHeroSection({
         <div className="flex w-full flex-col items-center gap-8 md:gap-[60px]">
           <div className="flex w-full flex-col items-center gap-8 md:gap-10">
             <p className="flex items-center justify-center gap-2 font-sans-display text-base font-black uppercase tracking-[1.6px] text-foreground-ppg">
-              <i className="fa-regular fa-message-code text-[16px]" aria-hidden />
+              <i className="fa-solid fa-message-code text-[16px]" aria-hidden />
               Prisma MCP Server
             </p>
             <div className="flex w-full max-w-[910px] flex-col items-center gap-4 sm:gap-5 md:gap-6">
