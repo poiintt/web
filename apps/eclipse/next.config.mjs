@@ -202,7 +202,6 @@ const securityHeaders = [
 const config = {
   reactStrictMode: true,
   transpilePackages: ["@prisma/eclipse"],
-  output: "export",
   images: { unoptimized: true },
   async headers() {
     return [

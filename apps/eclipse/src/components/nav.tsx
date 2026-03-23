@@ -1,13 +1,13 @@
 'use client';
 
 import Link from 'next/link';
-import { useSidebar } from './sidebar-context';
+import { useSidebar } from './sidebar/base';
 
 export function Nav() {
-  const { toggle } = useSidebar();
+  const { setOpen } = useSidebar();
 
   return (
-    <header data-component="nav" className="fixed top-0 left-0 bottom-auto right-0 z-40 px-5 h-[3.25rem] flex flex-row items-center justify-between gap-6 bg-background-neutral/50 border-b border-stroke-neutral backdrop-blur-surface">
+    <header className="fixed top-0 left-0 bottom-auto right-0 z-40 px-5 h-[3.25rem] flex flex-row items-center justify-between gap-6 bg-background-neutral/50 border-b border-stroke-neutral backdrop-blur-surface">
       <div className="flex flex-row items-center gap-3">
         <Link href="/" className="flex flex-row items-center justify-start gap-3">
           <div className="size-7 flex flex-row items-center justify-center gap-0 bg-background-neutral-reverse text-foreground-neutral-reverse rounded-square">
@@ -26,7 +26,7 @@ export function Nav() {
       </div>
 
       <button
-        onClick={toggle}
+        onClick={() => setOpen((prev) => !prev)}
         className="md:hidden flex flex-row items-center justify-center size-7 text-foreground-neutral-weak hover:text-foreground-neutral transition-colors cursor-pointer"
         aria-label="Toggle sidebar"
       >

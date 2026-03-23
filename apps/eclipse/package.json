@@ -4,7 +4,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "prebuild": "rimraf out",
     "build": "next build",
     "dev": "next dev --port 3003",
     "start": "next start --port 3003",
