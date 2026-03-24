@@ -4,6 +4,7 @@
     "eyebrow": "Prisma in your stack",
     "icon": "fa-solid fa-layer-group",
     "imageUrl": "/icons/technologies/nextjs.svg",
+    "imageUrlLight": "/icons/technologies/nextjs-light.svg",
     "title": "The easiest way to use Prisma in Next.js",
     "description": "Build fast, type-safe Next.js apps with the world's most popular TypeScript ORM and the first serverless Postgres without cold starts.",
     "btns": [
