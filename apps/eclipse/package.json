@@ -12,25 +12,19 @@
     "postinstall": "fumadocs-mdx"
   },
   "dependencies": {
-    "@base-ui/react": "catalog:",
     "@fumadocs/base-ui": "catalog:",
-    "@fumadocs/cli": "catalog:",
     "@prisma/eclipse": "workspace:^",
-    "@prisma-docs/ui": "workspace:*",
-    "class-variance-authority": "catalog:",
     "fumadocs-core": "catalog:",
     "fumadocs-mdx": "catalog:",
     "fumadocs-ui": "catalog:",
     "lucide-react": "catalog:",
     "next": "catalog:",
-    "next-themes": "catalog:",
     "npm-to-yarn": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
     "recharts": "catalog:",
     "remark-directive": "catalog:",
-    "scroll-into-view-if-needed": "catalog:",
-    "zod": "catalog:"
+    "scroll-into-view-if-needed": "catalog:"
   },
   "devDependencies": {
     "@argos-ci/playwright": "catalog:",
@@ -41,9 +35,7 @@
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "postcss": "catalog:",
-    "rimraf": "catalog:",
     "tailwindcss": "catalog:",
-    "tw-animate-css": "catalog:",
     "typescript": "catalog:"
   }
 }

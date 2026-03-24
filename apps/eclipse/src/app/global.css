@@ -2,27 +2,41 @@
 @import "@prisma/eclipse/styles/globals.css";
 
 @theme {
-  --animate-ec-fade-in: ec-fade-in 150ms ease;
-  --animate-ec-fade-out: ec-fade-out 150ms ease forwards;
-  --animate-ec-sidebar-in: ec-sidebar-in 150ms ease;
-  --animate-ec-sidebar-out: ec-sidebar-out 150ms ease forwards;
+  --animate-fade-in: fade-in 300ms ease;
+  --animate-fade-out: fade-out 300ms ease forwards;
+  --animate-slide-in: slide-in 300ms ease;
+  --animate-slide-out: slide-out 300ms ease forwards;
 
-  @keyframes ec-fade-in {
-    from { opacity: 0; }
-    to { opacity: 1; }
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
   }
 
-  @keyframes ec-fade-out {
-    from { opacity: 1; }
-    to { opacity: 0; }
+  @keyframes fade-out {
+    from {
+      opacity: 1;
+    }
+
+    to {
+      opacity: 0;
+    }
   }
 
-  @keyframes ec-sidebar-in {
-    from { transform: translateX(calc(-100% - 0.5rem)); }
+  @keyframes slide-in {
+    from {
+      transform: translateX(calc(-100% - 0.5rem));
+    }
   }
 
-  @keyframes ec-sidebar-out {
-    to { transform: translateX(calc(-100% - 0.5rem)); }
+  @keyframes slide-out {
+    to {
+      transform: translateX(calc(-100% - 0.5rem));
+    }
   }
 }
 

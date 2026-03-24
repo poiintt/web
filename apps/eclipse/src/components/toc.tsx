@@ -11,9 +11,9 @@ import {
 } from 'react';
 import * as Primitive from 'fumadocs-core/toc';
 import { useOnChange } from 'fumadocs-core/utils/use-on-change';
-import { mergeRefs } from '../../lib/merge-refs';
+import { mergeRefs } from '../lib/merge-refs';
 
-// -- Context for sharing TOC items --
+// -- Context --
 
 const TOCContext = createContext<Primitive.TOCItemType[]>([]);
 
@@ -21,10 +21,6 @@ export function useTOCItems(): Primitive.TOCItemType[] {
   return use(TOCContext);
 }
 
-/**
- * Wraps children with fumadocs-core AnchorProvider for heading tracking.
- * Matches docs' TOCProvider pattern.
- */
 export function TOCProvider({
   toc,
   children,
@@ -39,15 +35,14 @@ export function TOCProvider({
   );
 }
 
-// -- TocThumb (animated active indicator) --
+// -- TocThumb --
 
 type TocThumbType = [top: number, height: number];
 
-interface TocThumbProps extends ComponentProps<'div'> {
-  containerRef: RefObject<HTMLElement | null>;
-}
-
-export function TocThumb({ containerRef, ...props }: TocThumbProps) {
+function TocThumb({
+  containerRef,
+  ...props
+}: ComponentProps<'div'> & { containerRef: RefObject<HTMLElement | null> }) {
   const thumbRef = useRef<HTMLDivElement>(null);
   const active = Primitive.useActiveAnchors();
 
@@ -108,9 +103,9 @@ function calc(container: HTMLElement, active: string[]): TocThumbType {
   return [upper, lower - upper];
 }
 
-// -- TOC items rendered with Eclipse design --
+// -- TOC items --
 
-export function TOCItems({ ref, ...props }: ComponentProps<'div'>) {
+function TOCItems({ ref, ...props }: ComponentProps<'div'>) {
   const containerRef = useRef<HTMLDivElement>(null);
   const items = useTOCItems();
 
@@ -147,9 +142,8 @@ function TOCItem({ item }: { item: Primitive.TOCItemType }) {
   );
 }
 
-/**
- * TableOfContents — reads items from TOCProvider context.
- */
+// -- TableOfContents --
+
 export function TableOfContents() {
   const items = useTOCItems();
   if (items.length === 0) return null;
