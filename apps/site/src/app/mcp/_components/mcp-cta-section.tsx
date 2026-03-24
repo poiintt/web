@@ -1,4 +1,4 @@
-import { buttonVariants } from "@prisma/eclipse";
+import { Button } from "@prisma/eclipse";
 
 export function McpCtaSection({ docsHref }: { docsHref: string }) {
   return (
@@ -30,38 +30,30 @@ export function McpCtaSection({ docsHref }: { docsHref: string }) {
 
           <div className="flex flex-col items-center gap-4">
             <div className="flex w-full flex-col items-center justify-center gap-4 min-[720px]:flex-row min-[720px]:gap-6">
-              <a
+              <Button
                 href={docsHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={buttonVariants({
-                  variant: "ppg",
-                  className:
-                    "h-9 w-full shrink-0 whitespace-nowrap gap-2 px-3 text-sm min-[720px]:w-[159px]",
-                })}
+                variant={"ppg"}
+                size={"3xl"}
+                className="gap-3"
               >
                 Add MCP Server
                 <i
                   className="fa-regular fa-arrow-right shrink-0 text-[16px]"
                   aria-hidden
                 />
-              </a>
-              <a
+              </Button>
+              <Button
                 href={docsHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={buttonVariants({
-                  variant: "default-stronger",
-                  className:
-                    "h-9 w-full shrink-0 whitespace-nowrap gap-2 px-3 text-sm min-[720px]:w-[120px]",
-                })}
+                variant={"default-stronger"}
+                size={"3xl"}
+                className="gap-3"
               >
                 Read Docs
                 <i
                   className="fa-regular fa-book-open shrink-0 text-[16px]"
                   aria-hidden
                 />
-              </a>
+              </Button>
             </div>
 
             <p className="text-xs text-foreground-neutral-weaker">

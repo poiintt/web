@@ -82,7 +82,8 @@ export function McpHeroSection({
           <Button
             href={docsHref}
             variant={"ppg"}
-            className="flex py-2 items-center gap-3 px-4 text-base font-bold"
+            size={"3xl"}
+            className="gap-3"
           >
             Add MCP Server
             <i
