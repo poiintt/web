@@ -1,13 +1,13 @@
-import { createHighlighter } from "shiki";
+import { createHighlighter, type ThemeRegistration } from "shiki";
 
-const prismaTheme = {
+const prismaTheme: ThemeRegistration = {
   name: "prisma-dark",
   type: "dark",
   colors: {
     "editor.background": "transparent",
     "editor.foreground": "var(--color-foreground-neutral-weak)",
   },
-  tokenColors: [
+  settings: [
     {
       scope: ["comment", "punctuation.definition.comment"],
       settings: {
