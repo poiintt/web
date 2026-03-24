@@ -80,11 +80,13 @@ export function DocsPage({
 
 export function DocsHeader({ children, className, ...props }: ComponentProps<'header'>) {
   return (
-    <header
-      className={`px-6 md:pl-[18.5rem] md:pr-12 pt-[4.75rem] md:pt-[6.25rem] pb-6 md:pb-12 flex flex-col items-stretch justify-start gap-2 border-b border-stroke-neutral ${className ?? ''}`}
-      {...props}
-    >
-      {children}
+    <header className="px-6 md:pl-[18.5rem] md:pr-12 pt-[4.75rem] md:pt-[6.25rem] pb-6 md:pb-12 flex flex-row items-stretch justify-start gap-12 border-b last:border-b-none border-stroke-neutral">
+      <div className="grow-1 flex flex-col items-stretch gap-2">
+        {children}
+      </div>
+      <div className="grow-0 shrink-0 w-[15rem] hidden xl:block">
+
+      </div>
     </header>
   );
 }
@@ -109,9 +111,9 @@ export function DocsDescription({ children, className, ...props }: ComponentProp
 
 export function DocsBody({ children, className, ...props }: ComponentProps<'div'>) {
   return (
-    <section className="px-6 md:pl-[18.5rem] md:pr-12 py-6 md:py-12 flex flex-row items-stretch justify-start gap-12">
-      <div className={`prose grow-1 min-w-0 ${className ?? ''}`} {...props}>
-        {children}
+    <section className="px-6 md:pl-[18.5rem] md:pr-12 py-6 md:py-12 flex flex-row items-stretch justify-start gap-12 border-b last:border-b-none border-stroke-neutral">
+      <div className="grow-1">
+        <div className="prose">{children}</div>
       </div>
       <div className="grow-0 shrink-0 w-[15rem] hidden xl:block">
         <TableOfContents />
@@ -138,37 +140,27 @@ function DocsFooter({ className }: { className?: string }) {
   if (!previous && !next) return null;
 
   return (
-    <nav
-      className={`mt-12 grid gap-3 ${previous && next ? 'grid-cols-2' : 'grid-cols-1'} ${className ?? ''}`}
-    >
-      {previous && (
-        <Link
-          href={previous.url}
-          className="flex flex-col gap-1 p-4 rounded-square border border-stroke-neutral hover:bg-background-neutral transition-colors"
-        >
-          <span className="text-xs text-foreground-neutral-weak">Previous</span>
-          <span className="flex items-center gap-1.5 text-sm font-medium text-foreground-neutral">
-            <svg className="size-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-            </svg>
-            {previous.name}
-          </span>
-        </Link>
-      )}
-      {next && (
-        <Link
-          href={next.url}
-          className={`flex flex-col gap-1 p-4 rounded-square border border-stroke-neutral hover:bg-background-neutral transition-colors text-end ${!previous ? 'col-start-1' : ''}`}
-        >
-          <span className="text-xs text-foreground-neutral-weak">Next</span>
-          <span className="flex items-center justify-end gap-1.5 text-sm font-medium text-foreground-neutral">
-            {next.name}
-            <svg className="size-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-            </svg>
-          </span>
-        </Link>
-      )}
-    </nav>
+    <footer className="p-6 md:pl-[18.5rem] md:pr-12 md:py-12 flex flex-row items-stretch justify-start gap-12 border-b last:border-b-0 border-stroke-neutral">
+      <div className="grow-1 flex flex-row items-stretch justify-center">
+        {previous && (
+          <Link href={previous.url} className="basis-1/2 flex flex-col items-start justify-start gap-1">
+            <span className="type-text-sm text-foreground-neutral-weak">Previous</span>
+            <span className="type-text-md text-foreground-neutral">
+              { previous.name }
+            </span>
+          </Link>
+        )}
+
+        {next && (
+          <Link href={next.url} className="basis-1/2 flex flex-col items-end justify-start gap-1">
+            <span className="type-text-sm text-foreground-neutral-weak">Next</span>
+            <span className="type-text-md text-foreground-neutral">
+              { next.name }
+            </span>
+          </Link>
+        )}
+      </div>
+      <div className="grow-0 shrink-0 w-[15rem] hidden xl:block"></div>
+    </footer>
   );
 }
