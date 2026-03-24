@@ -16,7 +16,7 @@ export function AgentCard({
       href={href}
       title={alt}
       aria-label={alt}
-      className="group relative flex h-[120px] w-full items-center justify-center rounded-[12px] border border-stroke-neutral bg-background-neutral-weaker no-underline outline-offset-4 transition-[border-color,background-color] hover:border-stroke-ppg/60 hover:bg-background-neutral focus-visible:ring-2 focus-visible:ring-stroke-ppg"
+      className="group relative flex h-30 w-full max-w-[165px] items-center justify-center rounded-[12px] border border-stroke-neutral bg-background-neutral-weaker shadow-[0_1px_2px_rgba(0,0,0,0.04)] no-underline outline-offset-4 transition-[border-color,background-color,box-shadow] hover:border-stroke-ppg/60 hover:bg-background-default hover:shadow-[0_8px_20px_rgba(0,0,0,0.08)] focus-visible:ring-2 focus-visible:ring-stroke-ppg dark:bg-background-neutral-weaker dark:hover:bg-background-neutral"
     >
       {logo ? (
         <Image
@@ -24,15 +24,17 @@ export function AgentCard({
           alt=""
           width={48}
           height={48}
-          className="size-12 object-contain opacity-55 grayscale transition-opacity group-hover:opacity-80 dark:brightness-0 dark:invert"
+          className="size-12 object-contain brightness-0 opacity-45 transition-opacity group-hover:opacity-65 dark:opacity-55 dark:invert"
           unoptimized
         />
       ) : (
-        <span className="font-mono text-lg text-foreground-neutral-weak">Any AI agent</span>
+        <span className="font-mono text-lg text-foreground-neutral-weak">
+          Any AI agent
+        </span>
       )}
       {icon ? (
         <span
-          className="absolute right-[7px] top-[7px] text-foreground-neutral-weaker opacity-60 transition-opacity group-hover:opacity-100"
+          className="absolute right-1.75 top-1.75 text-foreground-neutral-weaker opacity-50 transition-opacity group-hover:opacity-100"
           aria-hidden
         >
           <i className={`${icon} text-[16px]`} />

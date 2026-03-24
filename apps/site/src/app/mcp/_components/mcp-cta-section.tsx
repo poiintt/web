@@ -3,7 +3,7 @@ import { buttonVariants } from "@prisma/eclipse";
 export function McpCtaSection({ docsHref }: { docsHref: string }) {
   return (
     <section className="px-4 py-12 md:px-0">
-      <div className="relative mx-auto flex min-h-[308px] max-w-[1440px] items-center justify-center overflow-hidden py-12 ">
+      <div className="relative mx-auto flex min-h-77 max-w-360 items-center justify-center overflow-hidden py-12 ">
         <div
           className="pointer-events-none absolute inset-0 opacity-[0.08]"
           style={{
@@ -19,28 +19,32 @@ export function McpCtaSection({ docsHref }: { docsHref: string }) {
         />
         <div className="relative z-1 flex w-full max-w-[495px] flex-col items-center gap-8 rounded-[12px] px-4 py-4 text-center">
           <div className="flex flex-col items-center gap-4">
-            <h3 className="font-sans-display text-3xl font-black text-foreground-neutral">
+            <h3 className="stretch-display font-sans-display text-[30px] leading-10 font-black text-foreground-neutral">
               Start Building with AI
             </h3>
             <p className="max-w-[463px] text-base leading-6 text-foreground-neutral-weak">
-              Join thousands of developers, and agents, already using Prisma MCP for faster, more
-              intuitive database workflows.
+              Join thousands of developers, and agents, already using Prisma MCP
+              for faster, more intuitive database workflows.
             </p>
           </div>
 
           <div className="flex flex-col items-center gap-4">
-            <div className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6">
+            <div className="flex w-full flex-col items-center justify-center gap-4 min-[720px]:flex-row min-[720px]:gap-6">
               <a
                 href={docsHref}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={buttonVariants({
                   variant: "ppg",
-                  className: "h-9 w-full gap-2 px-3 text-sm sm:w-auto",
+                  className:
+                    "h-9 w-full shrink-0 whitespace-nowrap gap-2 px-3 text-sm min-[720px]:w-[159px]",
                 })}
               >
-                Add MCP server
-                <i className="fa-regular fa-arrow-up-right shrink-0 text-[14px]" aria-hidden />
+                Add MCP Server
+                <i
+                  className="fa-regular fa-arrow-right shrink-0 text-[16px]"
+                  aria-hidden
+                />
               </a>
               <a
                 href={docsHref}
@@ -48,11 +52,15 @@ export function McpCtaSection({ docsHref }: { docsHref: string }) {
                 rel="noopener noreferrer"
                 className={buttonVariants({
                   variant: "default-stronger",
-                  className: "h-9 w-full gap-2 px-3 text-sm sm:w-auto",
+                  className:
+                    "h-9 w-full shrink-0 whitespace-nowrap gap-2 px-3 text-sm min-[720px]:w-[120px]",
                 })}
               >
                 Read Docs
-                <i className="fa-regular fa-book-open shrink-0 text-[14px]" aria-hidden />
+                <i
+                  className="fa-regular fa-book-open shrink-0 text-[16px]"
+                  aria-hidden
+                />
               </a>
             </div>
 

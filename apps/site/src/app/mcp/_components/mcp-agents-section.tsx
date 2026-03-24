@@ -29,7 +29,7 @@ export function McpAgentsSection({
           </p>
         </div>
 
-        <div className="grid w-full max-w-[368px] grid-cols-2 gap-4 md:max-w-[790px] md:grid-cols-4 md:gap-8">
+        <div className="grid w-full max-w-[368px] grid-cols-2 justify-items-center gap-4 min-[400px]:gap-8 md:max-w-[790px] md:grid-cols-4 md:gap-8">
           {agents.map(({ logo, alt, icon, href }) => (
             <AgentCard key={alt} logo={logo} alt={alt} icon={icon} href={href} />
           ))}

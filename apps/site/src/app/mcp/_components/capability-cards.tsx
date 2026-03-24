@@ -4,7 +4,8 @@ const capabilityIconClass = "shrink-0 text-[24px] text-foreground-ppg";
 const capabilityCardClass =
   "relative flex w-full flex-col overflow-hidden rounded-[12px] border border-stroke-neutral bg-[linear-gradient(180deg,var(--color-background-default)_0%,var(--color-background-ppg)_262.5%)] shadow-[0_1px_2px_rgba(0,0,0,0.04)]";
 const capabilityHeaderClass = "flex items-center gap-4";
-const capabilityDescriptionClass = "max-w-full text-[16px] leading-6 text-foreground-neutral-weak";
+const capabilityDescriptionClass =
+  "max-w-full text-[16px] leading-6 text-foreground-neutral-weak";
 
 function CapabilityCardContent({
   icon,
@@ -18,10 +19,10 @@ function CapabilityCardContent({
   return (
     <div className="flex flex-col gap-4 p-4">
       <div className={capabilityHeaderClass}>
-        <div className="flex size-12 shrink-0 items-center justify-center rounded-[6px] bg-background-ppg">
+        <div className="flex size-12 shrink-0 items-center justify-center rounded-square bg-background-ppg">
           <i className={`${icon} ${capabilityIconClass}`} aria-hidden />
         </div>
-        <h4 className="font-sans-display text-[20px] leading-7 font-extrabold text-foreground-neutral">
+        <h4 className="stretch-display font-sans-display text-[20px] leading-7 font-black text-foreground-neutral">
           {title}
         </h4>
       </div>
@@ -84,7 +85,11 @@ export function CapabilityCard({
     : isWide
       ? "pb-[80px] xl:pb-[60px]"
       : "pb-[80px] xl:pb-[66px]";
-  const promptVariant = mobileTall ? "mobile-tall" : isWide ? "wide" : "compact";
+  const promptVariant = mobileTall
+    ? "mobile-tall"
+    : isWide
+      ? "wide"
+      : "compact";
 
   return (
     <div
@@ -92,7 +97,11 @@ export function CapabilityCard({
     >
       <div className={`${capabilityCardClass} h-full`}>
         <div className={contentPadClass}>
-          <CapabilityCardContent icon={icon} title={title} description={description} />
+          <CapabilityCardContent
+            icon={icon}
+            title={title}
+            description={description}
+          />
         </div>
       </div>
       <div className={`absolute ${promptInsetClass}`}>

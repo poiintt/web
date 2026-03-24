@@ -45,6 +45,21 @@
         )
 }
 
+@keyframes mcp-cursor-blink {
+    0%,
+    48% {
+        opacity: 1;
+    }
+    52%,
+    100% {
+        opacity: 0;
+    }
+}
+
+.mcp-type-cursor {
+    animation: mcp-cursor-blink 1s step-end infinite;
+}
+
 @keyframes glitch-1 {
     0% {
       clip-path: inset(20% 0 60% 0);

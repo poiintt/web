@@ -28,7 +28,13 @@ const heroFeatures: McpHeroFeature[] = [
     icon: "fa-light fa-message-smile",
     line1: "Natural language",
     line2: "database operations",
-    mobileText: "Natural language db operations",
+    mobileText: (
+      <>
+        Natural language
+        <br />
+        db operations
+      </>
+    ),
   },
   { icon: "fa-light fa-rocket-launch", line1: "Works with any", line2: "AI agent" },
   { icon: "fa-light fa-bolt", line1: "Super quick", line2: "2-minute setup" },
@@ -37,43 +43,43 @@ const heroFeatures: McpHeroFeature[] = [
 
 const agents: McpAgent[] = [
   {
-    logo: "https://cdn.sanity.io/images/p2zxqf70/production/d6c20f460745128976b42777082c0f509a0a3703-48x48.svg",
+    logo: "/mcp/logos/cursor.svg",
     alt: "Add to Cursor",
     icon: "fa-regular fa-copy",
     href: DOCS_MCP,
   },
   {
-    logo: "https://cdn.sanity.io/images/p2zxqf70/production/89100dbc0ed0cf476b3db2167608a57598f30df7-48x48.svg",
+    logo: "/mcp/logos/vscode.svg",
     alt: "Install in VS Code",
     icon: "fa-regular fa-copy",
     href: DOCS_MCP,
   },
   {
-    logo: "https://cdn.sanity.io/images/p2zxqf70/production/7f67dbbe8167e517aa0522b318c2fc670d09b15b-48x48.svg",
+    logo: "/mcp/logos/warp.svg",
     alt: "Copy JSON configuration",
     icon: "fa-regular fa-copy",
     href: DOCS_MCP,
   },
   {
-    logo: "https://cdn.sanity.io/images/p2zxqf70/production/967f1eacafd72c6cb613ca8be94154677def8e8d-50x48.svg",
+    logo: "/mcp/logos/chatgpt.svg",
     alt: "See how to add the remote Prisma MCP server to ChatGPT",
     icon: "fa-regular fa-arrow-up-right",
     href: "https://pris.ly/gpt-prisma-mcp",
   },
   {
-    logo: "https://cdn.sanity.io/images/p2zxqf70/production/ecae3930bd4cdc2e90d28ad88a09c91ae8e8ad29-48x48.svg",
+    logo: "/mcp/logos/claude-code.svg",
     alt: "Copy command to add to Claude Code",
     icon: "fa-regular fa-copy",
     href: DOCS_MCP,
   },
   {
-    logo: "https://cdn.sanity.io/images/p2zxqf70/production/d463811d56c616eafda88a79b866306858e067df-48x48.svg",
+    logo: "/mcp/logos/windsurf.svg",
     alt: "Add via Plugin Store",
     icon: "fa-regular fa-arrow-up-right",
     href: "https://pris.ly/windsurf-mcp",
   },
   {
-    logo: "https://cdn.sanity.io/images/p2zxqf70/production/17c842e8d84ff2f747801b30a2e292789db6146c-512x512.svg",
+    logo: "/mcp/logos/gemini.svg",
     alt: "Copy command to add to Gemini CLI",
     icon: "fa-regular fa-copy",
     href: DOCS_MCP,
