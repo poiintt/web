@@ -3,13 +3,11 @@ import { createHighlighter } from "shiki";
 const prismaTheme = {
   name: "prisma-dark",
   type: "dark",
-  settings: [
-    {
-      settings: {
-        background: "transparent",
-        foreground: "var(--color-foreground-neutral-weak)",
-      },
-    },
+  colors: {
+    "editor.background": "transparent",
+    "editor.foreground": "var(--color-foreground-neutral-weak)",
+  },
+  tokenColors: [
     {
       scope: ["comment", "punctuation.definition.comment"],
       settings: {
