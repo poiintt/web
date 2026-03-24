@@ -145,6 +145,10 @@ export function SidebarContent({
     if (collapsed) setHover(false);
   });
 
+  useEffect(() => {
+    return () => window.clearTimeout(timerRef.current);
+  }, []);
+
   if (mode !== 'full') return null;
 
   function shouldIgnoreHover(e: PointerEvent): boolean {
@@ -372,7 +376,7 @@ function SidebarFolderLink({ href, children }: { href: string; children: ReactNo
   );
 }
 
-function SidebarItem({ href, icon, children }: { href: string; icon?: ReactNode; external?: boolean; children: ReactNode }) {
+function SidebarItem({ href, icon, children }: { href: string; icon?: ReactNode; children: ReactNode }) {
   const pathname = usePathname();
   const active = pathname === href;
   const ref = useRef<HTMLAnchorElement>(null);
@@ -467,7 +471,6 @@ export function SidebarPageTree() {
             key={item.url}
             href={item.url}
             icon={item.icon}
-            external={item.external}
           >
             {item.name}
           </SidebarItem>

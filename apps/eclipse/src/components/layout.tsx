@@ -4,13 +4,12 @@ import { TreeContextProvider } from '@fumadocs/base-ui/contexts/tree';
 import { SidebarProvider, SidebarContent, SidebarDrawer, SidebarPageTree } from './sidebar';
 import { Nav } from './nav';
 import { SearchToggle } from './search';
-import { SidebarEnabledFromPageProvider } from './page';
+import { SidebarEnabledFromPageProvider, SidebarEnabledGate } from './page';
 
 export interface DocsLayoutProps {
   tree: PageTree.Root;
 
   sidebar?: {
-    banner?: ReactNode;
     footer?: ReactNode;
     enabled?: boolean;
     defaultOpenLevel?: number;
@@ -41,16 +40,14 @@ export function DocsLayout({
         <SidebarEnabledFromPageProvider layoutEnabled={sidebarEnabled}>
           <Nav />
           <div>
-            {sidebarEnabled && (
-              <>
-                <SidebarContent banner={searchBanner} footer={sidebarProps.footer}>
-                  <SidebarPageTree />
-                </SidebarContent>
-                <SidebarDrawer banner={searchBanner} footer={sidebarProps.footer}>
-                  <SidebarPageTree />
-                </SidebarDrawer>
-              </>
-            )}
+            <SidebarEnabledGate>
+              <SidebarContent banner={searchBanner} footer={sidebarProps.footer}>
+                <SidebarPageTree />
+              </SidebarContent>
+              <SidebarDrawer banner={searchBanner} footer={sidebarProps.footer}>
+                <SidebarPageTree />
+              </SidebarDrawer>
+            </SidebarEnabledGate>
             <main>{children}</main>
           </div>
         </SidebarEnabledFromPageProvider>

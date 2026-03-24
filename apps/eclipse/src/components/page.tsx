@@ -4,7 +4,7 @@ import type { ComponentProps, ReactNode } from 'react';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { createContext, use, useMemo, useState } from 'react';
+import { createContext, use, useEffect, useMemo, useState } from 'react';
 import { useFooterItems } from '@fumadocs/base-ui/utils/use-footer-items';
 import { TOCProvider, TableOfContents } from './toc';
 
@@ -36,9 +36,20 @@ export function SidebarEnabledFromPageProvider({
   );
 }
 
+export function SidebarEnabledGate({ children }: { children: ReactNode }) {
+  const enabled = use(SidebarEnabledContext);
+  if (!enabled) return null;
+  return <>{children}</>;
+}
+
 function SidebarEnabledSync({ enabled }: { enabled: boolean }) {
   const setEnabled = use(SidebarEnabledSetterContext);
-  if (!enabled) setEnabled(false);
+
+  useEffect(() => {
+    if (!enabled) setEnabled(false);
+    return () => setEnabled(true);
+  }, [enabled, setEnabled]);
+
   return null;
 }
 
@@ -80,7 +91,7 @@ export function DocsPage({
 
 export function DocsHeader({ children, className, ...props }: ComponentProps<'header'>) {
   return (
-    <header className="px-6 md:pl-[18.5rem] md:pr-12 pt-[4.75rem] md:pt-[6.25rem] pb-6 md:pb-12 flex flex-row items-stretch justify-start gap-12 border-b last:border-b-none border-stroke-neutral">
+    <header className={`px-6 md:pl-[18.5rem] md:pr-12 pt-[4.75rem] md:pt-[6.25rem] pb-6 md:pb-12 flex flex-row items-stretch justify-start gap-12 border-b last:border-b-none border-stroke-neutral ${className ?? ''}`} {...props}>
       <div className="grow-1 flex flex-col items-stretch gap-2">
         {children}
       </div>

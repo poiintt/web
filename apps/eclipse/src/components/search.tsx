@@ -3,7 +3,7 @@
 import { useDocsSearch } from 'fumadocs-core/search/client';
 import { useRouter } from 'next/navigation';
 import { createPortal } from 'react-dom';
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback, useState } from 'react';
 import { useSearchContext } from '@fumadocs/base-ui/contexts/search';
 import type { SharedProps } from 'fumadocs-ui/components/dialog/search';
 
@@ -19,10 +19,13 @@ export default function EclipseSearchDialog({ open, onOpenChange }: SharedProps)
 function SearchDialogInner({ onClose }: { onClose: () => void }) {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
   const { search, setSearch, query } = useDocsSearch({ type: 'fetch' });
 
   useEffect(() => {
+    previousFocusRef.current = document.activeElement as HTMLElement | null;
     inputRef.current?.focus();
+    return () => { previousFocusRef.current?.focus(); };
   }, []);
 
   useEffect(() => {
@@ -45,6 +48,9 @@ function SearchDialogInner({ onClose }: { onClose: () => void }) {
       <div className="fixed inset-0 bg-background-default/50 backdrop-blur-surface" aria-hidden="true" />
 
       <div
+        role="dialog"
+        aria-modal="true"
+        aria-label="Search documentation"
         className="relative z-10 w-full max-w-lg bg-background-default border border-stroke-neutral rounded-square shadow-box overflow-hidden"
         onClick={(e) => e.stopPropagation()}
         onKeyDown={(e) => {
@@ -132,8 +138,17 @@ function ResultIcon({ type }: { type: 'page' | 'heading' | 'text' }) {
   );
 }
 
+function useModifierKey() {
+  const [key, setKey] = useState('⌘');
+  useEffect(() => {
+    if (!navigator.userAgent.includes('Mac')) setKey('Ctrl');
+  }, []);
+  return key;
+}
+
 export function SearchToggle() {
   const { setOpenSearch } = useSearchContext();
+  const modifier = useModifierKey();
 
   return (
     <button
@@ -142,7 +157,7 @@ export function SearchToggle() {
     >
       <span className="text-sm text-foreground-neutral-weak">Search...</span>
       <kbd className="-mr-1.5 px-1.5 py-0.5 bg-background-neutral font-mono text-xs text-foreground-neutral-weaker rounded-square-low">
-        CMD+K
+        {modifier}+K
       </kbd>
     </button>
   );

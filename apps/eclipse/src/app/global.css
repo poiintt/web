@@ -50,7 +50,7 @@
   }
 
   .font-mono-settings {
-    font-feature-settings: var(--font-mono--settings);
+    font-feature-settings: var(--font-mono-settings);
   }
 
   .no-scrollbar::-webkit-scrollbar {
@@ -67,11 +67,7 @@
 
   b,
   strong {
-    @apply font-semibold;
-  }
-
-  code {
-    @apply text-[0.875em];
+    @apply font-medium;
   }
 
   h1,
@@ -125,15 +121,19 @@
   p,
   li {
     code {
-      @apply -my-0.5 px-1.5 py-0.5 bg-background-neutral-strong rounded-square-low;
+      @apply -my-0.5 px-1.5 py-0.5 bg-background-neutral-strong rounded-square-low text-[0.875em];
     }
   }
 
   li {
-    @apply mx-6 list-disc list-outside;
+    @apply mx-6 list-outside;
   }
 
-  pre {
-    @apply my-6 first:mt-0 last:mb-0 p-4 bg-background-neutral-weak text-foreground-neutral border border-stroke-neutral rounded-square;
+  ol li {
+    @apply list-decimal;
+  }
+
+  ul li {
+    @apply list-disc;
   }
 }
