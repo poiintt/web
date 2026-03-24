@@ -141,7 +141,7 @@ function DocsFooter({ className }: { className?: string }) {
 
   return (
     <footer className="p-6 md:pl-[18.5rem] md:pr-12 md:py-12 flex flex-row items-stretch justify-start gap-12 border-b last:border-b-0 border-stroke-neutral">
-      <div className="grow-1 flex flex-row items-stretch justify-center">
+      <div className="grow-1 flex flex-row items-stretch justify-end">
         {previous && (
           <Link href={previous.url} className="basis-1/2 flex flex-col items-start justify-start gap-1">
             <span className="type-text-sm text-foreground-neutral-weak">Previous</span>
