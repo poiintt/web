@@ -2,7 +2,7 @@ import { McpPromptBubble } from "./mcp-bubble";
 
 const capabilityIconClass = "shrink-0 text-[24px] text-foreground-ppg";
 const capabilityCardClass =
-  "relative flex w-full flex-col overflow-hidden rounded-[12px] border border-stroke-neutral bg-[linear-gradient(180deg,var(--color-background-default)_0%,var(--color-background-ppg)_262.5%)] shadow-[0_1px_2px_rgba(0,0,0,0.04)]";
+  "relative flex w-full flex-col overflow-hidden rounded-[12px] border border-stroke-neutral bg-[linear-gradient(180deg,var(--color-background-default)_0%,var(--color-background-ppg)_262.5%)] shadow-box-low";
 const capabilityHeaderClass = "flex items-center gap-4";
 const capabilityDescriptionClass =
   "max-w-full text-[16px] leading-6 text-foreground-neutral-weak";

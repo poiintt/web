@@ -1,7 +1,6 @@
 import { useId, type ReactNode } from "react";
 
-const bubbleShadow =
-  "shadow-[0_1px_2px_rgba(0,0,0,0.08)] dark:shadow-[0_12px_36px_rgba(0,0,0,0.2)]";
+const bubbleShadow = "shadow-box-low dark:shadow-box-high";
 
 export type McpBubbleVariant =
   | "hero-desktop-title"
@@ -9,7 +8,11 @@ export type McpBubbleVariant =
   | "hero-mobile-title"
   | "hero-mobile-description";
 
-export type McpPromptBubbleVariant = "mobile" | "mobile-tall" | "wide" | "compact";
+export type McpPromptBubbleVariant =
+  | "mobile"
+  | "mobile-tall"
+  | "wide"
+  | "compact";
 
 type BubbleConfig = {
   shell: string;
@@ -43,15 +46,13 @@ const promptConfig: Record<McpPromptBubbleVariant, string> = {
 };
 
 const promptTextClass =
-  "inline-block w-full break-words text-pretty font-mono text-[14px] font-normal leading-5 text-[#99F6E4]";
+  "inline-block w-full break-words text-pretty font-mono text-[14px] font-normal leading-5 text-background-ppg-reverse-strong dark:text-foreground-ppg-reverse-weak";
 
-function BubbleTail({
-  side,
-}: {
-  side: "left" | "right";
-}) {
+function BubbleTail({ side }: { side: "left" | "right" }) {
   const positionClass =
-    side === "left" ? "bottom-[-2px] left-[-10.5px]" : "bottom-[-2px] right-[-10.5px] scale-x-[-1]";
+    side === "left"
+      ? "bottom-[-2px] left-[-10.5px]"
+      : "bottom-[-2px] right-[-10.5px] scale-x-[-1]";
   const clipPathId = useId();
 
   return (
@@ -94,7 +95,7 @@ export function McpPromptBubble({
   return (
     <div className="relative w-full">
       <div
-        className={`relative z-10 flex w-full items-center rounded-[12px] border transition-colors duration-300 ${promptConfig[variant]} [--mcp-bubble-fill:#115552] dark:[--mcp-bubble-fill:#0D3A38] [--mcp-bubble-stroke:#16A394] [background-color:var(--mcp-bubble-fill)] [border-color:var(--mcp-bubble-stroke)]`}
+        className={`relative z-10 flex w-full items-center rounded-[12px] border bg-background-ppg text-background-ppg-reverse-strong transition-colors duration-300 ${promptConfig[variant]} [--mcp-bubble-fill:var(--color-background-ppg)] dark:[--mcp-bubble-fill:var(--color-background-ppg)] [--mcp-bubble-stroke:var(--color-stroke-ppg)] bg-(--mcp-bubble-fill) border-(--mcp-bubble-stroke)`}
       >
         <code className={promptTextClass}>{children}</code>
         <BubbleTail side="right" />

@@ -16,7 +16,7 @@ export function AgentCard({
       href={href}
       title={alt}
       aria-label={alt}
-      className="group relative flex h-30 w-full max-w-[165px] items-center justify-center rounded-[12px] border border-stroke-neutral bg-background-neutral-weaker shadow-[0_1px_2px_rgba(0,0,0,0.04)] no-underline outline-offset-4 transition-[border-color,background-color,box-shadow] hover:border-stroke-ppg/60 hover:bg-background-default hover:shadow-[0_8px_20px_rgba(0,0,0,0.08)] focus-visible:ring-2 focus-visible:ring-stroke-ppg dark:bg-background-neutral-weaker dark:hover:bg-background-neutral"
+      className="group relative flex h-30 w-full max-w-[165px] items-center justify-center rounded-[12px] border border-stroke-neutral bg-background-neutral-weaker shadow-box-low no-underline outline-offset-4 transition-[border-color,background-color,box-shadow] hover:border-stroke-ppg/60 hover:bg-background-default hover:shadow-box-high focus-visible:ring-2 focus-visible:ring-stroke-ppg dark:bg-background-neutral-weaker dark:hover:bg-background-neutral"
     >
       {logo ? (
         <Image
