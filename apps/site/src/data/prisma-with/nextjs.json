@@ -29,17 +29,17 @@
         "description": "Built on <u>unikernels</u>, Prisma Postgres runs on bare metal servers for peak performance and infinite scalability."
       },
       {
-        "icon": "fa-regular fa-head-side-brain",
+        "icon": "fa-regular fa-face-icicles",
         "title": "Serverless, without cold starts",
         "description": "The first serverless database with pay-as-you-go pricing, no infrastructure management, and zero cold starts."
       },
       {
-        "icon": "fa-regular fa-cloud-arrow-down",
+        "icon": "fa-regular fa-cloud-arrow-up",
         "title": "Flexible data fetching & rendering",
         "description": "Display your data using client-side rendering, server-side rendering and static site generation."
       },
       {
-        "icon": "fa-regular fa-globe",
+        "icon": "fa-regular fa-globe-pointer",
         "title": "Built-in global caching",
         "description": "Add a cache strategy to any database query and its results will be cached close to your users for peak performance and UX."
       },
@@ -49,7 +49,7 @@
         "description": "Pairing Prisma with Next.js ensures your app is coherently typed, from the database to your React components."
       },
       {
-        "icon": "fa-regular fa-users",
+        "icon": "fa-regular fa-people-arrows",
         "title": "Helpful communities",
         "description": "Both Next.js and Prisma have vibrant communities where you find support, fun events and amazing developers."
       }
