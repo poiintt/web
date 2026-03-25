@@ -33,7 +33,7 @@ export function McpHeroSection({
             <div className="flex w-full max-w-[910px] flex-col items-center gap-4 sm:gap-5 md:gap-6">
               <div className="w-full max-w-[872px]">
                 <McpBubble variant="hero-desktop-title">
-                  <h1 className="relative z-10 w-full text-balance text-center font-sans-display stretch-display text-[30px] leading-10 font-black text-foreground-ppg-reverse">
+                  <h1 className="relative z-10 w-full text-balance text-center font-sans-display stretch-display text-[30px] leading-10 font-black text-foreground-neutral dark:text-foreground-ppg-reverse">
                     <span className="sm:hidden">
                       <McpTypeText
                         text={"Your Database Workflow,\nPowered by AI"}
@@ -47,15 +47,15 @@ export function McpHeroSection({
                         speed={14}
                       />
                     </span>
-                    <span className="mcp-type-cursor text-foreground-neutral-weak">
+                    <span className="mcp-type-cursor text-foreground-neutral-weaker dark:text-foreground-neutral-weak">
                       _
                     </span>
                   </h1>
                 </McpBubble>
               </div>
-              <div className="w-full max-w-[872px]">
+              <div className="w-full max-w-218">
                 <McpBubble variant="hero-desktop-description">
-                  <p className="relative z-10 w-full text-pretty text-left font-mono text-[clamp(0.9375rem,2vw,1rem)] font-medium leading-normal text-foreground-ppg-reverse-weak">
+                  <p className="relative z-10 w-full text-pretty text-left font-mono text-[clamp(0.9375rem,2vw,1rem)] font-medium leading-normal text-foreground-ppg-strong dark:text-foreground-ppg-reverse-weak">
                     <span className="sm:hidden">
                       <McpTypeText
                         text="Manage your databases with natural language via MCP using your AI tool of choice. Works great with Prisma Postgres"
@@ -70,7 +70,7 @@ export function McpHeroSection({
                         delay={480}
                       />
                     </span>
-                    <span className="mcp-type-cursor text-foreground-ppg/90">
+                    <span className="mcp-type-cursor text-foreground-ppg-strong dark:text-foreground-ppg-reverse-weak">
                       _
                     </span>
                   </p>

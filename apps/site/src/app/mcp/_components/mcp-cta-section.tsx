@@ -2,19 +2,18 @@ import { Button } from "@prisma/eclipse";
 
 export function McpCtaSection({ docsHref }: { docsHref: string }) {
   return (
-    <section className="px-4 py-12 md:px-0">
-      <div className="relative mx-auto flex min-h-77 max-w-360 items-center justify-center overflow-hidden py-12 ">
+    <section className="relative isolate overflow-hidden px-4 py-12 md:px-0">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-1/2 top-1/2 h-[280px] w-[min(100%,760px)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-radial-[at_50%_50%] from-[#0D3A38]/14 from-0% via-[#16A394]/10 via-24% to-transparent to-54% dark:from-[#2DD4BF]/16 dark:from-0% dark:via-[#0D3A38]/18 dark:via-30% dark:to-transparent dark:to-58%"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-1/2 top-1/2 h-[170px] w-[min(100%,480px)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-radial-[at_50%_50%] from-[#16A394]/10 from-0% via-[#16A394]/5 via-24% to-transparent to-52% dark:hidden"
+      />
+      <div className="relative mx-auto flex min-h-77 max-w-360 items-center justify-center overflow-hidden py-12">
         <div
-          className="pointer-events-none absolute inset-0 opacity-[0.08]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px)",
-            backgroundSize: "40px 40px",
-            WebkitMaskImage:
-              "radial-gradient(ellipse 85% 75% at 50% 50%, #000 20%, #000 50%, transparent 82%)",
-            maskImage:
-              "radial-gradient(ellipse 85% 75% at 50% 50%, #000 20%, #000 50%, transparent 82%)",
-          }}
+          className="pointer-events-none absolute left-1/2 top-1/2 h-[240px] w-[min(100%,720px)] -translate-x-1/2 -translate-y-1/2 [--mcp-grid-line:rgba(13,58,56,0.22)] dark:[--mcp-grid-line:rgba(255,255,255,0.14)] [background-image:linear-gradient(var(--mcp-grid-line)_1px,transparent_1px),linear-gradient(90deg,var(--mcp-grid-line)_1px,transparent_1px)] [background-position:20px_20px] [background-size:40px_40px] [mask-image:radial-gradient(ellipse_72%_74%_at_50%_50%,#000_16%,rgba(0,0,0,0.95)_46%,rgba(0,0,0,0.4)_76%,transparent_100%)] opacity-100"
           aria-hidden
         />
         <div className="relative z-1 flex w-full max-w-[495px] flex-col items-center gap-8 rounded-[12px] px-4 py-4 text-center">

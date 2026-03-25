@@ -19,19 +19,19 @@ type BubbleConfig = {
 const config: Record<McpBubbleVariant, BubbleConfig> = {
   "hero-desktop-title": {
     tailSide: "right",
-    shell: `min-h-[120px] items-center justify-center rounded-xl px-5 py-5 sm:min-h-[96px] sm:px-6 sm:py-4 lg:min-h-[72px] lg:px-6 ${bubbleShadow} bg-[#14314C] dark:bg-[#030712] [--mcp-bubble-fill:#14314C] dark:[--mcp-bubble-fill:#030712] [--mcp-bubble-stroke:#2DD4BF]`,
+    shell: `min-h-[120px] items-center justify-center rounded-xl px-5 py-5 sm:min-h-[96px] sm:px-6 sm:py-4 lg:min-h-[72px] lg:px-6 ${bubbleShadow} [--mcp-bubble-fill:var(--color-background-default)] dark:[--mcp-bubble-fill:var(--color-background-neutral-weaker)] [--mcp-bubble-stroke:var(--color-stroke-ppg)] [background-color:var(--mcp-bubble-fill)] [border-color:var(--mcp-bubble-stroke)]`,
   },
   "hero-desktop-description": {
     tailSide: "left",
-    shell: `min-h-[108px] items-center rounded-xl px-4 py-4 sm:min-h-[92px] sm:px-5 sm:py-3.5 lg:min-h-[78px] lg:px-6 lg:py-3 ${bubbleShadow} bg-[#115552] dark:bg-[#042F2E] [--mcp-bubble-fill:#115552] dark:[--mcp-bubble-fill:#042F2E] [--mcp-bubble-stroke:#2DD4BF]`,
+    shell: `min-h-[108px] items-center rounded-xl px-4 py-4 sm:min-h-[92px] sm:px-5 sm:py-3.5 lg:min-h-[78px] lg:px-6 lg:py-3 ${bubbleShadow} [--mcp-bubble-fill:var(--color-background-ppg)] [--mcp-bubble-stroke:var(--color-stroke-ppg)] [background-color:var(--mcp-bubble-fill)] [border-color:var(--mcp-bubble-stroke)]`,
   },
   "hero-mobile-title": {
     tailSide: "right",
-    shell: `min-h-[120px] items-center justify-center rounded-xl px-5 py-5 sm:min-h-[128px] sm:px-6 ${bubbleShadow} bg-[#14314C] dark:bg-[#030712] [--mcp-bubble-fill:#14314C] dark:[--mcp-bubble-fill:#030712] [--mcp-bubble-stroke:#2DD4BF]`,
+    shell: `min-h-[120px] items-center justify-center rounded-xl px-5 py-5 sm:min-h-[128px] sm:px-6 ${bubbleShadow} [--mcp-bubble-fill:var(--color-background-default)] dark:[--mcp-bubble-fill:var(--color-background-neutral-weaker)] [--mcp-bubble-stroke:var(--color-stroke-ppg)] [background-color:var(--mcp-bubble-fill)] [border-color:var(--mcp-bubble-stroke)]`,
   },
   "hero-mobile-description": {
     tailSide: "left",
-    shell: `min-h-[108px] items-center rounded-xl px-4 py-4 sm:min-h-[112px] sm:px-5 ${bubbleShadow} bg-[#115552] dark:bg-[#042F2E] [--mcp-bubble-fill:#115552] dark:[--mcp-bubble-fill:#042F2E] [--mcp-bubble-stroke:#2DD4BF]`,
+    shell: `min-h-[108px] items-center rounded-xl px-4 py-4 sm:min-h-[112px] sm:px-5 ${bubbleShadow} [--mcp-bubble-fill:var(--color-background-ppg)] [--mcp-bubble-stroke:var(--color-stroke-ppg)] [background-color:var(--mcp-bubble-fill)] [border-color:var(--mcp-bubble-stroke)]`,
   },
 };
 
@@ -94,8 +94,7 @@ export function McpPromptBubble({
   return (
     <div className="relative w-full">
       <div
-        className={`relative z-10 flex w-full items-center rounded-[12px] border bg-[#115552] transition-colors duration-300 dark:bg-[#0D3A38] ${promptConfig[variant]} [--mcp-bubble-fill:#115552] [--mcp-bubble-stroke:#16A394] dark:[--mcp-bubble-fill:#0D3A38]`}
-        style={{ borderColor: "var(--mcp-bubble-stroke)" }}
+        className={`relative z-10 flex w-full items-center rounded-[12px] border transition-colors duration-300 ${promptConfig[variant]} [--mcp-bubble-fill:#115552] dark:[--mcp-bubble-fill:#0D3A38] [--mcp-bubble-stroke:#16A394] [background-color:var(--mcp-bubble-fill)] [border-color:var(--mcp-bubble-stroke)]`}
       >
         <code className={promptTextClass}>{children}</code>
         <BubbleTail side="right" />
@@ -115,7 +114,7 @@ export function McpBubble({
 
   return (
     <div className="relative w-full">
-      <div className={`relative z-10 flex w-full border border-stroke-ppg ${shell}`}>
+      <div className={`relative z-10 flex w-full border ${shell}`}>
         {children}
         <BubbleTail side={tailSide} />
       </div>
