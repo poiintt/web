@@ -10,43 +10,41 @@ type DataPoint = {
 };
 
 function Marker({ data }: { data: DataPoint }) {
-  const markerRef = useRef<HTMLSpanElement>(null);
   const [showTooltip, setShowTooltip] = useState(false);
   const isActive = Boolean(data.ratio);
 
   return (
     <>
       <span
-        ref={markerRef}
         className={cn(
-          "absolute -translate-x-1/2 -translate-y-1/2 rounded-full z-1",
+          "absolute rounded-full",
           isActive
-            ? "bg-[#71E8DF99] border border-[#B7F4EE] animate-[pulsate_2s_ease-in-out_infinite] shadow-[0_0_28px_0_#71E8DF99]"
-            : "size-[10px] bg-[rgba(113,128,150,1)] border border-[rgba(113,128,150,0.5)]",
+            ? "bg-[#71E8DF99] border border-[#B7F4EE] shadow-[0_0_28px_0_#71E8DF99] opacity-0 animate-[pulsate_2s_ease-in-out_infinite] z-2"
+            : "size-2 bg-[rgba(113,128,150,1)] border border-stroke-neutral opacity-100 z-1",
         )}
         style={{
           ...(isActive && {
             width: `${20 * (1 + (data.ratio || 0))}px`,
             height: `${20 * (1 + (data.ratio || 0))}px`,
+            animationDuration: `${2 / (1 + (data.ratio || 0))}s`,
+            animationDelay: `${(data.ratio || 0) * 1000}ms`,
           }),
           ...(data.cured_coord && {
             left: `${data.cured_coord.lon}%`,
             top: `${data.cured_coord.lat}%`,
           }),
-          ...(isActive && {
-            animationDuration: `${2 / (1 + (data.ratio || 0))}s`,
-            animationDelay: `${(data.ratio || 0) * 1000}ms`,
-          }),
+          transformOrigin: "center",
         }}
         onMouseEnter={() => setShowTooltip(true)}
         onMouseLeave={() => setShowTooltip(false)}
       />
-      {showTooltip && isActive && data.pop && markerRef.current && (
+      {showTooltip && isActive && data.pop && (
         <span
-          className="absolute z-10 px-2 py-1 text-xs font-semibold bg-background-neutral-strong text-foreground-neutral rounded -translate-x-1/2 pointer-events-none"
+          className="absolute z-10 px-2 py-1 text-xs font-semibold bg-background-neutral-strong text-foreground-neutral rounded pointer-events-none whitespace-nowrap"
           style={{
             left: `${data.cured_coord.lon}%`,
-            top: `calc(${data.cured_coord.lat}% - 24px)`,
+            top: `${data.cured_coord.lat}%`,
+            transform: "translate(-50%, -150%)",
           }}
         >
           {data.pop}
@@ -79,8 +77,9 @@ export function WorldMap() {
   }, []);
 
   return (
-    <div className="relative w-full max-w-[1036px] mx-auto">
-      <div className="relative">
+    <div className="relative w-full max-w-[1056px] mx-auto">
+      {/* Map container */}
+      <div className="relative mt-12 px-[5px] pb-[6%] pt-[2%] md:pb-[90px] md:pt-[25px]">
         {points.map((data, idx) => (
           <Marker key={idx} data={data} />
         ))}
@@ -90,23 +89,15 @@ export function WorldMap() {
           width={1036}
           height={609}
           alt="World map"
-          className="w-full h-auto"
+          className="w-full h-auto translate-x-[5px]"
         />
-      </div>
 
-      {/* Legend */}
-      <div className="flex items-center gap-6 mt-6">
-        <div className="flex items-center gap-2">
-          <span className="size-3 rounded-full bg-[#71E8DF99] border border-[#B7F4EE] shadow-[0_0_10px_0_#71E8DF99]" />
-          <span className="text-sm text-foreground-neutral-weak">
-            Active Point of Presence
-          </span>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="size-3 rounded-full bg-[rgba(113,128,150,1)] border border-[rgba(113,128,150,0.5)]" />
-          <span className="text-sm text-foreground-neutral-weak">
-            Inactive Point of Presence
-          </span>
+        {/* Legend */}
+        <div className="absolute grid grid-cols-[repeat(4,auto)] gap-4 text-[10px] text-foreground-neutral-weak border border-stroke-neutral rounded-lg px-2.5 py-1.5 w-max -bottom-11 left-1/2 -translate-x-1/2 md:grid-cols-[auto_1fr] md:row-gap-0.5 md:col-gap-1.5 md:mb-[5%] md:bottom-0 md:left-0 md:translate-x-0 lg:mb-[84px]">
+          <span className="size-2.5 rounded-full bg-[#71E8DF99] border border-[#B7F4EE] shadow-[0_0_10px_0_#71E8DF99] self-center" />
+          <span className="self-center">Active Point of Presence</span>
+          <span className="size-2.5 rounded-full bg-[rgba(113,128,150,1)] border border-stroke-neutral self-center" />
+          <span className="self-center">Inactive Point of Presence</span>
         </div>
       </div>
     </div>
