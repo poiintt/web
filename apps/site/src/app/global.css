@@ -6,6 +6,11 @@
 @source inline("md:hover:paused");
 @source inline("hover:paused");
 
+@keyframes pulsate {
+    0%, 100% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.5; }
+    50% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
 @theme {
     --animate-slide-down: slideDown 130s linear infinite;
     --animate-slide-down-2: slideDown2 130s linear infinite;
