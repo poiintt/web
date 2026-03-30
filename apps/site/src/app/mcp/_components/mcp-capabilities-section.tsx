@@ -5,7 +5,7 @@ export type McpCapability = {
   title: string;
   description: string;
   prompt: string;
-  mobileTall: boolean;
+  mobileTall?: boolean;
 };
 
 export function McpCapabilitiesSection({
