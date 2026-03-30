@@ -1,0 +1,94 @@
+{
+  "tabs": {
+    "defaultValue": "create-and-manage",
+    "head": [
+      {
+        "title": "Manage Postgres",
+        "icon": "fa-regular fa-chart-pyramid",
+        "value": "create-and-manage"
+      },
+      {
+        "title": "Type-safe",
+        "icon": "fa-regular fa-message-text",
+        "value": "type-safe-code"
+      },
+      {
+        "value": "create-database",
+        "title": "Create DB",
+        "icon": "fa-regular fa-database"
+      },
+      {
+        "value": "ai-coding",
+        "title": "AI Tools",
+        "icon": "fa-regular fa-robot"
+      },
+      {
+        "value": "manage-team",
+        "title": "Console",
+        "icon": "fa-regular fa-table"
+      },
+      {
+        "value": "understand-queries",
+        "title": "Query Insights",
+        "icon": "fa-regular fa-head-side-gear"
+      }
+    ],
+    "body": [
+      {
+        "value": "create-and-manage",
+        "title": "Create and manage Postgres within your existing tools",
+        "content": "Spin up Prisma Postgres locally. No Docker containers, no config files, no login required. Use the VS Code extension to create, manage, and explore local and hosted databases without leaving your editor.",
+        "image": "/illustrations/postgres/postgres_6"
+      },
+      {
+        "value": "type-safe-code",
+        "title": "Write readable, type-safe code",
+        "content": "Your editor autocompletes field names and knows column types as you write queries. Type safety with Prisma ORM catches errors before runtime, so you can build faster.",
+        "image": "/illustrations/postgres/postgres_5"
+      },
+      {
+        "value": "create-database",
+        "title": "Create databases instantly",
+        "content": "Use the API to create databases whenever you need them. Get a preview database for each PR that your team can actually query and test against.",
+        "image": "/illustrations/postgres/postgres_4"
+      },
+      {
+        "value": "ai-coding",
+        "title": "Optimized for AI Coding",
+        "content": "Your tools, Cursor, Claude Code, Warp, understand your database straight away and already speak Prisma. The MCP server and the declarative Prisma Schema help your AI agent write migrations, generate queries, manage your databases, and much more.",
+        "image": "/illustrations/postgres/postgres_3"
+      },
+      {
+        "value": "manage-team",
+        "title": "Manage databases with your team",
+        "content": "Explore and edit data visually with Prisma Studio, built into the Console or running locally. Your team can access databases, monitor usage, and manage all projects and settings from one interface.",
+        "image": "/illustrations/postgres/postgres_2"
+      },
+      {
+        "value": "understand-queries",
+        "title": "Understand why your queries are slow",
+        "content": "Query Insights helps you understand how your database queries behave in production. You can spot slow queries, see key performance metrics, and get an AI prompt to fix them in your favorite AI editor. It is included in Prisma Postgres at no extra cost.",
+        "image": "/illustrations/postgres/postgres_1"
+      }
+    ]
+  },
+  "stack": [
+    {
+      "title": "Any framework, any deployment",
+      "image": "logo-grid",
+      "subtitle": "Connection pooling and edge compatibility handled automatically via regular connection strings, no special configuration.",
+      "icon": "fa-regular fa-code"
+    },
+    {
+      "title": "Use any ORM or database client",
+      "image": "/illustrations/enterprise/enterprise_1",
+      "subtitle": "Connection pooling and edge compatibility handled automatically via regular connection strings, no special configuration.",
+      "icon": "fa-regular fa-database"
+    },
+    {
+      "title": "Your auth, your way",
+      "subtitle": "BetterAuth, Clerk, NextAuth, or roll your own. Works with any Postgres-compatible auth setup because it's just Postgres.",
+      "icon": "fa-regular fa-fingerprint"
+    }
+  ]
+}
