@@ -1,5 +1,4 @@
-import clsx from "clsx";
-
+import { cn } from "../lib/cn";
 const LogoParadeItem = ({
   logo,
   clickable = true,
@@ -9,7 +8,7 @@ const LogoParadeItem = ({
   noLinks,
 }: any) => {
   const LogoParadeWrapper = ({ href, children }: any) => {
-    const wrapperClass = clsx(
+    const wrapperClass = cn(
       "inline-flex self-center p-0 animate-[fadein_0.5s_cubic-bezier(0.455,0.03,0.515,0.955)_forwards]",
       !clickable && "cursor-default pointer-events-none",
     );
@@ -24,7 +23,7 @@ const LogoParadeItem = ({
   };
   return (
     <div
-      className={clsx(
+      className={cn(
         className,
         "my-4 mx-[31px] flex items-center justify-center shrink-0 min-w-full",
       )}
@@ -32,7 +31,7 @@ const LogoParadeItem = ({
     >
       <LogoParadeWrapper href={clickable ? logo.url || false : false}>
         <img
-          className={clsx(
+          className={cn(
             !noFilter &&
               "grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all",
           )}
@@ -169,7 +168,7 @@ const LogoParade = ({
     <section className="overflow-x-hidden w-full" data-testid="logo-parade">
       {finalLogos.length >= 6 ? (
         <div
-          className={clsx(
+          className={cn(
             "flex flex-row items-center overflow-hidden relative max-w-[1200px] w-full mx-auto h-[100px]",
             "[mask-image:linear-gradient(90deg,transparent_0%,black_15%,black_85%,transparent_100%)]",
             "[-webkit-mask-image:linear-gradient(90deg,transparent_0%,black_15%,black_85%,transparent_100%)]",
@@ -181,7 +180,7 @@ const LogoParade = ({
           }}
         >
           <div
-            className={clsx(
+            className={cn(
               "shrink-0 absolute w-max min-w-full flex justify-around",
               reverseAnim
                 ? "animate-[slidelogoreverse_135s_linear_infinite]"
@@ -204,7 +203,7 @@ const LogoParade = ({
             ))}
           </div>
           <div
-            className={clsx(
+            className={cn(
               "shrink-0 absolute w-max min-w-full flex justify-around",
               reverseAnim
                 ? "translate-x-full animate-[slidelogo2reverse_135s_linear_infinite]"
