@@ -13,11 +13,13 @@ interface TwoColumnItem {
   mobileImageAlt: string | null;
   logos: any[] | null;
   alignItems?: "items-end" | "items-start" | "items-center";
+  footer?: ReactNode;
+  color?: "orm" | "ppg";
+  other?: ReactNode;
   useDefaultLogos: boolean;
-  noShadow?: boolean;
   visualPosition: "left" | "right";
   visualType: "logoGrid" | "image" | "other";
-  other?: ReactNode;
+  noShadow?: boolean;
 }
 
 interface CardSectionProps {
@@ -36,7 +38,7 @@ export const CardSection = ({ cardSection }: CardSectionProps) => {
     <div className="max-w-[1232px] mx-auto mt-8 px-4 overflow-visible">
       {cardSection.map((item, index) => (
         <section
-          key={index}
+          key={`card-section-${index}-${item.visualType}-${item.visualPosition}`}
           className="py-6 md:py-8 lg:py-12 my-6 md:my-8 lg:my-12 w-full overflow-visible"
         >
           <div
@@ -62,18 +64,18 @@ export const CardSection = ({ cardSection }: CardSectionProps) => {
                 item.visualType === "logoGrid" ? "max-w-full" : "lg:w-full",
               )}
             >
-              {item.visualType === "other" && item.other}
+              {item.other && item.visualType === "other" && item.other}
               {item.visualType === "logoGrid" && item.useDefaultLogos && (
                 <LogoGrid />
               )}
               {item.visualType === "image" && item.imageUrl && (
-                <div>
+                <div key={`images-${index}`}>
                   <img
+                    key={`desktop-img-${index}`}
                     className={cn(
                       "hidden sm:block w-full h-auto",
-                      item.noShadow
-                        ? undefined
-                        : "shadow-[0_10px_25px_-5px_rgba(0,0,0,0.1)]",
+                      !item.noShadow &&
+                        "shadow-[0_10px_25px_-5px_rgba(0,0,0,0.1)]",
                     )}
                     src={
                       mounted && resolvedTheme === "light"
@@ -84,11 +86,11 @@ export const CardSection = ({ cardSection }: CardSectionProps) => {
                   />
                   {item.mobileImageUrl && (
                     <img
+                      key={`mobile-img-${index}`}
                       className={cn(
                         "w-full h-auto sm:hidden",
-                        item.noShadow
-                          ? undefined
-                          : "shadow-[0_10px_25px_-5px_rgba(0,0,0,0.1)]",
+                        !item.noShadow &&
+                          "shadow-[0_10px_25px_-5px_rgba(0,0,0,0.1)]",
                       )}
                       src={
                         mounted && resolvedTheme === "light"
@@ -102,6 +104,7 @@ export const CardSection = ({ cardSection }: CardSectionProps) => {
               )}
             </div>
           </div>
+          {item.footer && <>{item.footer}</>}
         </section>
       ))}
     </div>
