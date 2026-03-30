@@ -12,7 +12,7 @@ import remarkConsoleUtm from "@/lib/remark-console-utm";
 function convertLine(cmd: string, pm: "npm" | "pnpm" | "yarn" | "bun"): string {
   return cmd
     .split("\n")
-    .map((line) => convert(line, pm))
+    .map((line) => convert(line.replace(/^npm init -y$/, "npm init"), pm))
     .join("\n");
 }
 
