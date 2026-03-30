@@ -32,6 +32,7 @@ export interface Link {
     icon?: string;
     desc?: string;
   }>;
+  buttonVariant?: "ppg" | "orm" | undefined;
 }
 
 interface WebNavigationProps {
@@ -40,9 +41,14 @@ interface WebNavigationProps {
     source: "website";
     medium: string;
   };
+  buttonVariant?: "ppg" | "orm" | undefined;
 }
 
-export function WebNavigation({ links, utm }: WebNavigationProps) {
+export function WebNavigation({
+  links,
+  utm,
+  buttonVariant = "ppg",
+}: WebNavigationProps) {
   const [mobileView, setMobileView] = useState(false);
   const loginHref = utm
     ? `https://console.prisma.io/login?utm_source=${utm.source}&utm_medium=${utm.medium}&utm_campaign=login`
@@ -114,7 +120,7 @@ export function WebNavigation({ links, utm }: WebNavigationProps) {
               </NavigationMenuItem>
               <NavigationMenuItem className="hidden sm:block">
                 <Button
-                  variant="ppg"
+                  variant={buttonVariant}
                   className="whitespace-nowrap"
                   href={signupHref}
                 >
@@ -136,6 +142,7 @@ export function WebNavigation({ links, utm }: WebNavigationProps) {
             {mobileView && (
               <NavigationMobileMenu
                 links={links}
+                buttonVariant={buttonVariant}
                 loginHref={loginHref}
                 signupHref={signupHref}
               />

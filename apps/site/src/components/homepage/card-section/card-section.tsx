@@ -12,9 +12,12 @@ interface TwoColumnItem {
   mobileImageUrl: string | null;
   mobileImageAlt: string | null;
   logos: any[] | null;
+  alignItems?: "items-end" | "items-start" | "items-center";
   useDefaultLogos: boolean;
+  noShadow?: boolean;
   visualPosition: "left" | "right";
-  visualType: "logoGrid" | "image";
+  visualType: "logoGrid" | "image" | "other";
+  other?: ReactNode;
 }
 
 interface CardSectionProps {
@@ -41,6 +44,7 @@ export const CardSection = ({ cardSection }: CardSectionProps) => {
               "[&_h2]:mt-0 flex gap-8 lg:gap-12 md:gap-8 sm:gap-6 items-center overflow-visible",
               item.visualPosition === "left" && "lg:flex-row-reverse flex-col",
               item.visualPosition === "right" && "lg:flex-row flex-col",
+              item.alignItems,
             )}
           >
             <div
@@ -58,11 +62,19 @@ export const CardSection = ({ cardSection }: CardSectionProps) => {
                 item.visualType === "logoGrid" ? "max-w-full" : "lg:w-full",
               )}
             >
-              {item.visualType === "logoGrid" && item.useDefaultLogos && <LogoGrid />}
+              {item.visualType === "other" && item.other}
+              {item.visualType === "logoGrid" && item.useDefaultLogos && (
+                <LogoGrid />
+              )}
               {item.visualType === "image" && item.imageUrl && (
-                <>
+                <div>
                   <img
-                    className="hidden sm:block w-full h-auto shadow-[0_10px_25px_-5px_rgba(0,0,0,0.1)]"
+                    className={cn(
+                      "hidden sm:block w-full h-auto",
+                      item.noShadow
+                        ? undefined
+                        : "shadow-[0_10px_25px_-5px_rgba(0,0,0,0.1)]",
+                    )}
                     src={
                       mounted && resolvedTheme === "light"
                         ? `${item.imageUrl}_light.svg`
@@ -72,7 +84,12 @@ export const CardSection = ({ cardSection }: CardSectionProps) => {
                   />
                   {item.mobileImageUrl && (
                     <img
-                      className="w-full h-auto shadow-[0_10px_25px_-5px_rgba(0,0,0,0.1)] sm:hidden"
+                      className={cn(
+                        "w-full h-auto sm:hidden",
+                        item.noShadow
+                          ? undefined
+                          : "shadow-[0_10px_25px_-5px_rgba(0,0,0,0.1)]",
+                      )}
                       src={
                         mounted && resolvedTheme === "light"
                           ? `${item.mobileImageUrl}_light.svg`
@@ -81,7 +98,7 @@ export const CardSection = ({ cardSection }: CardSectionProps) => {
                       alt={item.mobileImageAlt || ""}
                     />
                   )}
-                </>
+                </div>
               )}
             </div>
           </div>
