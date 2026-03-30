@@ -5,7 +5,7 @@ export function McpVideoSection() {
         <div className="relative aspect-video w-full">
           <iframe
             className="size-full"
-            src="https://www.youtube-nocookie.com/embed/jFm41OPnOUc"
+            src="https://www.youtube.com/embed/jFm41OPnOUc"
             title="Prisma MCP video"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             referrerPolicy="strict-origin-when-cross-origin"
