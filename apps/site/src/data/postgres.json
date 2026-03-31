@@ -199,13 +199,15 @@
           "imageUrl": "/icons/technologies/shopify.svg",
           "alt": "Shopify"
         }
-      ]
+      ],
+      "useDefaultLogos": false
     },
     {
       "title": "Use any ORM or database client",
       "image": "logo-bar",
       "subtitle": "Connection pooling and edge compatibility handled automatically via regular connection strings, no special configuration.",
       "icon": "fa-regular fa-database",
+      "useDefaultLogos": false,
       "logos": [
         {
           "link": "/docs/prisma-postgres/quickstart/prisma-orm",
@@ -240,6 +242,7 @@
       "subtitle": "BetterAuth, Clerk, NextAuth, or roll your own. Works with any Postgres-compatible auth setup because it's just Postgres.",
       "icon": "fa-regular fa-fingerprint",
       "image": "logo-bar",
+      "useDefaultLogos": false,
       "logos": [
         {
           "link": "/docs/guides/authentication/better-auth/nextjs",
