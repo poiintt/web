@@ -81,14 +81,113 @@
     },
     {
       "title": "Use any ORM or database client",
-      "image": "/illustrations/enterprise/enterprise_1",
+      "image": "logo-bar",
       "subtitle": "Connection pooling and edge compatibility handled automatically via regular connection strings, no special configuration.",
-      "icon": "fa-regular fa-database"
+      "icon": "fa-regular fa-database",
+      "logos": [
+        {
+          "imageUrl": "/icons/technologies/postgres.svg",
+          "label": "PostgreSQL",
+          "link": "https://www.postgresql.org/",
+          "alt": "PostgreSQL"
+        },
+        {
+          "imageUrl": "/icons/technologies/mysql.svg",
+          "label": "MySQL",
+          "link": "https://www.mysql.com/",
+          "alt": "MySQL"
+        },
+        {
+          "imageUrl": "/icons/technologies/mongodb.svg",
+          "label": "MongoDB",
+          "link": "https://www.mongodb.com/",
+          "alt": "MongoDB"
+        },
+        {
+          "imageUrl": "/icons/technologies/sqlite.svg",
+          "label": "SQLite",
+          "link": "https://www.sqlite.org/",
+          "alt": "SQLite"
+        },
+        {
+          "imageUrl": "/icons/technologies/cockroach.svg",
+          "label": "CockroachDB",
+          "link": "https://www.cockroachlabs.com/",
+          "alt": "CockroachDB"
+        },
+        {
+          "imageUrl": "/icons/technologies/planetscale.svg",
+          "label": "PlanetScale",
+          "link": "https://planetscale.com/",
+          "alt": "PlanetScale"
+        }
+      ]
     },
     {
       "title": "Your auth, your way",
       "subtitle": "BetterAuth, Clerk, NextAuth, or roll your own. Works with any Postgres-compatible auth setup because it's just Postgres.",
-      "icon": "fa-regular fa-fingerprint"
+      "icon": "fa-regular fa-fingerprint",
+      "image": "logo-bar",
+      "logos": [
+        {
+          "imageUrl": "/icons/technologies/betterauth.png",
+          "label": "BetterAuth",
+          "link": "https://www.better-auth.com/",
+          "alt": "BetterAuth"
+        },
+        {
+          "imageUrl": "/icons/technologies/clerk.jpeg",
+          "label": "Clerk",
+          "link": "https://clerk.com/",
+          "alt": "Clerk"
+        },
+        {
+          "imageUrl": "/icons/technologies/authjs.png",
+          "label": "Auth.js",
+          "link": "https://authjs.dev/",
+          "alt": "Auth.js"
+        },
+        {
+          "imageUrl": "/icons/technologies/github-dark.svg",
+          "label": "GitHub",
+          "link": "https://github.com/",
+          "alt": "GitHub"
+        },
+        {
+          "imageUrl": "/icons/technologies/cognito.svg",
+          "label": "AWS Cognito",
+          "link": "https://aws.amazon.com/cognito/",
+          "alt": "AWS Cognito"
+        },
+        {
+          "imageUrl": "/icons/technologies/apollo.svg",
+          "label": "Apollo",
+          "link": "https://www.apollographql.com/",
+          "alt": "Apollo"
+        }
+      ]
+    }
+  ],
+  "made_for": [
+    {
+      "title": "Dev & Test Environments",
+      "description": "First-class TypeScript support catches errors at compile time. Schema changes reflect instantly in your code.",
+      "icon": "fa-regular fa-gear-code"
+    },
+    {
+      "title": "RAG Pipelines",
+      "description": "Build RAG entirely in Postgres—embeddings, hybrid search, and context in relational tables. No external vector DB needed.",
+      "icon": "fa-regular fa-code-branch"
+    },
+    {
+      "title": "Agentic Workflows",
+      "description": "Agents query data and store memory via MCP. Developers govern with Prisma schema. The database becomes a human-AI collaboration layer.",
+      "icon": "fa-regular fa-merge"
+    },
+    {
+      "title": "Agent Platforms & SaaS",
+      "description": "Give every agent persistent memory in isolated databases. Query with SQL, provision in milliseconds, pay for what you use.",
+      "icon": "fa-regular fa-layer-group"
     }
   ]
 }
