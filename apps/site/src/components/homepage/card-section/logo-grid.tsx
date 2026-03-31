@@ -15,12 +15,12 @@ const AnimationStyles = () => (
         transform: translateX(0%);
       }
       to {
-        transform: translateX(-100%);
+        transform: translateX(-50%);
       }
     }
     @keyframes slideRight {
       from {
-        transform: translateX(-100%);
+        transform: translateX(-50%);
       }
       to {
         transform: translateX(0%);
@@ -35,7 +35,7 @@ const LogoBar = ({
   color,
   direction = "right",
   pauseOnHover = false,
-  duplicateCount = 3,
+  duplicateCount = 2,
 }: {
   logos: Logo[];
   color?: "orm" | "ppg";
@@ -55,7 +55,7 @@ const LogoBar = ({
   return (
     <div className="relative w-full overflow-hidden h-[85px] md:h-[60px]">
       <div
-        className={`flex flex-nowrap items-center absolute w-max min-w-full ${direction === "left" ? "animate-[slideLeft_40s_linear_infinite]" : "animate-[slideRight_40s_linear_infinite]"} ${pauseOnHover ? "hover:[animation-play-state:paused]" : ""}`}
+        className={`flex flex-nowrap items-center absolute ${direction === "left" ? "animate-[slideLeft_40s_linear_infinite]" : "animate-[slideRight_40s_linear_infinite]"} ${pauseOnHover ? "hover:[animation-play-state:paused]" : ""}`}
       >
         {duplicatedLogos.map((item) => (
           <a
@@ -91,7 +91,7 @@ interface Logo {
 
 interface LogoGridProps {
   logos?: Logo[];
-  type?: "spotlight" | "track";
+  type?: "spotlight" | "track" | "wrap";
   color?: "orm" | "ppg";
 }
 
@@ -133,7 +133,15 @@ LogoImage.displayName = "LogoImage";
 // ============================================================================
 
 const SpotlightMode = memo(
-  ({ logos, color }: { logos: Logo[]; color?: "orm" | "ppg" }) => {
+  ({
+    logos,
+    color,
+    still,
+  }: {
+    logos: Logo[];
+    color?: "orm" | "ppg";
+    still?: boolean;
+  }) => {
     const logoSize = 50;
     const visibleLogos = logos.slice(0, 21);
 
@@ -148,7 +156,7 @@ const SpotlightMode = memo(
                   key={`${logo.alt}-${index}`}
                   href={logo.link}
                   className={cn(
-                    "w-[20%] sm:w-[12%] aspect-square rounded-xl z-1 bg-background-default border border-white/10 flex items-center justify-center p-3 md:p-2 transition-[transform_0.2s_ease,border-color_0.2s_ease] hover:-translate-y-0.5 hover:scale-[1.02] active:translate-y-0 active:scale-100",
+                    "w-[85px] md:w-[60px] aspect-square rounded-xl z-1 bg-background-default border border-white/10 flex items-center justify-center p-3 md:p-2 transition-[transform_0.2s_ease,border-color_0.2s_ease] hover:-translate-y-0.5 hover:scale-[1.02] active:translate-y-0 active:scale-100",
                     color === "orm"
                       ? "hover:border-background-orm"
                       : "hover:border-background-ppg",
@@ -197,20 +205,20 @@ const TrackMode = memo(
           logos={logosBar1}
           color={color}
           pauseOnHover={false}
-          duplicateCount={3}
+          duplicateCount={2}
         />
         <LogoBar
           logos={logosBar2}
           color={color}
           direction="left"
           pauseOnHover={false}
-          duplicateCount={3}
+          duplicateCount={2}
         />
         <LogoBar
           logos={logosBar3}
           color={color}
           pauseOnHover={false}
-          duplicateCount={3}
+          duplicateCount={2}
         />
       </div>
     );
@@ -231,14 +239,15 @@ export const LogoGrid = ({
   const logos =
     propLogos && propLogos.length > 0 ? propLogos : defaultLogosData;
 
+  const comps = {
+    track: <TrackMode logos={logos} color={color} />,
+    spotlight: <SpotlightMode logos={logos} color={color} />,
+    wrap: <SpotlightMode still logos={logos} color={color} />,
+  };
   return (
     <>
       <AnimationStyles />
-      {type === "track" ? (
-        <TrackMode logos={logos} color={color} />
-      ) : (
-        <SpotlightMode logos={logos} color={color} />
-      )}
+      {comps[type]}
     </>
   );
 };

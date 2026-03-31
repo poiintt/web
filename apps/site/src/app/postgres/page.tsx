@@ -182,15 +182,15 @@ export default async function SiteHome() {
               <Card
                 key={card.title}
                 className={cn(
-                  "bg-[linear-gradient(180deg,var(--color-background-default)_0%,var(--color-background-ppg)_262.5%)] relative md:col-span-1",
+                  "first:bg-background-default not-first:bg-[linear-gradient(180deg,var(--color-background-default)_0%,var(--color-background-ppg)_262.5%)] relative md:col-span-1",
                   "first:md:col-span-2 overflow-hidden",
                 )}
               >
                 <div
                   className={cn("flex flex-col gap-6 justify-between h-full")}
                 >
-                  <div className="flex justify-between items-start flex-col lg:flex-row lg:gap-0 gap-13">
-                    <div className="flex flex-col gap-4 lg:max-w-121 w-full">
+                  <div className="flex justify-between items-start flex-col lg:flex-row gap-6">
+                    <div className="flex flex-col gap-4 w-full flex-1">
                       <div className="flex flex-col gap-4 items-start">
                         <Action color="ppg" size="4xl">
                           <i className={cn("text-2xl", card.icon)} />
@@ -205,8 +205,16 @@ export default async function SiteHome() {
                     </div>
                     {typeof card.image === "string" &&
                     card.image === "logo-grid" ? (
-                      <div className={cn("relative p-1 mx-auto")}>
-                        <LogoGrid />
+                      <div
+                        className={cn(
+                          "min-w-0 overflow-visible flex-1 flex items-center relative md:max-w-unset sm:max-w-[60%] max-w-full mx-auto",
+                          "before:absolute before:inset-0 before:bg-[linear-gradient(90deg,var(--color-background-default)_0%,transparent_50%,var(--color-background-default)_100%)] before:z-10 before:pointer-events-none",
+                        )}
+                      >
+                        <LogoGrid
+                          logos={card.useDefaultLogos ? undefined : card.logos}
+                          type="track"
+                        />
                       </div>
                     ) : null}
                   </div>

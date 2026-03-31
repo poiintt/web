@@ -77,7 +77,129 @@
       "title": "Any framework, any deployment",
       "image": "logo-grid",
       "subtitle": "Connection pooling and edge compatibility handled automatically via regular connection strings, no special configuration.",
-      "icon": "fa-regular fa-code"
+      "icon": "fa-regular fa-code",
+      "logos": [
+        {
+          "link": "/docs/guides/deployment/cloudflare-d1",
+          "title": "Cloudflare D1",
+          "imageUrl": "/icons/technologies/cloudflare-d1.svg",
+          "alt": "Cloudflare D1"
+        },
+        {
+          "link": "/docs/orm/prisma-client/deployment/edge/deploy-to-cloudflare",
+          "title": "Cloudflare",
+          "imageUrl": "/icons/technologies/cloudflare-icon-only.svg",
+          "alt": "Cloudflare"
+        },
+        {
+          "link": "/docs/guides/frameworks/astro",
+          "title": "Astro",
+          "imageUrl": "/icons/technologies/astro-dark.svg",
+          "mobileImageUrl": "/icons/technologies/astro.svg",
+          "alt": "Astro"
+        },
+        {
+          "link": "/docs/guides/runtimes/bun",
+          "title": "Bun",
+          "imageUrl": "/icons/technologies/bun.svg",
+          "alt": "Bun"
+        },
+        {
+          "link": "/docs/guides/integrations/datadog",
+          "title": "Datadog",
+          "imageUrl": "/icons/technologies/datadog_light.svg",
+          "mobileImageUrl": "/icons/technologies/datadog.svg",
+          "alt": "Datadog"
+        },
+        {
+          "link": "/docs/guides/deployment/docker",
+          "title": "Docker",
+          "imageUrl": "/icons/technologies/docker-blue.svg",
+          "alt": "Docker"
+        },
+        {
+          "link": "/docs/guides/integrations/deno",
+          "title": "Deno",
+          "imageUrl": "/icons/companies/deno-darkmode.svg",
+          "mobileImageUrl": "/icons/technologies/deno-deploy.svg",
+          "alt": "Deno"
+        },
+        {
+          "link": "/docs/guides/integrations/vercel-deployment",
+          "title": "Vercel",
+          "imageUrl": "/icons/technologies/vercel-icon-dark.svg",
+          "mobileImageUrl": "/icons/technologies/vercel.svg",
+          "alt": "Vercel"
+        },
+        {
+          "link": "/docs/guides/frameworks/nextjs",
+          "title": "Next.js",
+          "imageUrl": "/icons/technologies/nextjs.svg",
+          "alt": "Next.js"
+        },
+        {
+          "link": "/docs/guides/frameworks/hono",
+          "title": "Hono",
+          "imageUrl": "/icons/technologies/hono.svg",
+          "alt": "Hono"
+        },
+        {
+          "link": "/docs/guides/integrations/github-actions",
+          "title": "GitHub",
+          "imageUrl": "/icons/technologies/github-dark.svg",
+          "mobileImageUrl": "/icons/companies/github.svg",
+          "alt": "GitHub"
+        },
+        {
+          "link": "/docs/orm/prisma-client/deployment/traditional/deploy-to-railway",
+          "title": "Railway",
+          "imageUrl": "/icons/technologies/railway-dark.svg",
+          "mobileImageUrl": "/icons/companies/railway.svg",
+          "alt": "Railway"
+        },
+        {
+          "link": "/docs/guides/frameworks/react-router-7",
+          "title": "React Router",
+          "imageUrl": "/icons/technologies/rr7.svg",
+          "alt": "React Router"
+        },
+        {
+          "link": "/docs/guides/frameworks/solid-start",
+          "title": "Solid Start",
+          "imageUrl": "/icons/technologies/solid-start.svg",
+          "alt": "Solid Start"
+        },
+        {
+          "link": "/docs/guides/frameworks/sveltekit",
+          "title": "SvelteKit",
+          "imageUrl": "/icons/technologies/svelte.svg",
+          "alt": "SvelteKit"
+        },
+        {
+          "link": "/docs/guides/frameworks/tanstack-start",
+          "title": "TanStack",
+          "imageUrl": "/icons/technologies/tanstack.svg",
+          "alt": "TanStack"
+        },
+        {
+          "link": "/docs/guides/deployment/turborepo",
+          "title": "Turborepo",
+          "imageUrl": "/icons/technologies/turborepo-icon-only.svg",
+          "alt": "Turborepo"
+        },
+        {
+          "link": "/docs/guides/frameworks/nuxt",
+          "title": "Nuxt",
+          "imageUrl": "/icons/technologies/nuxt.svg",
+          "alt": "Nuxt"
+        },
+        {
+          "link": "/docs/guides/integrations/shopify",
+          "title": "Shopify",
+          "imageUrl": "/icons/technologies/shopify.svg",
+          "alt": "Shopify"
+        }
+      ]
     },
     {
       "title": "Use any ORM or database client",
@@ -86,40 +208,25 @@
       "icon": "fa-regular fa-database",
       "logos": [
         {
-          "imageUrl": "/icons/technologies/postgres.svg",
-          "label": "PostgreSQL",
-          "link": "https://www.postgresql.org/",
-          "alt": "PostgreSQL"
+          "link": "/docs/prisma-postgres/quickstart/prisma-orm",
+          "title": "Prisma",
+          "imageUrl": "/icons/technologies/prisma.svg",
+          "alt": "Prisma"
         },
         {
-          "imageUrl": "/icons/technologies/mysql.svg",
-          "label": "MySQL",
-          "link": "https://www.mysql.com/",
-          "alt": "MySQL"
+          "link": "/docs/prisma-postgres/quickstart/typeorm",
+          "imageUrl": "/icons/technologies/typeorm.svg",
+          "title": "TypeORM"
         },
         {
-          "imageUrl": "/icons/technologies/mongodb.svg",
-          "label": "MongoDB",
-          "link": "https://www.mongodb.com/",
-          "alt": "MongoDB"
+          "link": "/docs/prisma-postgres/quickstart/drizzle-orm",
+          "imageUrl": "/icons/technologies/drizzle.svg",
+          "title": "Drizzle"
         },
         {
-          "imageUrl": "/icons/technologies/sqlite.svg",
-          "label": "SQLite",
-          "link": "https://www.sqlite.org/",
-          "alt": "SQLite"
-        },
-        {
-          "imageUrl": "/icons/technologies/cockroach.svg",
-          "label": "CockroachDB",
-          "link": "https://www.cockroachlabs.com/",
-          "alt": "CockroachDB"
-        },
-        {
-          "imageUrl": "/icons/technologies/planetscale.svg",
-          "label": "PlanetScale",
-          "link": "https://planetscale.com/",
-          "alt": "PlanetScale"
+          "link": "/docs/prisma-postgres/quickstart/kysely",
+          "imageUrl": "/icons/technologies/kysely.svg",
+          "title": "Kysely"
         }
       ]
     },
@@ -130,40 +237,22 @@
       "image": "logo-bar",
       "logos": [
         {
+          "link": "/docs/guides/authentication/better-auth/nextjs",
+          "title": "Better-Auth",
           "imageUrl": "/icons/technologies/betterauth.png",
-          "label": "BetterAuth",
-          "link": "https://www.better-auth.com/",
-          "alt": "BetterAuth"
+          "alt": "Better-Auth"
         },
         {
+          "link": "/docs/guides/authentication/clerk/nextjs",
+          "title": "Clerk",
           "imageUrl": "/icons/technologies/clerk.jpeg",
-          "label": "Clerk",
-          "link": "https://clerk.com/",
           "alt": "Clerk"
         },
         {
+          "link": "/docs/guides/authentication/authjs/nextjs",
+          "title": "Auth.js",
           "imageUrl": "/icons/technologies/authjs.png",
-          "label": "Auth.js",
-          "link": "https://authjs.dev/",
           "alt": "Auth.js"
-        },
-        {
-          "imageUrl": "/icons/technologies/github-dark.svg",
-          "label": "GitHub",
-          "link": "https://github.com/",
-          "alt": "GitHub"
-        },
-        {
-          "imageUrl": "/icons/technologies/cognito.svg",
-          "label": "AWS Cognito",
-          "link": "https://aws.amazon.com/cognito/",
-          "alt": "AWS Cognito"
-        },
-        {
-          "imageUrl": "/icons/technologies/apollo.svg",
-          "label": "Apollo",
-          "link": "https://www.apollographql.com/",
-          "alt": "Apollo"
         }
       ]
     }
