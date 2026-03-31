@@ -97,26 +97,32 @@ const twoCol = [
   },
 ];
 export const metadata: Metadata = {
-  title: SITE_HOME_TITLE,
-  description: SITE_HOME_DESCRIPTION,
+  title: "Prisma Postgres | Instant Global Databases",
+  description:
+    "Free to start, no setup, no commitments. Easily grow your database as your app scales.",
   alternates: {
-    canonical: "https://www.prisma.io/",
+    canonical: "https://www.prisma.io/postgres",
   },
   openGraph: {
-    title: SITE_HOME_TITLE,
-    description: SITE_HOME_DESCRIPTION,
-    url: "https://www.prisma.io/",
+    title: "Prisma Postgres | Instant Global Databases",
+    description:
+      "Free to start, no setup, no commitments. Easily grow your database as your app scales.",
+    url: "https://www.prisma.io/postgres",
     images: [
       {
-        url: "/og/og-index.png",
+        url: "/og/og-postgres.png",
+        width: 1200,
+        height: 630,
+        alt: "Prisma Postgres | Instant Global Databases",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: SITE_HOME_TITLE,
-    description: SITE_HOME_DESCRIPTION,
-    images: ["/og/og-index.png"],
+    title: "Prisma Postgres | Instant Global Databases",
+    description:
+      "Free to start, no setup, no commitments. Easily grow your database as your app scales.",
+    images: ["/og/og-postgres.png"],
   },
 };
 
