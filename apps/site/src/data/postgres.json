@@ -217,18 +217,21 @@
         {
           "link": "/docs/prisma-postgres/quickstart/typeorm",
           "imageUrl": "/icons/technologies/typeorm.svg",
-          "title": "TypeORM"
+          "title": "TypeORM",
+          "alt": "TypeORM"
         },
         {
           "link": "/docs/prisma-postgres/quickstart/drizzle-orm",
           "imageUrl": "/icons/technologies/drizzle.svg",
           "imageUrlLight": "/icons/technologies/drizzle_light.svg",
-          "title": "Drizzle"
+          "title": "Drizzle",
+          "alt": "Drizzle"
         },
         {
           "link": "/docs/prisma-postgres/quickstart/kysely",
           "imageUrl": "/icons/technologies/kysely.svg",
-          "title": "Kysely"
+          "title": "Kysely",
+          "alt": "Kysely"
         }
       ]
     },
