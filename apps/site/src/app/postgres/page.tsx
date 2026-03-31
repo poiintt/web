@@ -214,7 +214,7 @@ export default async function SiteHome() {
                       <div
                         className={cn(
                           "min-w-0 overflow-visible flex-1 flex items-center relative md:max-w-unset sm:max-w-[60%] max-w-full mx-auto",
-                          "before:absolute before:inset-0 before:bg-[linear-gradient(90deg,var(--color-background-default)_0%,transparent_50%,var(--color-background-default)_100%)] before:z-10 before:pointer-events-none",
+                          "before:absolute before:inset-0 before:bg-[linear-gradient(90deg,var(--color-background-default)_0%,transparent_50%,var(--color-background-default)_100%)] before:z-10 before:pointer-events-none w-full",
                         )}
                       >
                         <LogoGrid
