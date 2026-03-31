@@ -1,7 +1,6 @@
 "use client";
 
 import parse from "html-react-parser";
-import { prisma_highlighter } from "../../lib/shiki_prisma";
 import {
   CodeBlock,
   Tabs,
@@ -20,7 +19,9 @@ type HowSectionData = {
     }>;
     body: Array<{
       value: string;
+      title: string;
       content: string;
+      image: string;
     }>;
   };
 };
