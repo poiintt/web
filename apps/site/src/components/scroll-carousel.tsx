@@ -1,19 +1,29 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { PostCard, type PostCardItem } from "./post-card";
+import {
+  Children,
+  isValidElement,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import { cn } from "@/lib/cn";
-
-interface ShowcaseScrollCarouselProps {
-  items: PostCardItem[];
-  className?: string;
-}
 
 interface NavButtonProps {
   direction: "left" | "right";
   disabled: boolean;
   onClick: () => void;
   className: string;
+}
+
+export interface ScrollCarouselProps {
+  ariaLabel: string;
+  className?: string;
+  gridClassName: string;
+  itemClassName?: string;
+  children: ReactNode;
 }
 
 const NavButton = ({
@@ -40,15 +50,19 @@ const NavButton = ({
   </button>
 );
 
-export const ShowcaseScrollCarousel = ({
-  items,
+export function ScrollCarousel({
+  ariaLabel,
   className,
-}: ShowcaseScrollCarouselProps) => {
+  gridClassName,
+  itemClassName,
+  children,
+}: ScrollCarouselProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isAtStart, setIsAtStart] = useState(true);
   const [isAtEnd, setIsAtEnd] = useState(false);
+  const items = Children.toArray(children);
 
-  const updateScrollBounds = () => {
+  const updateScrollBounds = useCallback(() => {
     const container = scrollRef.current;
 
     if (!container) {
@@ -63,43 +77,45 @@ export const ShowcaseScrollCarousel = ({
 
     setIsAtStart(container.scrollLeft <= tolerance);
     setIsAtEnd(container.scrollLeft >= maxScrollLeft - tolerance);
-  };
+  }, []);
 
-  const scrollByItem = (direction: -1 | 1) => {
-    const container = scrollRef.current;
-    const carouselItems = container?.querySelectorAll<HTMLElement>(
-      "[data-carousel-item]",
-    );
+  const scrollByItem = useCallback(
+    (direction: -1 | 1) => {
+      const container = scrollRef.current;
+      const carouselItems =
+        container?.querySelectorAll<HTMLElement>("[data-carousel-item]");
 
-    if (!container || !carouselItems?.length) {
-      return;
-    }
+      if (!container || !carouselItems?.length) {
+        return;
+      }
 
-    if ((direction === -1 && isAtStart) || (direction === 1 && isAtEnd)) {
-      return;
-    }
+      if ((direction === -1 && isAtStart) || (direction === 1 && isAtEnd)) {
+        return;
+      }
 
-    const itemList = Array.from(carouselItems);
-    const currentScroll = container.scrollLeft;
-    const currentIndex = itemList.reduce((closestIndex, item, index) => {
-      const currentDistance = Math.abs(item.offsetLeft - currentScroll);
-      const closestDistance = Math.abs(
-        itemList[closestIndex].offsetLeft - currentScroll,
+      const itemList = Array.from(carouselItems);
+      const currentScroll = container.scrollLeft;
+      const currentIndex = itemList.reduce((closestIndex, item, index) => {
+        const currentDistance = Math.abs(item.offsetLeft - currentScroll);
+        const closestDistance = Math.abs(
+          itemList[closestIndex].offsetLeft - currentScroll,
+        );
+
+        return currentDistance < closestDistance ? index : closestIndex;
+      }, 0);
+
+      const targetIndex = Math.max(
+        0,
+        Math.min(itemList.length - 1, currentIndex + direction),
       );
 
-      return currentDistance < closestDistance ? index : closestIndex;
-    }, 0);
-
-    const targetIndex = Math.max(
-      0,
-      Math.min(itemList.length - 1, currentIndex + direction),
-    );
-
-    container.scrollTo({
-      left: itemList[targetIndex].offsetLeft,
-      behavior: "smooth",
-    });
-  };
+      container.scrollTo({
+        left: itemList[targetIndex].offsetLeft,
+        behavior: "smooth",
+      });
+    },
+    [isAtEnd, isAtStart],
+  );
 
   useEffect(() => {
     const container = scrollRef.current;
@@ -118,16 +134,14 @@ export const ShowcaseScrollCarousel = ({
     container.addEventListener("scroll", updateScrollBounds, { passive: true });
     window.addEventListener("resize", updateScrollBounds);
     resizeObserver?.observe(container);
-    Array.from(container.children).forEach((child) =>
-      resizeObserver?.observe(child),
-    );
+    Array.from(container.children).forEach((child) => resizeObserver?.observe(child));
 
     return () => {
       container.removeEventListener("scroll", updateScrollBounds);
       window.removeEventListener("resize", updateScrollBounds);
       resizeObserver?.disconnect();
     };
-  }, []);
+  }, [updateScrollBounds]);
 
   return (
     <div className={cn("relative", className)}>
@@ -148,16 +162,16 @@ export const ShowcaseScrollCarousel = ({
         <div
           ref={scrollRef}
           className="overflow-x-auto snap-x snap-mandatory pb-4 scroll-smooth [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
-          aria-label="Showcase carousel"
+          aria-label={ariaLabel}
         >
-          <div className="grid grid-flow-col auto-cols-[100%] gap-4 xs:auto-cols-[calc((100%-16px)/2)] sm:auto-cols-[calc((100%-16px)/3)] md:auto-cols-[calc((100%-32px)/4)] lg:auto-cols-[calc((100%-64px)/5)]">
+          <div className={cn("grid grid-flow-col gap-4", gridClassName)}>
             {items.map((item, index) => (
               <div
-                key={`${item.title}-${index}`}
+                key={isValidElement(item) && item.key != null ? item.key : index}
                 data-carousel-item
-                className="min-w-0 snap-start min-h-full h-full"
+                className={cn("min-w-0 snap-start", itemClassName)}
               >
-                <PostCard post={item} className="min-h-full" />
+                {item}
               </div>
             ))}
           </div>
@@ -180,4 +194,4 @@ export const ShowcaseScrollCarousel = ({
       </div>
     </div>
   );
-};
+}
