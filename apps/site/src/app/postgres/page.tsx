@@ -1,15 +1,7 @@
-import Antigravity from "../../components/homepage/antigravity";
 import type { Metadata } from "next";
-import {
-  SITE_HOME_DESCRIPTION,
-  SITE_HOME_TITLE,
-} from "../../lib/blog-metadata";
 import { Button, Card, Action } from "@prisma/eclipse";
 import { cn } from "@/lib/cn";
-import { Bento } from "@/components/homepage/bento";
 import { CardSection } from "@/components/homepage/card-section/card-section";
-import review from "../../data/homepage.json";
-import Testimonials from "../../components/homepage/testimonials";
 import { PostgresTabs } from "../../components/postgres";
 import postgresData from "../../data/postgres.json";
 import { LogoGrid } from "@/components/homepage/card-section/logo-grid";
@@ -148,7 +140,7 @@ export default async function SiteHome() {
           <div className="flex flex-col md:flex-row gap-4 items-center justify-center">
             <Button
               variant="ppg"
-              href="https://console.prisma.io/sign-up?utm_source=website&utm_medium=postgres&utm_campaign=cta"
+              href={CONSOLE_URL}
               size="3xl"
               target="_blank"
               rel="noopener noreferrer"
@@ -327,7 +319,13 @@ export default async function SiteHome() {
               </p>
             </div>
             <div className="flex flex-col md:flex-row gap-6">
-              <Button variant="ppg" size="2xl">
+              <Button
+                variant="ppg"
+                size="2xl"
+                href={CONSOLE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <span>Create your first Database</span>
                 <i className="fa-regular fa-arrow-right ml-2" />
               </Button>

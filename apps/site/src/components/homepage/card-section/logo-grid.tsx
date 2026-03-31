@@ -150,15 +150,7 @@ LogoImage.displayName = "LogoImage";
 // ============================================================================
 
 const SpotlightMode = memo(
-  ({
-    logos,
-    color,
-    still,
-  }: {
-    logos: Logo[];
-    color?: "orm" | "ppg";
-    still?: boolean;
-  }) => {
+  ({ logos, color }: { logos: Logo[]; color?: "orm" | "ppg" }) => {
     const logoSize = 50;
     const visibleLogos = logos.slice(0, 21);
 
@@ -259,7 +251,7 @@ export const LogoGrid = ({
   const comps = {
     track: <TrackMode logos={logos} color={color} />,
     spotlight: <SpotlightMode logos={logos} color={color} />,
-    wrap: <SpotlightMode still logos={logos} color={color} />,
+    wrap: <SpotlightMode logos={logos} color={color} />,
   };
   return (
     <>

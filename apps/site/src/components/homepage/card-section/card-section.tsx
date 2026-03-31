@@ -37,12 +37,15 @@ export const CardSection = ({ cardSection }: CardSectionProps) => {
   const sectionRefs = useRef<(HTMLElement | null)[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // Safe guard against empty array
+  const hasSteps = Boolean(cardSection[0]?.step);
+
   useEffect(() => {
     setMounted(true);
   }, []);
 
   useEffect(() => {
-    if (!cardSection[0].step || !containerRef.current) return;
+    if (!hasSteps || !containerRef.current) return;
 
     const scrollWatcher = () => {
       requestAnimationFrame(() => {
@@ -87,11 +90,10 @@ export const CardSection = ({ cardSection }: CardSectionProps) => {
       ref={containerRef}
       className={cn(
         "max-w-[1232px] mx-auto mt-8 px-4 overflow-visible",
-        cardSection[0].step &&
-          "flex-col md:flex-row items-start gap-6! relative",
+        hasSteps && "flex-col md:flex-row items-start gap-6! relative",
       )}
     >
-      {cardSection[0].step && (
+      {hasSteps && (
         <div
           className="max-h-full absolute top-0 left-8.5 md:left-12 w-[2px] bg-[linear-gradient(180deg,var(--color-background-default)_25%,var(--color-stroke-ppg-weak)_50%,var(--color-background-default)_75%)] z-[1]"
           style={{ height: `${progressHeight}px` }}
@@ -110,7 +112,7 @@ export const CardSection = ({ cardSection }: CardSectionProps) => {
           >
             <div
               className={cn(
-                "[&_h2]:mt-0 flex gap-6 md:gap-8 md:gap-12 sm:gap-6 items-center overflow-visible",
+                "[&_h2]:mt-0 flex gap-6 md:gap-8 lg:gap-12 sm:gap-6 items-center overflow-visible",
                 item.visualPosition === "left" &&
                   "lg:flex-row-reverse flex-col",
                 item.visualPosition === "right" && "md:flex-row flex-col",
