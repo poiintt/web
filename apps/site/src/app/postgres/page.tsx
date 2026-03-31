@@ -243,18 +243,20 @@ export default async function SiteHome() {
           <CardSection cardSection={twoCol} />
         </div>
       </section>
-      <div className="my-12 bg-[linear-gradient(180deg,var(--color-background-default)_-177.75%,var(--color-background-ppg)_100%)] shadow-[0_1px_2px_0_rgba(0,0,0,0.04)] p-12 mb-24">
-        <div className="web-cta flex gap-3 md:gap-12 items-center mx-auto w-fit lg:p-4 flex-col md:flex-row">
-          <h3 className="text-2xl text-foreground-neutral font-sans-display font-bold text-center md:text-left">
-            Build anything.
-            <br />
-            Deploy instantly.
+      <div
+        className={cn(
+          "my-12 md:p-12 mb-24 p-4",
+          "bg-background-default md:bg-[linear-gradient(180deg,var(--color-background-default)_-177.75%,var(--color-background-ppg)_100%)] shadow-[0_1px_2px_0_rgba(0,0,0,0.04)]",
+        )}
+      >
+        <div className="web-cta flex gap-4 md:gap-12 items-center mx-auto md:p-4 flex-col md:flex-row md:bg-none bg-[linear-gradient(180deg,var(--color-background-default)_0%,var(--color-background-ppg)_330.76%)] md:border-none border border-stroke-neutral md:max-w-none max-w-137 w-full md:w-fit p-12 md:rounded-none rounded-square-high">
+          <h3 className="text-2xl text-foreground-neutral font-sans-display font-bold text-center md:text-left md:mb-0 mb-3">
+            Pay as you scale
           </h3>
           <div className="content flex flex-col lg:flex-row gap-3 lg:gap-12 items-center md:items-start lg:items-center">
             <p className="max-w-94 w-full text-center md:text-left text-foreground-neutral-weak text-md">
-              Give your users instant production-ready Postgres, spin up
-              databases, add a built-in data browser, and make it feel part of
-              your product.
+              Usage-based pricing, with a generous free tier.  Spend limits
+              included, so you never get surprised.
             </p>
             <Button variant="ppg" size="2xl" href="/pricing">
               <span>Explore Pricing</span>
