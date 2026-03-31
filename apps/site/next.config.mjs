@@ -50,7 +50,10 @@ const ContentSecurityPolicy = `
     https://*.fontawesome.com;
 
   img-src 'self' data:
+    http://localhost:3002 http://127.0.0.1:3002
+    https://www.prisma.io https://prisma.io
     https://cdn.sanity.io
+    https://prisma.io
     https://prismalens.vercel.app
     https://api.producthunt.com
     https://www.google.com
@@ -72,7 +75,8 @@ const ContentSecurityPolicy = `
     https://vercel.live https://vercel.com data: blob:
     https://td.doubleclick.net
     https://raw.githubusercontent.com
-    https://*.meetupstatic.com;
+    https://*.meetupstatic.com
+    https://www.prisma.io;
 
   connect-src 'self'
     https://api.github.com

@@ -12,9 +12,14 @@ interface TwoColumnItem {
   mobileImageUrl: string | null;
   mobileImageAlt: string | null;
   logos: any[] | null;
+  alignItems?: "items-end" | "items-start" | "items-center";
+  footer?: ReactNode;
+  color?: "orm" | "ppg";
+  other?: ReactNode;
   useDefaultLogos: boolean;
   visualPosition: "left" | "right";
-  visualType: "logoGrid" | "image";
+  visualType: "logoGrid" | "image" | "other";
+  noShadow?: boolean;
 }
 
 interface CardSectionProps {
@@ -33,14 +38,15 @@ export const CardSection = ({ cardSection }: CardSectionProps) => {
     <div className="max-w-[1232px] mx-auto mt-8 px-4 overflow-visible">
       {cardSection.map((item, index) => (
         <section
-          key={index}
-          className="py-16 sm:py-6 md:py-8 lg:py-12 my-12 w-full overflow-visible"
+          key={`card-section-${index}-${item.visualType}-${item.visualPosition}`}
+          className="py-6 md:py-8 lg:py-12 my-6 md:my-8 lg:my-12 w-full overflow-visible"
         >
           <div
             className={cn(
               "[&_h2]:mt-0 flex gap-8 lg:gap-12 md:gap-8 sm:gap-6 items-center overflow-visible",
               item.visualPosition === "left" && "lg:flex-row-reverse flex-col",
               item.visualPosition === "right" && "lg:flex-row flex-col",
+              item.alignItems,
             )}
           >
             <div
@@ -58,13 +64,19 @@ export const CardSection = ({ cardSection }: CardSectionProps) => {
                 item.visualType === "logoGrid" ? "max-w-full" : "lg:w-full",
               )}
             >
+              {item.other && item.visualType === "other" && item.other}
               {item.visualType === "logoGrid" && item.useDefaultLogos && (
                 <LogoGrid />
               )}
               {item.visualType === "image" && item.imageUrl && (
-                <>
+                <div key={`images-${index}`}>
                   <img
-                    className="hidden sm:block w-full h-auto shadow-[0_10px_25px_-5px_rgba(0,0,0,0.1)]"
+                    key={`desktop-img-${index}`}
+                    className={cn(
+                      "hidden sm:block w-full h-auto",
+                      !item.noShadow &&
+                        "shadow-[0_10px_25px_-5px_rgba(0,0,0,0.1)]",
+                    )}
                     src={
                       mounted && resolvedTheme === "light"
                         ? `${item.imageUrl}_light.svg`
@@ -74,7 +86,12 @@ export const CardSection = ({ cardSection }: CardSectionProps) => {
                   />
                   {item.mobileImageUrl && (
                     <img
-                      className="w-full h-auto shadow-[0_10px_25px_-5px_rgba(0,0,0,0.1)] sm:hidden"
+                      key={`mobile-img-${index}`}
+                      className={cn(
+                        "w-full h-auto sm:hidden",
+                        !item.noShadow &&
+                          "shadow-[0_10px_25px_-5px_rgba(0,0,0,0.1)]",
+                      )}
                       src={
                         mounted && resolvedTheme === "light"
                           ? `${item.mobileImageUrl}_light.svg`
@@ -83,10 +100,11 @@ export const CardSection = ({ cardSection }: CardSectionProps) => {
                       alt={item.mobileImageAlt || ""}
                     />
                   )}
-                </>
+                </div>
               )}
             </div>
           </div>
+          {item.footer && <>{item.footer}</>}
         </section>
       ))}
     </div>
