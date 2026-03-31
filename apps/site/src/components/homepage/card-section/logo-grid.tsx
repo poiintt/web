@@ -62,15 +62,15 @@ const LogoBar = ({
             key={item.key}
             href={item.logo.link}
             className={cn(
-              "w-[85px] h-[85px] md:w-[60px] md:h-[60px] flex-shrink-0 rounded-xl z-[1] bg-background-default border border-white/10 flex items-center justify-center p-3 md:p-2 transition-[opacity_0.2s_ease,filter_0.2s_ease,transform_0.2s_ease,background_0.2s_ease,border-color_0.2s_ease] cursor-pointer opacity-80 mr-6 md:mr-2   hover:opacity-100",
+              "w-[85px] h-[85px] md:w-[60px] md:h-[60px] flex-shrink-0 rounded-xl z-[1] bg-background-default border flex items-center justify-center p-3 md:p-2 transition-[opacity_0.2s_ease,filter_0.2s_ease,transform_0.2s_ease,background_0.2s_ease,border-color_0.2s_ease] cursor-pointer opacity-80 mr-6 md:mr-2   hover:opacity-100",
               color === "orm"
-                ? "hover:border-background-orm"
-                : "hover:border-background-ppg",
+                ? "hover:border-foreground-orm"
+                : "hover:border-foreground-ppg",
             )}
             target="_blank"
             rel="noopener noreferrer"
           >
-            <LogoImage logo={item.logo} size={60} />
+            <LogoImage logo={item.logo} size={60} light={item.imageUrlLight} />
           </a>
         ))}
       </div>
@@ -99,32 +99,48 @@ interface LogoGridProps {
 // LOGO IMAGE COMPONENT
 // ============================================================================
 
-const LogoImage = memo(({ logo, size }: { logo: Logo; size: number }) => {
-  const { resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
+const LogoImage = memo(
+  ({ logo, size, light }: { logo: Logo; size: number; light?: string }) => {
+    const { resolvedTheme } = useTheme();
+    const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+    useEffect(() => {
+      setMounted(true);
+    }, []);
 
-  const imageUrl =
-    mounted && resolvedTheme === "light" && logo.mobileImageUrl
-      ? logo.mobileImageUrl
-      : logo.imageUrl;
+    const imageUrl =
+      mounted && resolvedTheme === "light" && logo.mobileImageUrl
+        ? logo.mobileImageUrl
+        : logo.imageUrl;
 
-  const isSvg = imageUrl.endsWith(".svg");
-  const ImageComponent = isSvg ? Image : "img";
+    const isSvg = imageUrl.endsWith(".svg");
+    const ImageComponent = isSvg ? Image : "img";
 
-  return (
-    <ImageComponent
-      src={imageUrl}
-      alt={logo.alt}
-      width={size}
-      height={size}
-      className="w-full aspect-square rounded-lg object-contain"
-    />
-  );
-});
+    return (
+      <>
+        <ImageComponent
+          src={imageUrl}
+          alt={logo.alt}
+          width={size}
+          height={size}
+          className={cn(
+            "w-full aspect-square rounded-lg object-contain",
+            light && "hidden dark:block",
+          )}
+        />
+        {light && (
+          <ImageComponent
+            src={light}
+            alt={logo.alt}
+            width={size}
+            height={size}
+            className="w-full aspect-square rounded-lg object-contain block dark:hidden"
+          />
+        )}
+      </>
+    );
+  },
+);
 
 LogoImage.displayName = "LogoImage";
 
@@ -156,15 +172,19 @@ const SpotlightMode = memo(
                   key={`${logo.alt}-${index}`}
                   href={logo.link}
                   className={cn(
-                    "w-[85px] md:w-[60px] aspect-square rounded-xl z-1 bg-background-default border border-white/10 flex items-center justify-center p-3 md:p-2 transition-[transform_0.2s_ease,border-color_0.2s_ease] hover:-translate-y-0.5 hover:scale-[1.02] active:translate-y-0 active:scale-100",
+                    "w-[85px] md:w-[60px] aspect-square rounded-xl z-1 bg-background-default border flex items-center justify-center p-3 md:p-2 transition-[transform_0.2s_ease,border-color_0.2s_ease] hover:-translate-y-0.5 hover:scale-[1.02] active:translate-y-0 active:scale-100",
                     color === "orm"
-                      ? "hover:border-background-orm"
-                      : "hover:border-background-ppg",
+                      ? "hover:border-foreground-orm"
+                      : "hover:border-foreground-ppg",
                   )}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <LogoImage logo={logo} size={logoSize} />
+                  <LogoImage
+                    logo={logo}
+                    size={logoSize}
+                    light={logo.imageUrlLight}
+                  />
                 </a>
               ))}
             </div>
@@ -200,7 +220,7 @@ const TrackMode = memo(
           position: "relative",
         }}
       >
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 translate-z-0 w-[350px] h-[350px] md:w-[300px] md:h-[300px] rounded-full bg-[radial-gradient(circle,#092A28_0%,#090A15_100%)] blur-[50px] md:blur-[40px] pointer-events-none z-0 will-change-[top,left,transform] [backface-visibility:hidden] [-webkit-backface-visibility:hidden] [perspective:1000px] [-webkit-perspective:1000px] isolate" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 translate-z-0 w-[350px] h-[350px] md:w-[300px] md:h-[300px] rounded-full bg-[radial-gradient(circle,#E0F2F1_0%,_#F5F7FA_100%)] dark:bg-[radial-gradient(circle,#092A28_0%,#090A15_100%)] blur-[50px] md:blur-[40px] pointer-events-none z-0 will-change-[top,left,transform] [backface-visibility:hidden] [-webkit-backface-visibility:hidden] [perspective:1000px] [-webkit-perspective:1000px] isolate" />
         <LogoBar
           logos={logosBar1}
           color={color}

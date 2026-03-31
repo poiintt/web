@@ -211,6 +211,7 @@
           "link": "/docs/prisma-postgres/quickstart/prisma-orm",
           "title": "Prisma",
           "imageUrl": "/icons/technologies/prisma.svg",
+          "imageUrlLight": "/icons/technologies/prisma_light.svg",
           "alt": "Prisma"
         },
         {
@@ -221,6 +222,7 @@
         {
           "link": "/docs/prisma-postgres/quickstart/drizzle-orm",
           "imageUrl": "/icons/technologies/drizzle.svg",
+          "imageUrlLight": "/icons/technologies/drizzle_light.svg",
           "title": "Drizzle"
         },
         {
