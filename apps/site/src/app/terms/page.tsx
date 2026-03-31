@@ -1,19 +1,21 @@
-import type { Metadata } from "next";
+import { createPageMetadata } from "@/lib/page-metadata";
 import { termsSections, termsLastUpdated } from "@/data/terms";
 import { LegalAccordion } from "@/components/legal-accordion";
 
-export const metadata: Metadata = {
+export const metadata = createPageMetadata({
   title: "Terms of Service | Prisma",
   description:
     "Read the Prisma Terms of Service governing your use of Prisma products and services.",
-};
+  path: "/terms",
+  ogImage: "/og/og-terms.png",
+});
 
 export default function TermsPage() {
   return (
     <main className="flex-1 w-full z-1 -mt-24 pt-24 relative legal-hero-gradient">
       {/* Hero */}
       <div className="text-center py-16">
-        <h1 className="text-5xl font-bold font-sans-display text-foreground-neutral mb-6">
+        <h1 className="text-5xl md:text-6xl font-bold font-sans-display text-foreground-neutral mb-6">
           Terms of Service
         </h1>
         <p className="text-lg text-foreground-neutral-weak">
