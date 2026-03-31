@@ -70,7 +70,7 @@ const LogoBar = ({
             target="_blank"
             rel="noopener noreferrer"
           >
-            <LogoImage logo={item.logo} size={60} light={item.imageUrlLight} />
+            <LogoImage logo={item.logo} size={60} />
           </a>
         ))}
       </div>
@@ -85,6 +85,7 @@ const LogoBar = ({
 interface Logo {
   imageUrl: string;
   mobileImageUrl?: string;
+  imageUrlLight?: string;
   link: string;
   alt: string;
 }
@@ -99,48 +100,48 @@ interface LogoGridProps {
 // LOGO IMAGE COMPONENT
 // ============================================================================
 
-const LogoImage = memo(
-  ({ logo, size, light }: { logo: Logo; size: number; light?: string }) => {
-    const { resolvedTheme } = useTheme();
-    const [mounted, setMounted] = useState(false);
+const LogoImage = memo(({ logo, size }: { logo: Logo; size: number }) => {
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
-    useEffect(() => {
-      setMounted(true);
-    }, []);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
-    const imageUrl =
-      mounted && resolvedTheme === "light" && logo.mobileImageUrl
-        ? logo.mobileImageUrl
-        : logo.imageUrl;
+  const imageUrl =
+    mounted && resolvedTheme === "light" && logo.mobileImageUrl
+      ? logo.mobileImageUrl
+      : logo.imageUrl;
 
-    const isSvg = imageUrl.endsWith(".svg");
-    const ImageComponent = isSvg ? Image : "img";
+  const imageUrlLight = logo.imageUrlLight;
 
-    return (
-      <>
+  const isSvg = imageUrl.endsWith(".svg");
+  const ImageComponent = isSvg ? Image : "img";
+
+  return (
+    <>
+      <ImageComponent
+        src={imageUrl}
+        alt={logo.alt}
+        width={size}
+        height={size}
+        className={cn(
+          "w-full aspect-square rounded-lg object-contain",
+          imageUrlLight && "hidden dark:block",
+        )}
+      />
+      {imageUrlLight && (
         <ImageComponent
-          src={imageUrl}
+          src={imageUrlLight}
           alt={logo.alt}
           width={size}
           height={size}
-          className={cn(
-            "w-full aspect-square rounded-lg object-contain",
-            light && "hidden dark:block",
-          )}
+          className="w-full aspect-square rounded-lg object-contain block dark:hidden"
         />
-        {light && (
-          <ImageComponent
-            src={light}
-            alt={logo.alt}
-            width={size}
-            height={size}
-            className="w-full aspect-square rounded-lg object-contain block dark:hidden"
-          />
-        )}
-      </>
-    );
-  },
-);
+      )}
+    </>
+  );
+});
 
 LogoImage.displayName = "LogoImage";
 
@@ -180,11 +181,7 @@ const SpotlightMode = memo(
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <LogoImage
-                    logo={logo}
-                    size={logoSize}
-                    light={logo.imageUrlLight}
-                  />
+                  <LogoImage logo={logo} size={logoSize} />
                 </a>
               ))}
             </div>

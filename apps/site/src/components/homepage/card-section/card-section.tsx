@@ -73,7 +73,7 @@ export const CardSection = ({ cardSection }: CardSectionProps) => {
     >
       {cardSection[0].step && (
         <div
-          className="max-h-full absolute top-0 left-12 w-[2px] bg-[linear-gradient(180deg,var(--color-background-default)_25%,var(--color-stroke-ppg-weak)_50%,var(--color-background-default)_75%)] z-1"
+          className="max-h-full absolute top-0 left-12 w-[2px] bg-[linear-gradient(180deg,var(--color-background-default)_25%,var(--color-stroke-ppg-weak)_50%,var(--color-background-default)_75%)] z-[1]"
           style={{ height: `${progressHeight}px` }}
         />
       )}
