@@ -235,9 +235,9 @@ export default async function SiteHome() {
           })}
         </div>
       </section>
-      <section className="my-12 px-4">
+      <section className="my-12">
         <div className="pt-12 relative gap-8 flex flex-col max-w-249 w-full mx-auto">
-          <h3 className="text-center text-foreground-neutral stretch-display text-3xl stretch-display font-sans-display my-0 -mb-12">
+          <h3 className="text-center text-foreground-neutral stretch-display text-3xl stretch-display font-sans-display my-0 -mb-12 px-4">
             Real Postgres. Better experience.
           </h3>
           <CardSection cardSection={twoCol} />

@@ -53,6 +53,26 @@ export const CardSection = ({ cardSection }: CardSectionProps) => {
           container.getBoundingClientRect().y * -1 + window.innerHeight * 0.8;
 
         setProgressHeight(position);
+
+        // Find the section closest to the center of the viewport
+        const viewportCenter = window.innerHeight / 2;
+        let closestIndex = 0;
+        let minDistance = Infinity;
+
+        sectionRefs.current.forEach((section, index) => {
+          if (!section) return;
+
+          const rect = section.getBoundingClientRect();
+          const sectionCenter = rect.top + rect.height / 2;
+          const distance = Math.abs(sectionCenter - viewportCenter);
+
+          if (distance < minDistance) {
+            minDistance = distance;
+            closestIndex = index;
+          }
+        });
+
+        setActive(closestIndex);
       });
     };
 
@@ -73,33 +93,24 @@ export const CardSection = ({ cardSection }: CardSectionProps) => {
     >
       {cardSection[0].step && (
         <div
-          className="max-h-full absolute top-0 left-12 w-[2px] bg-[linear-gradient(180deg,var(--color-background-default)_25%,var(--color-stroke-ppg-weak)_50%,var(--color-background-default)_75%)] z-[1]"
+          className="max-h-full absolute top-0 left-8.5 md:left-12 w-[2px] bg-[linear-gradient(180deg,var(--color-background-default)_25%,var(--color-stroke-ppg-weak)_50%,var(--color-background-default)_75%)] z-[1]"
           style={{ height: `${progressHeight}px` }}
         />
       )}
       {cardSection.map((item, index) => {
-        const { ref, inView } = useInView({
-          threshold: 0.5,
-          triggerOnce: false,
-        });
-
-        useEffect(() => {
-          if (inView) {
-            setActive(index);
-          }
-        }, [inView, index]);
-
         return (
           <section
             key={`card-section-${index}-${item.visualType}-${item.visualPosition}`}
-            ref={ref}
+            ref={(el) => {
+              sectionRefs.current[index] = el;
+            }}
             className={
               "py-6 md:py-8 lg:py-12 my-6 md:my-8 lg:my-12 w-full overflow-visible"
             }
           >
             <div
               className={cn(
-                "[&_h2]:mt-0 flex gap-8 md:gap-12 sm:gap-6 items-center overflow-visible",
+                "[&_h2]:mt-0 flex gap-6 md:gap-8 md:gap-12 sm:gap-6 items-center overflow-visible",
                 item.visualPosition === "left" &&
                   "lg:flex-row-reverse flex-col",
                 item.visualPosition === "right" && "md:flex-row flex-col",
@@ -112,7 +123,7 @@ export const CardSection = ({ cardSection }: CardSectionProps) => {
                   size="5xl"
                   color={active === index ? "ppg" : "neutral"}
                   className={cn(
-                    "relative z-2 transition-all",
+                    "relative z-[2] transition-all md:size-element-5xl! size-element-3xl!",
                     active === index
                       ? "border border-stroke-ppg shadow-[0_-7px_80px_0_rgba(45,212,191,0.16),0_-2.924px_33.422px_0_rgba(45,212,191,0.12),0_-1.564px_17.869px_0_rgba(45,212,191,0.10),0_-0.877px_10.017px_0_rgba(45,212,191,0.08),0_-0.466px_5.32px_0_rgba(45,212,191,0.06),0_-0.194px_2.214px_0_rgba(45,212,191,0.04)]"
                       : "border border-stroke-neutral bg-background-neutral-weaker",
@@ -121,7 +132,7 @@ export const CardSection = ({ cardSection }: CardSectionProps) => {
                   <i
                     className={cn(
                       item.step,
-                      "text-3xl",
+                      "text-xl md:text-3xl",
                       active === index
                         ? "text-foreground-ppg"
                         : "text-background-neutral-strong",
