@@ -10,7 +10,7 @@
       {
         "label": "See code examples",
         "icon": "fa-regular fa-arrow-right",
-        "url": "#mongo-tabs"
+        "url": "#mongodb-tabs"
       }
     ]
   },
@@ -53,6 +53,7 @@
     "title": "How Prisma and MongoDB fit together",
     "description": "MongoDB is a powerful NoSQL database that allows developers to intuitively work with their data. However, due to its schemaless nature, developers may run into data inconsistencies as they're evolving their applications. Prisma is a next-generation ORM/ODM that makes it easier to ensure data consistency by providing an easy-to-read schema and a type-safe database client with auto-completion for all queries.",
     "tabs": {
+      "id": "mongodb-tabs",
       "defaultValue": "read",
       "head": [
         { "title": "Read", "value": "read" },
@@ -103,7 +104,7 @@
         "description": "In this guide, you will learn about the concepts behind using Prisma and MongoDB, the commonalities and differences between MongoDB and other database providers, and the process for configuring your application to integrate with MongoDB using Prisma.",
         "btn": {
           "label": "Read the guide",
-          "url": "https://www.prisma.io/docs/orm/overview/databases/mongodb"
+          "url": "https://www.prisma.io/docs/prisma-orm/quickstart/mongodb"
         }
       },
       {

@@ -13,7 +13,7 @@
       },
       {
         "label": "Read the docs",
-        "url": "https://www.prisma.io/docs/guides/nextjs"
+        "url": "https://www.prisma.io/docs/guides/frameworks/nextjs"
       }
     ]
   },
@@ -144,7 +144,7 @@
           },
           {
             "label": "Watch intro",
-            "url": "/"
+            "url": "http://www.youtube.com/watch?v=PbjHxIuHduU"
           }
         ]
       },
